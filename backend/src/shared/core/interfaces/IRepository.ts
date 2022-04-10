@@ -26,6 +26,13 @@ export interface IRepository<T> {
    */
   drop(entity: T): Promise<void> | void;
 
+  /**
+   * Find entity by Id
+   *
+   * @param id
+   */
+  findById(id: string): Promise<T> | void;
+
   getOrmName(): string;
 }
 

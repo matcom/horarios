@@ -1,12 +1,13 @@
-import { IEntity, BaseProps } from '../core/interfaces/IEntity';
+import { BaseProps, IEntity } from '../core/interfaces/IEntity';
 import { Identifier } from './Identifier';
+import { v4 } from 'uuid';
 
 export abstract class DomainEntity<T extends BaseProps> implements IEntity {
   public readonly _id: Identifier;
   protected readonly props: T;
 
-  protected constructor(props: T, id: Identifier) {
-    this._id = id;
+  protected constructor(props: T, id?: Identifier) {
+    this._id = id ?? v4();
     this.props = props;
   }
 
