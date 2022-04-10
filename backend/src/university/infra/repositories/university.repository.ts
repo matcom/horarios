@@ -5,7 +5,9 @@ import { IUniversityRepository } from '../../domain/interfaces/IRepository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UniversityMapper } from '../mappers/university.mapper';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UniversityRepository extends BaseRepository<University, UniversityPersistence> implements IUniversityRepository {
   constructor(@InjectRepository(UniversityPersistence) _repository: Repository<UniversityPersistence>) {
     super(_repository, UniversityMapper.DomainToPersist, UniversityMapper.PersistToDomain, 'UniversityRepository');
