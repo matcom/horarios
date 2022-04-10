@@ -5,22 +5,22 @@ import { EnumPermits } from 'src/shared/domain/enum.permits';
 @Entity('user')
 @Index(['id'], { unique: true })
 export class UserPersistence extends PersistentEntity {
-    @Column({ type: 'varchar' })
+    @Column({ type: 'text' })
     shortName: string;
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'text' })
     fullName: string;
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'text' })
     description: string;
 
     @Column({ type: 'number' })
     priority: number;
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'text' })
     email: string
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'text' })
     password: string
 
     @Column({ type: 'simple-array' })
