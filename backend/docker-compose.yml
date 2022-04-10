@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - horarios:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: horarios
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  horarios:
+    driver: local
+
