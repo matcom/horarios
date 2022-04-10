@@ -1,8 +1,8 @@
 import { IRepository } from 'src/shared/core/interfaces/IRepository';
 import { OrmName } from '../types/orm-name.enum';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeepPartial } from 'typeorm';
-import { Type, Logger } from '@nestjs/common';
+import { DeepPartial, Repository } from 'typeorm';
+import { Logger, Type } from '@nestjs/common';
 import { PersistentEntity } from './base.entity';
 import { IEntity } from 'src/shared/core/interfaces/IEntity';
 import { PageParams } from '../../../core/PaginatorParams';
@@ -20,6 +20,7 @@ export abstract class BaseRepository<E extends IEntity,
     )
     protected readonly _entityRepository: Repository<P>,
     private readonly _domainToPersistentFunc: (domainEntity: E) => Partial<P>,
+    private readonly _persistToDomainFunc: (persistEntity: P) => E,
     context: string,
   ) {
     this._logger = new Logger(context);
@@ -51,6 +52,12 @@ export abstract class BaseRepository<E extends IEntity,
     await this._entityRepository
       .create(this._domainToPersistentFunc(entity) as DeepPartial<P>)
       .remove();
+  }
+
+  async findById(id: string): Promise<E> {
+    this._logger.log(`Find by id: ${id}`);
+    const ans: P = await this._entityRepository.findOne(id);
+    return this._persistToDomainFunc(ans);
   }
 
   getOrmName(): string {
