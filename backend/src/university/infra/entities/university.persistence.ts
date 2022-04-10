@@ -4,15 +4,15 @@ import { Column, Entity, Index } from 'typeorm';
 @Entity('university')
 @Index(['id'], { unique: true })
 export class UniversityPersistence extends PersistentEntity {
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   shortName: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   fullName: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'number' })
+  @Column({ type: 'int' })
   priority: number;
 }
