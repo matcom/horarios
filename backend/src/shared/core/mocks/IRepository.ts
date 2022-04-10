@@ -8,6 +8,8 @@ export const repositoryMockFactory: <T>() => MockType<IRepository<T>> = jest.fn(
     }),
     drop: jest.fn(() => {
     }),
+    findById: jest.fn(() => {
+    }),
     getOrmName: jest.fn(() => {
     }),
   }),
