@@ -35,11 +35,14 @@ export class CreateUserUseCase implements IUseCase<UserCreateDto, Promise<Create
             email: request.email,
             status: request.status
         });
+        
 
         if (userDomainOrError.isFailure)
             return left(userDomainOrError);
 
         const user: User = userDomainOrError.unwrap();
+
+        user.setPasswordHash(request.password)
 
         try {
             await this.userRepository.save(user);

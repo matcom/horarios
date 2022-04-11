@@ -4,6 +4,7 @@ import { EnumPermits } from 'src/shared/domain/enum.permits';
 import { Guard } from 'src/shared/core/Guard';
 import { AppError } from 'src/shared/core/errors/AppError';
 import { EnumStatus } from '../enums/enum.status';
+import { hashSync } from 'bcrypt';
 
 type UserProps = {
     shortName: string;
@@ -89,6 +90,9 @@ export class User extends DomainEntity<UserProps> {
         }
 
         return Result.Ok(new User(props));
+    }
+    public setPasswordHash(password: string) {
+        this.props.password = hashSync(password, 5)
     }
 
     public Update(props: newUserProps) {

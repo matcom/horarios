@@ -15,7 +15,7 @@ export class UserPersistence extends PersistentEntity {
     @Column({ type: 'text' })
     description: string;
 
-    @Column({ type: 'number' })
+    @Column({ type: 'int' })
     priority: number;
 
     @Column({ type: 'text' })
@@ -27,7 +27,7 @@ export class UserPersistence extends PersistentEntity {
     @Column({ type: 'simple-array' })
     roles: EnumPermits[]
 
-    @Column({ type: 'text' })
+    @Column({ type: 'enum' })
     status: EnumStatus
 
 
