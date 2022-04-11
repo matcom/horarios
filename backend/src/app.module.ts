@@ -6,9 +6,10 @@ import { UniversityModule } from './university/university.module';
 import { DataAccessModule } from './shared/modules/data-access/data-access.module';
 import { UserModule } from './user/user.module';
 import { EmailModule } from './email/email.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [TeacherModule, UniversityModule, DataAccessModule, UserModule, EmailModule],
+  imports: [TeacherModule, UniversityModule, DataAccessModule, UserModule, EmailModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,4 +1,5 @@
 import { EnumPermits } from "src/shared/domain/enum.permits";
+import { EnumStatus } from "src/user/domain/enums/enum.status";
 
 export type UserCreateDto = {
     shortName: string;
@@ -7,5 +8,6 @@ export type UserCreateDto = {
     priority: number;
     roles: EnumPermits[]
     password: string
-    email:string
+    email: string
+    status: EnumStatus
 }

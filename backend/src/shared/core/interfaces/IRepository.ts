@@ -33,6 +33,14 @@ export interface IRepository<T> {
    */
   findById(id: string): Promise<T> | void;
 
+
+   /**
+   * Find entity by filter
+   *
+   * @param filter
+   */
+  findOne(filter: {}): Promise<T> | void;
+
   getOrmName(): string;
 }
 

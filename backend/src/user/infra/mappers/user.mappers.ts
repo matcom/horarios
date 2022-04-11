@@ -27,7 +27,8 @@ export class UserMapper {
             updatedAt: domain.updatedAt,
             email: domain.email,
             roles: domain.roles,
-            password: hashSync(domain.password, 5)
+            password: hashSync(domain.password, 5),
+            status: domain.status
         };
     }
 }

@@ -32,7 +32,8 @@ export class CreateUserUseCase implements IUseCase<UserCreateDto, Promise<Create
             description: request.description,
             password: request.password,
             roles: request.roles,
-            email: request.email
+            email: request.email,
+            status: request.status
         });
 
         if (userDomainOrError.isFailure)

@@ -3,6 +3,7 @@ import { Result } from '../../../shared/core/Result';
 import { EnumPermits } from 'src/shared/domain/enum.permits';
 import { Guard } from 'src/shared/core/Guard';
 import { AppError } from 'src/shared/core/errors/AppError';
+import { EnumStatus } from '../enums/enum.status';
 
 type UserProps = {
     shortName: string;
@@ -14,6 +15,7 @@ type UserProps = {
     email: string;
     password: string;
     roles: EnumPermits[];
+    status: EnumStatus;
 };
 
 type newUserProps = Omit<UserProps,
@@ -51,6 +53,9 @@ export class User extends DomainEntity<UserProps> {
     }
     get roles(): EnumPermits[] {
         return this.props.roles
+    }
+    get status(): EnumStatus {
+        return this.props.status
     }
 
     public static New(props: newUserProps): Result<User> {

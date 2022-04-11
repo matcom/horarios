@@ -18,7 +18,7 @@ export class FindByIdUserUseCase implements IUseCase<UserFindByIdDto, Promise<Fi
     private _logger: Logger;
 
     constructor(private readonly userRepository: UserRepository) {
-        this._logger = new Logger('CreateUserUseCase');
+        this._logger = new Logger('FindByIdUseCase');
     }
 
     async execute(request: UserFindByIdDto): Promise<FindByIdUserUseCaseResponse> {
