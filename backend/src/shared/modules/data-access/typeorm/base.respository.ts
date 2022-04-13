@@ -60,7 +60,7 @@ export abstract class BaseRepository<E extends IEntity,
     return this._persistToDomainFunc(ans);
   }
 
-  async findOne(filter: {}): void | Promise<E> {
+  async findOne(filter: {}): Promise<E> {
     this._logger.log(`Find`);
     const ans: P = await this._entityRepository.findOne(filter);
     return this._persistToDomainFunc(ans);

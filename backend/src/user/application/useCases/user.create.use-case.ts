@@ -24,12 +24,9 @@ export class CreateUserUseCase implements IUseCase<UserCreateDto, Promise<Create
         this._logger.log('Executing...');
 
 
-
         const userDomainOrError: Result<User> = User.New({
-            priority: request.priority,
-            shortName: request.shortName,
-            fullName: request.fullName,
-            description: request.description,
+           
+            username: request.username,
             password: request.password,
             roles: request.roles,
             email: request.email,

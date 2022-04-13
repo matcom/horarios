@@ -6,13 +6,15 @@ import { UserModule } from 'src/user/user.module';
 import { LocalStrategy } from './application/Strategies/localStrategy';
 import { JwtStrategy } from './application/Strategies/jwtStrategy';
 import { ValidateUserUseCase } from './application/useCase/auth.validate.use-case';
+import { AuthController } from './controller/AuthController';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-    imports: [EmailModule, UserModule, PassportModule, JwtModule.register({
-        secret: 'poner el secret',
-        signOptions: { expiresIn: 10000 },
+    imports: [ConfigModule.forRoot({ isGlobal: true }), EmailModule, UserModule, PassportModule, JwtModule.register({
+        secret: new ConfigService().get('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
     })],
-    controllers: [],
+    controllers: [AuthController],
     providers: [ValidateUserUseCase, LocalStrategy, JwtStrategy]
 })
 export class AuthModule { }

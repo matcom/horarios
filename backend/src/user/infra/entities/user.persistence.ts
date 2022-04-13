@@ -7,16 +7,7 @@ import { EnumStatus } from 'src/user/domain/enums/enum.status';
 @Index(['id'], { unique: true })
 export class UserPersistence extends PersistentEntity {
     @Column({ type: 'text' })
-    shortName: string;
-
-    @Column({ type: 'text' })
-    fullName: string;
-
-    @Column({ type: 'text' })
-    description: string;
-
-    @Column({ type: 'int' })
-    priority: number;
+    username: string;
 
     @Column({ type: 'text' })
     email: string
@@ -29,6 +20,5 @@ export class UserPersistence extends PersistentEntity {
 
     @Column({ type: 'enum' })
     status: EnumStatus
-
 
 }

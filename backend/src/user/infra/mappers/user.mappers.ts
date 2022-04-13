@@ -19,10 +19,7 @@ export class UserMapper {
     public static DomainToPersist(domain: User): Partial<UserPersistence> {
         return {
             id: domain._id.toString(),
-            shortName: domain.shortName,
-            fullName: domain.fullName,
-            description: domain.description,
-            priority: domain.priority,
+            username: domain.username,
             createdAt: domain.createdAt,
             updatedAt: domain.updatedAt,
             email: domain.email,

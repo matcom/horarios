@@ -1,8 +1,5 @@
 export class RegisterDto {
-    shortName: string;
-    fullName: string;
-    description: string;
-    priority: number;
+    username: string;
     password: string
     email: string
 }

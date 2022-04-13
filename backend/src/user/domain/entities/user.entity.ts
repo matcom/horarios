@@ -7,10 +7,7 @@ import { EnumStatus } from '../enums/enum.status';
 import { hashSync } from 'bcrypt';
 
 type UserProps = {
-    shortName: string;
-    fullName: string;
-    description: string;
-    priority: number;
+    username:string;
     createdAt: Date;
     updatedAt: Date;
     email: string;
@@ -23,20 +20,9 @@ type newUserProps = Omit<UserProps,
     'id' | 'createdAt' | 'updatedAt'>;
 
 export class User extends DomainEntity<UserProps> {
-    get shortName(): string {
-        return this.props.shortName;
-    }
-
-    get fullName(): string {
-        return this.props.fullName;
-    }
-
-    get description(): string {
-        return this.props.description;
-    }
-
-    get priority(): number {
-        return this.props.priority;
+  
+    get username(): string {
+        return this.props.username;
     }
 
     get createdAt(): Date {
@@ -74,15 +60,11 @@ export class User extends DomainEntity<UserProps> {
     public static Create(props: UserProps): Result<User> {
         // set guards here
 
-        const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.shortName })
+        const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
         if (!shortNameOrError) {
             return Result.Fail(new AppError.ValidationError(shortNameOrError.message))
         }
 
-        const fuulNameOrError = Guard.againstAtLeast({ argumentPath: 'fullname', numChars: 5, argument: props.fullName })
-        if (fuulNameOrError) {
-            return Result.Fail(new AppError.ValidationError(fuulNameOrError.message))
-        }
 
         const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password })
         if (passwordOrError) {
