@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                 throw new UnauthorizedException('error');
             }
             const userDomain = userDomainOrError.value.unwrap()
-            if (!userDomain || userDomain.status == EnumStatus.pendin) {
+            if (!userDomain || userDomain.status == EnumStatus.Pending) {
                 throw new UnauthorizedException('not permits');
             }
             return userDomain
