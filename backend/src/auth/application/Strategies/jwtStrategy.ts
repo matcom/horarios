@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { PassportStrategy } from "@nestjs/passport";
-import { Strategy, ExtractJwt } from 'passport-jwt'
-import { User } from "src/user/domain/entities/user.entity";
-import { EnumStatus } from "src/user/domain/enums/enum.status";
-import { UserRepository } from "src/user/infra/repositories/user.repository";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { User } from 'src/user/domain/entities/user.entity';
+import { EnumStatus } from 'src/user/domain/enums/enum.status';
+import { UserRepository } from 'src/user/infra/repositories/user.repository';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         try {
             const userDomain = await this.userRepository.findOne({ email: payload.email })
-            if (!userDomain || userDomain.status == EnumStatus.pendin) {
+            if (!userDomain || userDomain.status == EnumStatus.Pending) {
                 throw new UnauthorizedException('not permits');
             }
             return userDomain

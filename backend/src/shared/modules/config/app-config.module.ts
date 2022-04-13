@@ -4,6 +4,7 @@ import * as Joi from '@hapi/joi';
 import { AppConfigService } from './service/app-config-service';
 import { databaseConfig, databaseSchema } from './namespaces/database.config';
 import { appConfig, appSchema } from './namespaces/app.config';
+import { emailConfig, emailSchema } from './namespaces/email.config';
 
 @Global()
 @Module({
@@ -15,14 +16,14 @@ import { appConfig, appSchema } from './namespaces/app.config';
         appConfig,
         // erpConfig,
         databaseConfig,
-        // emailConfig,
+        emailConfig,
         // graphqlConfig,
         // inventoryClientConfig,
       ],
       validationSchema: Joi.object({
         ...appSchema,
         ...databaseSchema,
-        // ...emailSchema,
+        ...emailSchema,
         // ...graphqlSchema,
         // ...erpSchema,
         // ...syncSchema,

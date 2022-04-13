@@ -6,19 +6,23 @@ import { EnumStatus } from 'src/user/domain/enums/enum.status';
 @Entity('user')
 @Index(['id'], { unique: true })
 export class UserPersistence extends PersistentEntity {
-    @Column({ type: 'text' })
-    username: string;
+  @Column({ type: 'text' })
+  username: string;
 
-    @Column({ type: 'text' })
-    email: string
+  @Column({ type: 'text' })
+  email: string;
 
-    @Column({ type: 'text' })
-    password: string
+  @Column({ type: 'text' })
+  password: string;
 
-    @Column({ type: 'simple-array' })
-    roles: EnumPermits[]
+  @Column({ type: 'simple-array' })
+  roles: EnumPermits[];
 
-    @Column({ type: 'enum' })
-    status: EnumStatus
+  @Column({
+    type: 'enum',
+    enum: EnumStatus,
+    default: EnumStatus.Pending,
+  })
+  status: EnumStatus;
 
 }
