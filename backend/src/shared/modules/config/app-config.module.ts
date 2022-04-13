@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { AppConfigService } from './service/app-config-service';
 import { databaseConfig, databaseSchema } from './namespaces/database.config';
+import { appConfig, appSchema } from './namespaces/app.config';
 
 @Global()
 @Module({
@@ -11,7 +12,7 @@ import { databaseConfig, databaseSchema } from './namespaces/database.config';
       isGlobal: true,
       load: [
         // syncConfig,
-        // appConfig,
+        appConfig,
         // erpConfig,
         databaseConfig,
         // emailConfig,
@@ -19,7 +20,7 @@ import { databaseConfig, databaseSchema } from './namespaces/database.config';
         // inventoryClientConfig,
       ],
       validationSchema: Joi.object({
-        // ...appSchema,
+        ...appSchema,
         ...databaseSchema,
         // ...emailSchema,
         // ...graphqlSchema,
