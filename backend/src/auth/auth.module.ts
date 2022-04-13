@@ -7,14 +7,12 @@ import { LocalStrategy } from './application/Strategies/localStrategy';
 import { JwtStrategy } from './application/Strategies/jwtStrategy';
 import { ValidateUserUseCase } from './application/useCase/auth.validate.use-case';
 import { AuthController } from './controller/AuthController';
-import { ConfigModule } from '@nestjs/config';
 import { AppConfigModule } from '../shared/modules/config/app-config.module';
 import { AppConfigService } from '../shared/modules/config/service/app-config-service';
 import { AuthUseCases } from './application/useCase';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
     EmailModule,
     UserModule,
     PassportModule,

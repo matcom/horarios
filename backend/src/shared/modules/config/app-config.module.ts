@@ -11,6 +11,7 @@ import { emailConfig, emailSchema } from './namespaces/email.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: ['.dev.env', '.env'],
       load: [
         // syncConfig,
         appConfig,
