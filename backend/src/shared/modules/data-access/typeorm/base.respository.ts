@@ -60,6 +60,12 @@ export abstract class BaseRepository<E extends IEntity,
     return this._persistToDomainFunc(ans);
   }
 
+  async findOne(filter: {}): Promise<E> {
+    this._logger.log(`Find`);
+    const ans: P = await this._entityRepository.findOne(filter);
+    return this._persistToDomainFunc(ans);
+  }
+
   getOrmName(): string {
     return OrmName.TYPE_ORM;
   }
