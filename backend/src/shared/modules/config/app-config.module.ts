@@ -3,25 +3,28 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from '@hapi/joi';
 import { AppConfigService } from './service/app-config-service';
 import { databaseConfig, databaseSchema } from './namespaces/database.config';
+import { appConfig, appSchema } from './namespaces/app.config';
+import { emailConfig, emailSchema } from './namespaces/email.config';
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: ['.dev.env', '.env'],
       load: [
         // syncConfig,
-        // appConfig,
+        appConfig,
         // erpConfig,
         databaseConfig,
-        // emailConfig,
+        emailConfig,
         // graphqlConfig,
         // inventoryClientConfig,
       ],
       validationSchema: Joi.object({
-        // ...appSchema,
+        ...appSchema,
         ...databaseSchema,
-        // ...emailSchema,
+        ...emailSchema,
         // ...graphqlSchema,
         // ...erpSchema,
         // ...syncSchema,

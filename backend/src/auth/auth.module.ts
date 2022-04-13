@@ -7,14 +7,34 @@ import { LocalStrategy } from './application/Strategies/localStrategy';
 import { JwtStrategy } from './application/Strategies/jwtStrategy';
 import { ValidateUserUseCase } from './application/useCase/auth.validate.use-case';
 import { AuthController } from './controller/AuthController';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppConfigModule } from '../shared/modules/config/app-config.module';
+import { AppConfigService } from '../shared/modules/config/service/app-config-service';
+import { AuthUseCases } from './application/useCase';
 
 @Module({
-    imports: [ConfigModule.forRoot({ isGlobal: true }), EmailModule, UserModule, PassportModule, JwtModule.register({
-        secret: new ConfigService().get('JWT_SECRET'),
-        signOptions: { expiresIn: '1h' },
-    })],
-    controllers: [AuthController],
-    providers: [ValidateUserUseCase, LocalStrategy, JwtStrategy]
+  imports: [
+    EmailModule,
+    UserModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [AppConfigModule],
+      inject: [AppConfigService],
+      useFactory: async (configService: AppConfigService) => ({
+        secret: configService.app.jwtSecret,
+        signOptions: {
+          expiresIn: configService.app.jwtExpiration,
+        },
+      }),
+
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [
+    ValidateUserUseCase,
+    LocalStrategy,
+    JwtStrategy,
+    ...AuthUseCases,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {
+}

@@ -7,8 +7,11 @@ import { UserPersistence } from './infra/entities/user.persistence';
 import { UserRepository } from './infra/repositories/user.repository';
 
 @Module({
-    imports: [DataAccessModule, TypeOrmModule.forFeature([UserPersistence])],
+    imports: [
+        DataAccessModule,
+        TypeOrmModule.forFeature([UserPersistence])],
     providers: [CreateUserUseCase, UserRepository],
-    controllers: [UserController]
+    controllers: [UserController],
+    exports: [UserRepository],
 })
 export class UserModule { }
