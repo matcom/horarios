@@ -13,13 +13,13 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async Login(@Request() req, @Response() res): Promise<ReturnLoginDto> {
+    async Login(@Request() req, @Response() res) {
         const login = await this.authLogin.execute(req.user)
         return ProcesResponse.setResponse(res, login)
     }
 
     @Post('register')
-    async Register(@Body() userDto: RegisterDto, @Response() res): Promise<User> {
+    async Register(@Body() userDto: RegisterDto, @Response() res) {
         const user = await this.authRegister.execute(userDto)
         return ProcesResponse.setResponse(res, user)
     }

@@ -138,10 +138,10 @@ export class Guard {
    * @memberof Guard
    */
   public static againstAtLeast({
-                                 argumentPath,
-                                 numChars,
-                                 argument,
-                               }: {
+    argumentPath,
+    numChars,
+    argument,
+  }: {
     numChars: number;
     argument: string;
     argumentPath: string;
@@ -191,10 +191,10 @@ export class Guard {
    * @memberof Guard
    */
   public static againstAtMost({
-                                numChars,
-                                argumentPath,
-                                argument,
-                              }: {
+    numChars,
+    argumentPath,
+    argument,
+  }: {
     numChars: number;
     argument: string;
     argumentPath: string;
@@ -268,10 +268,10 @@ export class Guard {
    * @memberof Guard
    */
   public static isOneOf<T>({
-                             value,
-                             validValues,
-                             argumentPath,
-                           }: {
+    value,
+    validValues,
+    argumentPath,
+  }: {
     value: T;
     validValues: T[];
     argumentPath: string;
@@ -312,11 +312,11 @@ export class Guard {
    * @memberof Guard
    */
   public static inRange({
-                          argumentPath,
-                          max,
-                          min,
-                          num,
-                        }: {
+    argumentPath,
+    max,
+    min,
+    num,
+  }: {
     num: number;
     min: number;
     max: number;
@@ -350,10 +350,10 @@ export class Guard {
    * @memberof Guard
    */
   public static allInRange({
-                             min,
-                             max,
-                             args,
-                           }: {
+    min,
+    max,
+    args,
+  }: {
     min: number;
     max: number;
     args: IGuardArgument<number>[];

@@ -9,6 +9,15 @@ export interface IRepository<T> {
   save(entity: T): Promise<void> | void;
 
   /**
+ * Update an entity in the repository, if an entity exists, update it.
+ *
+ * @param {T} entity
+ * @returns  {(Promise<void> | void)}
+ * @memberof IRepository
+ */
+  update(entity: T, id: string): Promise<void> | void;
+
+  /**
    * Persist many entities in the repository, if an entity exists, update it.
    *
    * @param {T} entity
@@ -34,11 +43,11 @@ export interface IRepository<T> {
   findById(id: string): Promise<T> | void;
 
 
-   /**
-   * Find entity by filter
-   *
-   * @param filter
-   */
+  /**
+  * Find entity by filter
+  *
+  * @param filter
+  */
   findOne(filter: {}): Promise<T> | void;
 
   getOrmName(): string;

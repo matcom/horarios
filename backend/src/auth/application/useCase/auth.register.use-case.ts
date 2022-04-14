@@ -39,6 +39,10 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
             const user = userOrError.value.unwrap()
             const emailOrError = await this.sendEmailUseCase.execute({ to: user.email, body: { data: "", message: `Pres the link to confirm register ${"a"}` } })
 
+            if (emailOrError.isLeft) {
+                const error = userOrError.value.unwrapError()
+                return left(Result.Fail(error));
+            }
             return right(Result.Ok(user));
         } catch (error) {
             return left(Result.Fail(new AppError.UnexpectedError(error)));

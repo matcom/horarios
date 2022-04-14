@@ -6,6 +6,8 @@ export const repositoryMockFactory: <T>() => MockType<IRepository<T>> = jest.fn(
   () => ({
     save: jest.fn(() => {
     }),
+    update: jest.fn(() => {
+    }),
     drop: jest.fn(() => {
     }),
     findById: jest.fn(() => {

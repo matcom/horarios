@@ -1,3 +1,3 @@
 export class UserFindEmailIdDto {
-    email?: string
+    email: string
 }
