@@ -47,4 +47,15 @@ export namespace AppError {
   }
 
   export type ValidationErrorResult<T> = Result<T, ValidationError>;
+
+
+  export class ObjectNotExist extends BaseError {
+    private readonly _brand?: ObjectNotExist;
+
+    public constructor(message: string) {
+      super({ name: 'ObjectNotExist', message, context: _context });
+    }
+  }
+
+  export type ObjectNotExistResult<T> = Result<T, ObjectNotExist>;
 }
