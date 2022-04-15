@@ -14,7 +14,7 @@ services:
   #      MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
   db:
-    image: postgis/postgis:13-3.1-alpine
+    image: postgres
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_USER: postgres
