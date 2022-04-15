@@ -55,7 +55,12 @@ export class University extends DomainEntity<UniversityProps> {
     return Result.Ok(new University(props));
   }
 
-  public Update(props: newUniversityProps) {
-    // this.props.name = props.name ?? this.props.name;
+  public Update(props: any) {
+    this.props.priority = props.priority ?? this.props.priority;
+    this.props.description = props.description ?? this.props.description;
+    this.props.fullName = props.fullName ?? this.props.fullName;
+    this.props.shortName = props.shortName ?? this.props.shortName;
+
+    this.props.updatedAt = new Date();
   }
 }
