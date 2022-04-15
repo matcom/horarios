@@ -10,6 +10,8 @@ import { AuthController } from './controller/AuthController';
 import { AppConfigModule } from '../shared/modules/config/app-config.module';
 import { AppConfigService } from '../shared/modules/config/service/app-config-service';
 import { AuthUseCases } from './application/useCase';
+import { SendEmailUseCase } from 'src/email/application/useCases/email.send.use-case';
+import { RegisterUseCase } from './application/useCase/auth.register.use-case';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { AuthUseCases } from './application/useCase';
     ValidateUserUseCase,
     LocalStrategy,
     JwtStrategy,
+    SendEmailUseCase,
+    RegisterUseCase,
     ...AuthUseCases,
   ],
 })

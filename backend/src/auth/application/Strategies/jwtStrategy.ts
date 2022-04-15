@@ -1,28 +1,37 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { User } from 'src/user/domain/entities/user.entity';
-import { EnumStatus } from 'src/user/domain/enums/enum.status';
-import { UserRepository } from 'src/user/infra/repositories/user.repository';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { Strategy, ExtractJwt } from 'passport-jwt'
+import { AppConfigService } from "src/shared/modules/config/service/app-config-service";
+import { FindByEmailUserUseCase } from "src/user/application/useCases/user.findByEmail.use-case";
+import { User } from "src/user/domain/entities/user.entity";
+import { EnumStatus } from "src/user/domain/enums/enum.status";
+import { UserRepository } from "src/user/infra/repositories/user.repository";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly userRepository: UserRepository) {
+    constructor(private readonly findByEmailUseCase: FindByEmailUserUseCase, configService: AppConfigService) {
+
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: 'poner el secret',
+            secretOrKey: configService.app.jwtSecret,
         });
     }
     async validate(payload: any): Promise<User> {
-
         try {
-            const userDomain = await this.userRepository.findOne({ email: payload.email })
+            console.log(payload, 'payload')
+            const userDomainOrError = await this.findByEmailUseCase.execute({ email: payload.email })
+            console.log(userDomainOrError, 'userdomain')
+            if (userDomainOrError.isLeft()) {
+                throw new UnauthorizedException('error');
+            }
+            const userDomain = userDomainOrError.value.unwrap()
             if (!userDomain || userDomain.status == EnumStatus.Pending) {
                 throw new UnauthorizedException('not permits');
             }
             return userDomain
         } catch (error) {
+            console.log('errrrooo')
             throw new UnauthorizedException('not permits');
         }
 

@@ -22,9 +22,9 @@ export class LoginUseCase implements IUseCase<User, Promise<LoginUseCaseResponse
 
     async execute(request: User): Promise<LoginUseCaseResponse> {
         this._logger.log('Executing...');
-
+        console.log(request,'req')
         try {
-            const payload = { email: request.email, sub: request._id, role: request.roles };
+            const payload = { email: request.email, sub: request._id.toString(), role: request.roles };
             const token: string = await this.jwtService.signAsync(payload)
             return right(Result.Ok({ acces_token: token }));
         } catch (error) {

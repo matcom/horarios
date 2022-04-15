@@ -7,7 +7,7 @@ import { EnumStatus } from '../enums/enum.status';
 import { hashSync } from 'bcrypt';
 
 type UserProps = {
-    username:string;
+    username: string;
     createdAt: Date;
     updatedAt: Date;
     email: string;
@@ -16,11 +16,18 @@ type UserProps = {
     status: EnumStatus;
 };
 
+
+
 type newUserProps = Omit<UserProps,
     'id' | 'createdAt' | 'updatedAt'>;
 
+
+type updateUserProps = Omit<UserProps,
+    'id' | 'createdAt' | 'updatedAt' | 'email'>;
+
+
 export class User extends DomainEntity<UserProps> {
-  
+
     get username(): string {
         return this.props.username;
     }
@@ -59,15 +66,14 @@ export class User extends DomainEntity<UserProps> {
 
     public static Create(props: UserProps): Result<User> {
         // set guards here
-
         const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
-        if (!shortNameOrError) {
+        if (!shortNameOrError.succeeded) {
             return Result.Fail(new AppError.ValidationError(shortNameOrError.message))
         }
 
 
         const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password })
-        if (passwordOrError) {
+        if (!passwordOrError.succeeded) {
             return Result.Fail(new AppError.ValidationError(passwordOrError.message))
         }
 
@@ -77,7 +83,35 @@ export class User extends DomainEntity<UserProps> {
         this.props.password = hashSync(password, 5)
     }
 
-    public Update(props: newUserProps) {
+    public Update(props: updateUserProps) {
+        console.log(props,'props')
+        if (props.username) {
+            const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
+            if (!shortNameOrError.succeeded) {
+                return Result.Fail(new AppError.ValidationError(shortNameOrError.message))
+            }
+            this.props.username = props.username
+        }
+
+        if (props.password) {
+            const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password })
+            if (!passwordOrError.succeeded) {
+                return Result.Fail(new AppError.ValidationError(passwordOrError.message))
+            }
+        }
+
+        if (props.roles) {
+            if (props.roles.length == 0)
+                return Result.Fail(new AppError.ValidationError('invalid roles'))
+            this.props.roles = props.roles
+        }
+
+        if (props.status) {
+            this.props.status = props.status
+        }
+
+        return Result.Ok(this)
+
         // this.props.name = props.name ?? this.props.name;
     }
 }
