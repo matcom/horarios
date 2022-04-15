@@ -6,7 +6,7 @@ export class UniversityMapper {
   public static PersistToDomain(persist: UniversityPersistence): University {
     const domain = University.Create({
       ...persist,
-    });
+    }, persist.id);
 
     // TODO: handle this
     if (domain.isFailure)
