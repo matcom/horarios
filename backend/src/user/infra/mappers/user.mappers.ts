@@ -5,9 +5,9 @@ import { hashSync } from 'bcrypt'
 
 export class UserMapper {
     public static PersistToDomain(persist: UserPersistence): User {
-        console.log(persist,'persist')
+        console.log(persist, 'persist')
         const domain = User.Create({
-            ...persist,
+            ...persist
         });
 
         // TODO: handle this
@@ -18,7 +18,7 @@ export class UserMapper {
     }
 
     public static DomainToPersist(domain: User): Partial<UserPersistence> {
-    
+
         return {
             id: domain._id.toString(),
             username: domain.username,

@@ -29,6 +29,7 @@ export class AppConfigService {
     logLevel: getLogLevel(this._configService.get<string>('app.logLevel')),
     jwtSecret: this._configService.get<string>('app.jwtSecret'),
     jwtExpiration: this._configService.get<number>('app.jwtExpiration'),
+    hostFront: this._configService.get<string>('app.hostFront')
   };
 
   database: IDataBaseConfig = {

@@ -53,4 +53,12 @@ export interface IAppConfig {
    * @memberof IAppConfig
    */
   jwtExpiration: number;
+
+  /**
+  * App host frontend.
+  *
+  * @type {number}
+  * @memberof IAppConfig
+  */
+  hostFront: string
 }

@@ -5,8 +5,10 @@ import { Guard } from 'src/shared/core/Guard';
 import { AppError } from 'src/shared/core/errors/AppError';
 import { EnumStatus } from '../enums/enum.status';
 import { hashSync } from 'bcrypt';
+import { BaseIdentifier, Identifier } from 'src/shared/domain/Identifier';
 
 type UserProps = {
+    id?: string;
     username: string;
     createdAt: Date;
     updatedAt: Date;
@@ -22,8 +24,12 @@ type newUserProps = Omit<UserProps,
     'id' | 'createdAt' | 'updatedAt'>;
 
 
-type updateUserProps = Omit<UserProps,
-    'id' | 'createdAt' | 'updatedAt' | 'email'>;
+type updateUserProps = {
+    username?: string;
+    password?: string;
+    roles?: EnumPermits[];
+    status?: EnumStatus;
+};
 
 
 export class User extends DomainEntity<UserProps> {
@@ -80,11 +86,11 @@ export class User extends DomainEntity<UserProps> {
         return Result.Ok(new User(props));
     }
     public setPasswordHash(password: string) {
-        this.props.password = hashSync(password, 5)
+        if (password)
+            this.props.password = hashSync(password, 5)
     }
 
     public Update(props: updateUserProps) {
-        console.log(props,'props')
         if (props.username) {
             const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
             if (!shortNameOrError.succeeded) {
@@ -109,9 +115,7 @@ export class User extends DomainEntity<UserProps> {
         if (props.status) {
             this.props.status = props.status
         }
-
         return Result.Ok(this)
-
         // this.props.name = props.name ?? this.props.name;
     }
 }

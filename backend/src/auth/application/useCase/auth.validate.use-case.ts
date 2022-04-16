@@ -30,13 +30,13 @@ export class ValidateUserUseCase implements IUseCase<ValidateDto, Promise<Valida
                 email: request.email,
             });
             if (!userDomain) {
-                left(Result.Fail(new AppError.ValidationError('invalid email')));
+                return left(Result.Fail(new AppError.ValidationError('invalid email')));
             }
             if (userDomain.status == EnumStatus.Pending) {
-                left(Result.Fail(new AppError.ValidationError('user not register')));
+                return left(Result.Fail(new AppError.ValidationError('user not register')));
             }
             if (!compareSync(request.password, userDomain.password)) {
-                left(Result.Fail(new AppError.ValidationError('invalid password')));
+                return left(Result.Fail(new AppError.ValidationError('invalid password')));
             }
             return right(Result.Ok(userDomain));
         } catch (error) {

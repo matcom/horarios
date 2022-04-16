@@ -36,7 +36,9 @@ export abstract class BaseRepository<E extends IEntity,
 
   async update(entity: E, id: string): Promise<void> {
     this._logger.debug(`Update entity with id: {${id}}`);
-    await this._entityRepository.update({ id: id }, this._domainToPersistentFunc(entity) as DeepPartial<P>)
+    const a = this._domainToPersistentFunc(entity) as DeepPartial<P>
+    console.log(a)
+    await this._entityRepository.update({ id: id }, a)
   }
 
   async saveMany(entities: E[]): Promise<void> {

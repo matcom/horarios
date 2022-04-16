@@ -11,7 +11,8 @@ import { CreateUserUseCase } from 'src/user/application/useCases/user.create.use
 import { SendEmailUseCase } from 'src/email/application/useCases/email.send.use-case';
 import { EnumPermits } from 'src/shared/domain/enum.permits';
 import { EnumStatus } from 'src/user/domain/enums/enum.status';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from 'src/shared/modules/config/service/app-config-service';
+
 
 export type RegisterUseCaseResponse = Either<AppError.UnexpectedErrorResult<User>
     | AppError.ValidationErrorResult<User>,
@@ -22,7 +23,7 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
 
     private _logger: Logger;
 
-    constructor(private readonly confifService: ConfigService, private readonly createUserUseCase: CreateUserUseCase, private readonly sendEmailUseCase: SendEmailUseCase) {
+    constructor(private readonly confifService: AppConfigService, private readonly createUserUseCase: CreateUserUseCase, private readonly sendEmailUseCase: SendEmailUseCase) {
         this._logger = new Logger('FindByIdUseCase');
     }
 
@@ -32,14 +33,16 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
         try {
             const userOrError = await this.createUserUseCase.execute({ ...request, roles: [EnumPermits.RegularAction], status: EnumStatus.Pending })
 
-            if (userOrError.isLeft) {
+            if (userOrError.isLeft()) {
                 const error = userOrError.value.unwrapError()
-                return left(Result.Fail(error));
+                return left(Result.Fail(new AppError.ValidationError(error.message)));
             }
             const user = userOrError.value.unwrap()
-            const emailOrError = await this.sendEmailUseCase.execute({ to: user.email, body: { data: "", message: `Pres the link to confirm register ${"a"}` } })
+            //por ahora asi, despues hasheo el id para que no haya problemas con seguridad 
+            const linkToConfirmRegister = this.confifService.app.hostFront + `/:${user._id.toString()}`
+            const emailOrError = await this.sendEmailUseCase.execute({ to: user.email, body: { data: "", message: `Pres the link to confirm register ${linkToConfirmRegister}` } })
 
-            if (emailOrError.isLeft) {
+            if (emailOrError.isLeft()) {
                 const error = userOrError.value.unwrapError()
                 return left(Result.Fail(error));
             }

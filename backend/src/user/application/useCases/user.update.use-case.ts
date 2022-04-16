@@ -26,7 +26,7 @@ export class UpdateUserUseCase implements IUseCase<UserUpdateDto, Promise<Update
 
     async execute(request: UserUpdateDto): Promise<UpdateUserUseCaseResponse> {
         this._logger.log('Executing...');
-
+        
         try {
             const user = await this.userRepository.findById(request.id)
             const updateUserOrError = user.Update(request.data)
@@ -35,7 +35,6 @@ export class UpdateUserUseCase implements IUseCase<UserUpdateDto, Promise<Update
                 return left(Result.Fail(error));
             }
             user.setPasswordHash(request.data.password)
-
             await this.userRepository.update(user, user._id.toString());
             return right(Result.Ok(user));
         } catch (error) {
