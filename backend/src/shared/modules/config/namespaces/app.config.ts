@@ -8,6 +8,7 @@ export const appConfig = registerAs('app', () => ({
   logLevel: process.env.LOG_LEVEL,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiration: process.env.JWT_EXPIRATION,
+  hostFront: process.env.HOST_FRONT
 }));
 
 export const appSchema = {

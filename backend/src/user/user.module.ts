@@ -14,6 +14,6 @@ import { UserRepository } from './infra/repositories/user.repository';
     imports: [DataAccessModule, TypeOrmModule.forFeature([UserPersistence])],
     providers: [ValidateUserUseCase, CreateUserUseCase, FindByEmailUserUseCase, FindByIdUserUseCase, UserRepository,UpdateUserUseCase],
     controllers: [UserController],
-    exports: [UserRepository, ValidateUserUseCase, FindByEmailUserUseCase, CreateUserUseCase]
+    exports: [UserRepository, ValidateUserUseCase, FindByEmailUserUseCase, CreateUserUseCase,UpdateUserUseCase]
 })
 export class UserModule { }

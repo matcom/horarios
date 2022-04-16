@@ -5,7 +5,6 @@ import { UserDto } from '../../application/dtos/user.dto';
 
 export class UserMapper {
   public static PersistToDomain(persist: UserPersistence): User {
-    console.log(persist, 'persist');
     const domain = User.Create({
       ...persist,
     }, persist.id);
