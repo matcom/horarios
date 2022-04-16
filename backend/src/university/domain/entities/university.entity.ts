@@ -1,5 +1,6 @@
 import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { Result } from '../../../shared/core/Result';
+import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 
 type UniversityProps = {
   shortName: string;
@@ -50,9 +51,9 @@ export class University extends DomainEntity<UniversityProps> {
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: UniversityProps): Result<University> {
+  public static Create(props: UniversityProps, id: string = null): Result<University> {
     // set guards here
-    return Result.Ok(new University(props));
+    return Result.Ok(new University(props, new UniqueEntityID(id)));
   }
 
   public Update(props: any) {

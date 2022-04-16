@@ -5,117 +5,122 @@ import { Guard } from 'src/shared/core/Guard';
 import { AppError } from 'src/shared/core/errors/AppError';
 import { EnumStatus } from '../enums/enum.status';
 import { hashSync } from 'bcrypt';
-import { BaseIdentifier, Identifier } from 'src/shared/domain/Identifier';
+import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 
 type UserProps = {
-    id?: string;
-    username: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    password: string;
-    roles: EnumPermits[];
-    status: EnumStatus;
+  username: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  password: string;
+  status: EnumStatus;
+  roles: EnumPermits[];
 };
-
 
 
 type newUserProps = Omit<UserProps,
-    'id' | 'createdAt' | 'updatedAt'>;
+  'id' | 'createdAt' | 'updatedAt'>;
 
 
-type updateUserProps = {
-    username?: string;
-    password?: string;
-    roles?: EnumPermits[];
-    status?: EnumStatus;
-};
+type updateUserProps = Omit<UserProps,
+  'id' | 'createdAt' | 'updatedAt' | 'email'>;
 
 
 export class User extends DomainEntity<UserProps> {
 
-    get username(): string {
-        return this.props.username;
+  get username(): string {
+    return this.props.username;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+
+  get email(): string {
+    return this.props.email;
+  }
+
+  get password(): string {
+    return this.props.password;
+  }
+
+  get roles(): EnumPermits[] {
+    return this.props.roles;
+  }
+
+  get status(): EnumStatus {
+    return this.props.status;
+  }
+
+  public static New(props: newUserProps): Result<User> {
+    const ans: Result<User> = this.Create({
+      ...props,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    if (ans.isFailure) return Result.Fail(ans.unwrapError());
+
+    return Result.Ok(ans.unwrap());
+  }
+
+  public static Create(props: UserProps, id: string = null): Result<User> {
+    // set guards here
+    const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username });
+    if (!shortNameOrError.succeeded) {
+      return Result.Fail(new AppError.ValidationError(shortNameOrError.message));
     }
 
-    get createdAt(): Date {
-        return this.props.createdAt;
+
+    const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password });
+    if (!passwordOrError.succeeded) {
+      return Result.Fail(new AppError.ValidationError(passwordOrError.message));
     }
 
-    get updatedAt(): Date {
-        return this.props.updatedAt;
-    }
-    get email(): string {
-        return this.props.email
-    }
-    get password(): string {
-        return this.props.password
-    }
-    get roles(): EnumPermits[] {
-        return this.props.roles
-    }
-    get status(): EnumStatus {
-        return this.props.status
-    }
+    return Result.Ok(new User(props, new UniqueEntityID(id)));
+  }
 
-    public static New(props: newUserProps): Result<User> {
-        const ans: Result<User> = this.Create({
-            ...props,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        });
+  public setPasswordHash(password: string) {
+    this.props.password = hashSync(password, 5);
+  }
 
-        if (ans.isFailure) return Result.Fail(ans.unwrapError());
-
-        return Result.Ok(ans.unwrap());
+  public Update(props: updateUserProps) {
+    console.log(props, 'props');
+    if (props.username) {
+      const shortNameOrError = Guard.againstAtLeast({
+        argumentPath: 'shortname',
+        numChars: 3,
+        argument: props.username,
+      });
+      if (!shortNameOrError.succeeded) {
+        return Result.Fail(new AppError.ValidationError(shortNameOrError.message));
+      }
+      this.props.username = props.username;
     }
 
-    public static Create(props: UserProps): Result<User> {
-        // set guards here
-        const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
-        if (!shortNameOrError.succeeded) {
-            return Result.Fail(new AppError.ValidationError(shortNameOrError.message))
-        }
-
-
-        const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password })
-        if (!passwordOrError.succeeded) {
-            return Result.Fail(new AppError.ValidationError(passwordOrError.message))
-        }
-
-        return Result.Ok(new User(props));
-    }
-    public setPasswordHash(password: string) {
-        if (password)
-            this.props.password = hashSync(password, 5)
+    if (props.password) {
+      const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password });
+      if (!passwordOrError.succeeded) {
+        return Result.Fail(new AppError.ValidationError(passwordOrError.message));
+      }
     }
 
-    public Update(props: updateUserProps) {
-        if (props.username) {
-            const shortNameOrError = Guard.againstAtLeast({ argumentPath: 'shortname', numChars: 3, argument: props.username })
-            if (!shortNameOrError.succeeded) {
-                return Result.Fail(new AppError.ValidationError(shortNameOrError.message))
-            }
-            this.props.username = props.username
-        }
-
-        if (props.password) {
-            const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password })
-            if (!passwordOrError.succeeded) {
-                return Result.Fail(new AppError.ValidationError(passwordOrError.message))
-            }
-        }
-
-        if (props.roles) {
-            if (props.roles.length == 0)
-                return Result.Fail(new AppError.ValidationError('invalid roles'))
-            this.props.roles = props.roles
-        }
-
-        if (props.status) {
-            this.props.status = props.status
-        }
-        return Result.Ok(this)
-        // this.props.name = props.name ?? this.props.name;
+    if (props.roles) {
+      if (props.roles.length == 0)
+        return Result.Fail(new AppError.ValidationError('invalid roles'));
+      this.props.roles = props.roles;
     }
+
+    if (props.status) {
+      this.props.status = props.status;
+    }
+
+    return Result.Ok(this);
+
+    // this.props.name = props.name ?? this.props.name;
+  }
 }
