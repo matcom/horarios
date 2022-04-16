@@ -12,6 +12,7 @@ import { AppConfigService } from '../shared/modules/config/service/app-config-se
 import { AuthUseCases } from './application/useCase';
 import { SendEmailUseCase } from 'src/email/application/useCases/email.send.use-case';
 import { RegisterUseCase } from './application/useCase/auth.register.use-case';
+import {UpdateUserUseCase} from "../user/application/useCases/user.update.use-case";
 
 @Module({
   imports: [

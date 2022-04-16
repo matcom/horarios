@@ -4,10 +4,7 @@ import { Result } from '../../../shared/core/Result';
 import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { Injectable, Logger, Optional } from '@nestjs/common';
 import { User } from 'src/user/domain/entities/user.entity';
-import { UserCreateDto } from '../dtos/user.create.dto';
 import { UserRepository } from 'src/user/infra/repositories/user.repository';
-import { EnumStatus } from 'src/user/domain/enums/enum.status';
-import { EnumPermits } from 'src/shared/domain/enum.permits';
 import { UserUpdateDto } from '../dtos/user.update.dto';
 
 export type UpdateUserUseCaseResponse = Either<AppError.UnexpectedErrorResult<User>

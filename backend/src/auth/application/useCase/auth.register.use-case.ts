@@ -31,20 +31,24 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
         this._logger.log('Executing...');
 
         try {
+            console.log('beofr')
             const userOrError = await this.createUserUseCase.execute({ ...request, roles: [EnumPermits.RegularAction], status: EnumStatus.Pending })
-
+            console.log(userOrError,'userOreror')
             if (userOrError.isLeft()) {
+                console.log('entro')
                 const error = userOrError.value.unwrapError()
                 return left(Result.Fail(new AppError.ValidationError(error.message)));
             }
+            console.log('1')
             const user = userOrError.value.unwrap()
+            console.log(user,2)
             //por ahora asi, despues hasheo el id para que no haya problemas con seguridad 
             const linkToConfirmRegister = this.confifService.app.hostFront + `/:${user._id.toString()}`
             const emailOrError = await this.sendEmailUseCase.execute({ to: user.email, body: { data: "", message: `Pres the link to confirm register ${linkToConfirmRegister}` } })
-
+            console.log(emailOrError,3)
             if (emailOrError.isLeft()) {
-                const error = userOrError.value.unwrapError()
-                return left(Result.Fail(error));
+                const error = emailOrError.value.unwrapError()
+                return left(Result.Fail(new AppError.UnexpectedError(error)));
             }
             return right(Result.Ok(user));
         } catch (error) {
