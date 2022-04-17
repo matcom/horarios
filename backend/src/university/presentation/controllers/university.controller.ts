@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateUniversityUseCase,
   FindByIdUniversityUseCase,
@@ -6,11 +6,12 @@ import {
   UpdateUniversityUseCase,
 } from '../../application/useCases';
 import { UniversityMapper } from '../../infra/mappers/university.mapper';
-import { JwtAuthGuard } from '../../../auth/application/Guards/JwtAuthGuard';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import { UniversityCreateDto } from '../../application/dtos/university.create.dto';
 import { University } from '../../domain/entities/university.entity';
 import { UniversityUpdateDto } from '../../application/dtos/university.update.dto';
+import { PaginatedUniversityUseCase } from '../../application/useCases/university.paginated.use-case';
+import { UniversityPaginatedDto } from '../../application/dtos/university.paginated.dto';
 
 @Controller('university')
 export class UniversityController {
@@ -21,7 +22,8 @@ export class UniversityController {
     private readonly findOneUseCase: FindByIdUniversityUseCase,
     private readonly createUniversity: CreateUniversityUseCase,
     private readonly updateUniversity: UpdateUniversityUseCase,
-    private readonly removeUniversity: RemoveUniversityUseCase) {
+    private readonly removeUniversity: RemoveUniversityUseCase,
+    private readonly paginatedUniversity: PaginatedUniversityUseCase) {
     this._logger = new Logger('UniversityController');
   }
 
@@ -32,6 +34,14 @@ export class UniversityController {
     const university = await this.findOneUseCase.execute({ id: params.id });
     return ProcessResponse.setResponse<University>(res, university, UniversityMapper.DomainToDto);
 
+  }
+
+  @Get()
+  async getAllPaginated(@Body() body: UniversityPaginatedDto, @Response() res) {
+    this._logger.log('Paginated');
+
+    const pag = await this.paginatedUniversity.execute(body);
+    return ProcessResponse.setResponse(res, pag, (a) => a);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -53,7 +63,7 @@ export class UniversityController {
     return ProcessResponse.setResponse<University>(res, university, UniversityMapper.DomainToDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

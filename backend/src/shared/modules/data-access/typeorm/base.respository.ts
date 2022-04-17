@@ -77,6 +77,11 @@ export abstract class BaseRepository<E extends IEntity,
     return OrmName.TYPE_ORM;
   }
 
+  async count(filter: {}): Promise<number> {
+    this._logger.log('Count');
+    return await this._entityRepository.count(filter);
+  }
+
   /**
    *
    * @deprecated
