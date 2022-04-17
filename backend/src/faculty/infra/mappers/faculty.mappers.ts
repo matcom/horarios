@@ -1,7 +1,8 @@
 import { FacultyPersistence } from '../entities/faculty.entity';
 import { Faculty } from '../../domain/entities/faculty.entity';
+import { FacultyDto } from '../../application/dtos/faculty.dto';
 
-export class FacultyMappers {
+export class FacultyMapper {
   public static PersistToDomain(persist: FacultyPersistence): Faculty {
     const domain = Faculty.Create({
       ...persist,
@@ -27,6 +28,16 @@ export class FacultyMappers {
     };
   }
 
-  public static DomainToDto(dto) {
+  public static DomainToDto(domain: Faculty): FacultyDto {
+    return {
+      id: domain._id.toString(),
+      shortName: domain.shortName,
+      fullName: domain.fullName,
+      description: domain.description,
+      priority: domain.priority,
+      createdAt: domain.createdAt,
+      updatedAt: domain.updatedAt,
+      universityId: domain.universityId,
+    };
   }
 }
