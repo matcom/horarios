@@ -19,7 +19,7 @@
             <label><input type="checkbox" value="remember-me"> Remember me</label>
           </div>
 
-          <button class="w-100 btn btn-lg btn-primary" @click="Login()">Login</button>
+          <button class="w-100 btn btn-lg btn-primary" @click="this.Login()">Login</button>
 
         </form>
       </div>
@@ -54,6 +54,9 @@ import {defineComponent} from "vue";
 import axios from "axios";
 import {useLoginStore} from "../../stores/counter"
 
+const apiClient = axios.create({
+  baseURL: "http://localhost:3001/",
+});
 export default defineComponent({
   name: "login",
   data() {
@@ -63,25 +66,23 @@ export default defineComponent({
     }
   },
   methods: {
-    async Login(): Promise<void> {
+    Login(){
+      this.TempLogin().then(()=>console.log('plll')).catch((err)=>console.log(err))
+    },
+    async TempLogin(): Promise<void> {
       const loginStore = useLoginStore()
-      const apiClient = axios.create({
-        baseURL: "http://localhost:3001/",
-        headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
-          'Content-Type':  'application/json',
-        }
-      });
+
       const data = {
         password: this.password,
         email: this.email
       }
-      const response = await apiClient.post('Auth/login', data)
+      console.log('voy a hacer la peticion')
+      const response = await apiClient.post('auth/login', data)
+      console.log('termine la peticion')
+      console.log(response)
       if (response.status == 200) {
         const token = response.data.acces_token
+        console.log(token)
         loginStore.setToken(token)
         await this.$router.push("/");
       }

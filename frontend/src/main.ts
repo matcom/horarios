@@ -8,6 +8,7 @@ const app = createApp(App)
 
 //import BootstrapVue3,{  IconsPlugin } from 'bootstrap-vue-3'
 
+
 //Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'

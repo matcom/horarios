@@ -58,6 +58,9 @@ label {
 import {defineComponent} from "vue";
 import axios from "axios";
 
+const apiClient = axios.create({
+  baseURL: "http://localhost:3001/",
+});
 export default defineComponent({
   name: "register",
   data() {
@@ -70,21 +73,14 @@ export default defineComponent({
   methods: {
     async Register(): Promise<void> {
       console.log(this.email,this.password)
-      const apiClient = axios.create({
-        baseURL: "http://localhost:3001/",
-        withCredentials: false,
-        headers: {
-          Accept: "applicacion/json",
-          "Content-Type": "application/json; charset=utf-8",
-          "Connection":"keep-alive",
-          "keep-alive":"timeout=5"
-        },
-      });
-      const response = await apiClient.post( 'Auth/register',{
+
+      console.log('send request')
+      const response = await apiClient.post( 'auth/register',{
         password: this.password,
         email: this.email,
         username:this.username
       })
+      console.log('end')
       if (response.status == 200) {
         console.log(response.data)
         //guardar el token
