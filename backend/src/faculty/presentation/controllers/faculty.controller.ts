@@ -35,7 +35,7 @@ export class FacultyController {
 
   }
 
-  @Get()
+  @Post()
   async getAllPaginated(@Body() body: FacultyPaginatedDto, @Response() res) {
     this._logger.log('Paginated');
 
