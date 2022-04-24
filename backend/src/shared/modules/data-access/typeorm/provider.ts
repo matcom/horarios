@@ -9,9 +9,14 @@ export const typeOrmProvider = TypeOrmModule.forRootAsync({
   useFactory: (config: AppConfigService): ConnectionOptions => {
     return {
       entities: [
-        __dirname + '/../../../../**/infra/entities/*.persistence{.ts,.js}',
+        __dirname + '/../../../../**/infra/entities/*.infra{.ts,.js}',
         __dirname + '/../../../../**/infra/entities/*.view{.ts,.js}',
+        __dirname + '/../../../../**/infra/entities/*.persistence{.ts,.js}',
       ],
+      migrations: [__dirname + '/../../../../../migrations/*.js'],
+      cli: {
+        migrationsDir: __dirname + '/../../../../../migrations/',
+      },
       logging: config.app.nodeEnv !== 'production',
       ...config.database,
     } as ConnectionOptions;

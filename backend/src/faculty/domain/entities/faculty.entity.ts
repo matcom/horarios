@@ -1,15 +1,22 @@
+import { DomainBaseProps } from '../../../shared/domain/domain.base-props';
 import { DomainEntity } from '../../../shared/domain/entity.abstract';
+import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
-import { DomainBaseProps } from '../../../shared/domain/domain.base-props';
-import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 
-type UniversityProps = DomainBaseProps & DomainTimestamp;
+type FacultyProps = DomainBaseProps & DomainTimestamp & {
+  universityId: string;
+};
 
-type newUniversityProps = Omit<UniversityProps,
+type newFacultyProps = Omit<FacultyProps,
   'id' | 'createdAt' | 'updatedAt'>;
 
-export class University extends DomainEntity<UniversityProps> {
+export class Faculty extends DomainEntity<FacultyProps> {
+
+  get universityId(): string {
+    return this.props.universityId;
+  }
+
   get shortName(): string {
     return this.props.shortName;
   }
@@ -34,8 +41,8 @@ export class University extends DomainEntity<UniversityProps> {
     return this.props.updatedAt;
   }
 
-  public static New(props: newUniversityProps): Result<University> {
-    const ans: Result<University> = this.Create({
+  public static New(props: newFacultyProps): Result<Faculty> {
+    const ans: Result<Faculty> = this.Create({
       ...props,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -46,14 +53,14 @@ export class University extends DomainEntity<UniversityProps> {
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: UniversityProps, id: string = null): Result<University> {
-    // set guards here
-    return Result.Ok(new University(props, new UniqueEntityID(id)));
+  public static Create(props: FacultyProps, id: string = null): Result<Faculty> {
+    return Result.Ok(new Faculty(props, new UniqueEntityID(id)));
   }
 
   public Update(props: any) {
     this.props.priority = props.priority ?? this.props.priority;
     this.props.description = props.description ?? this.props.description;
+    this.props.universityId = props.universityId ?? this.props.universityId;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
 
