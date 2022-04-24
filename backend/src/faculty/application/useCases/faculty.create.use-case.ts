@@ -17,7 +17,7 @@ export class CreateFacultyUseCase implements IUseCase<FacultyCreateDto, Promise<
   private _logger: Logger;
 
   constructor(private readonly facultyRepository: FacultyRepository) {
-    this._logger.log('CreateFacultyUseCase');
+    this._logger = new Logger('CreateFacultyUseCase');
   }
 
   async execute(request: FacultyCreateDto): Promise<CreateFacultyUseCaseResponse> {
