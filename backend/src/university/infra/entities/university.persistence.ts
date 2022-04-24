@@ -1,6 +1,6 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.entity';
+import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 
 @Entity('university')
 @Index(['id'], { unique: true })

@@ -1,7 +1,6 @@
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { UniversityPersistence } from '../../../university/infra/entities/university.persistence';
-import { JoinColumn } from 'typeorm/browser';
 
 @Entity('faculty')
 @Index(['id'], { unique: true })

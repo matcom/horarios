@@ -1,13 +1,13 @@
 import { BaseRepository } from '../../../shared/modules/data-access/typeorm/base.respository';
 import { Faculty } from '../../domain/entities/faculty.entity';
-import { FacultyPersistence } from '../entities/faculty.entity';
+import { FacultyPersistence } from '../entities/faculty.persistence';
 import { IFacultyRepository } from '../../domain/interfaces/IFacultyRepository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FacultyMappers } from '../mappers/faculty.mappers';
 import { PageParams } from '../../../shared/core/PaginatorParams';
 import { getDefaultPaginatedFindResult, PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { FacultyMappers } from '../mappers/faculty.mappers';
 
 @Injectable()
 export class FacultyRepository extends BaseRepository<Faculty, FacultyPersistence> implements IFacultyRepository {

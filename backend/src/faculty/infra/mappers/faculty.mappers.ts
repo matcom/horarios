@@ -1,8 +1,8 @@
-import { FacultyPersistence } from '../entities/faculty.entity';
+import { FacultyPersistence } from '../entities/faculty.persistence';
 import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyDto } from '../../application/dtos/faculty.dto';
 
-export class FacultyMapper {
+export class FacultyMappers {
   public static PersistToDomain(persist: FacultyPersistence): Faculty {
     const domain = Faculty.Create({
       ...persist,

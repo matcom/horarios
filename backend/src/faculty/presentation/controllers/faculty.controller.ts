@@ -11,7 +11,7 @@ import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyPaginatedDto } from '../../application/dtos/faculty.paginated.dto';
 import { FacultyUpdateDto } from '../../application/dtos/faculty.update.dto';
 import { FacultyCreateDto } from '../../application/dtos/faculty.create.dto';
-import { FacultyMapper } from '../../infra/mappers/faculty.mappers';
+import { FacultyMappers } from '../../infra/mappers/faculty.mappers';
 
 @Controller('faculty')
 export class FacultyController {
@@ -31,7 +31,7 @@ export class FacultyController {
     this._logger.log('Find One');
 
     const university = await this.findOneUseCase.execute({ id: params.id });
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMapper.DomainToDto);
+    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
 
   }
 
@@ -50,7 +50,7 @@ export class FacultyController {
     this._logger.log('Create');
 
     const university = await this.createFaculty.execute(body);
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMapper.DomainToDto);
+    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -59,7 +59,7 @@ export class FacultyController {
     this._logger.log('Update');
 
     const university = await this.updateFaculty.execute(body);
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMapper.DomainToDto);
+    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -68,7 +68,7 @@ export class FacultyController {
     this._logger.log('Delete');
 
     const university = await this.removeFaculty.execute(body);
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMapper.DomainToDto);
+    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
   }
 
 
