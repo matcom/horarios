@@ -6,15 +6,16 @@ import {LoginUseCase} from '../application/useCase/auth.login.use-case';
 import {RegisterUseCase} from '../application/useCase/auth.register.use-case';
 import {UserMapper} from "../../user/infra/mappers/user.mappers";
 import {ConfirmRegisterUseCase} from "../application/useCase/auth.confirm.register.use-case";
+import {Response as Res} from 'express'
 
-@Controller('Auth')
+@Controller('auth')
 export class AuthController {
     constructor(private readonly authRegister: RegisterUseCase, private readonly authLogin: LoginUseCase, private readonly confirmRegister: ConfirmRegisterUseCase) {
     }
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async Login(@Request() req, @Response() res) {
+    async Login(@Request() req, @Response() res: Res) {
         const login = await this.authLogin.execute(req.user);
         return ProcessResponse.setResponse(res, login, (a) => a);
     }

@@ -3,11 +3,21 @@
     <div class="card">
       <div class="card-body">
         <form>
-          <h2 class="h3 mb-3 fw-normal text-center">Register</h2>
+          <h2 class="h3 mb-3 fw-normal text-center">Update</h2>
 
           <div class="form-group">
-            <label>Email address</label>
-            <input v-model="email" type="email" class="form-control form-control-lg" placeholder="Email address"/>
+            <label>Email</label>
+            <input v-model="email" type="email" class="form-control form-control-lg" placeholder="Email"/>
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+            <input v-model="status" type="text" class="form-control form-control-lg" placeholder="Status"/>
+          </div>
+
+          <div class="form-group">
+            <label>Roles</label>
+            <input v-model="roles" type="text" class="form-control form-control-lg" placeholder="Roles"/>
           </div>
 
           <div class="form-group">
@@ -24,7 +34,7 @@
             <label><input type="checkbox" value="remember-me"> Remember me</label>
           </div>
 
-          <button class="w-100 btn btn-lg btn-primary" @click="Register()">Register</button>
+          <button class="w-100 btn btn-lg btn-primary" @click="Create()">Update</button>
 
         </form>
       </div>
@@ -58,29 +68,38 @@ label {
 import {defineComponent} from "vue";
 import axios from "axios";
 
-const apiClient = axios.create({
-  baseURL: "http://localhost:3001/",
-});
 export default defineComponent({
-  name: "register",
+  name: "create",
   data() {
     return {
       email: '',
+      roles: '',
+      status: '',
       password: '',
-      username:''
+      username: ''
     }
   },
   methods: {
-    async Register(): Promise<void> {
-      console.log(this.email,this.password)
-
-      console.log('send request')
-      const response = await apiClient.post( 'auth/register',{
-        password: this.password,
-        email: this.email,
-        username:this.username
+    async Create(): Promise<void> {
+      const apiClient = axios.create({
+        baseURL: "http://localhost:3001/",
+        withCredentials: false,
+        headers: {
+          Accept: "applicacion/json",
+          "Content-Type": "application/json; charset=utf-8",
+          "Connection": "keep-alive",
+          "keep-alive": "timeout=5"
+        },
+      });
+      const response = await apiClient.post('Auth/register', {
+        id: this.$route.params.id,
+        data: {
+          password: this.password,
+          username: this.username,
+          status: this.status,
+          roles: this.roles
+        }
       })
-      console.log('end')
       if (response.status == 200) {
         console.log(response.data)
         //guardar el token

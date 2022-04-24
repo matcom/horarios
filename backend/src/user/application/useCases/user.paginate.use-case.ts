@@ -1,28 +1,29 @@
 import {Either, left, right} from 'src/shared/core/Either';
 import {AppError} from '../../../shared/core/errors/AppError';
-import {University} from '../../domain/entities/university.entity';
 import {Result} from '../../../shared/core/Result';
 import {IUseCase} from '../../../shared/core/interfaces/IUseCase';
-import {UniversityPaginatedDto} from '../dtos/university.paginated.dto';
 import {Injectable, Logger} from '@nestjs/common';
-import {UniversityRepository} from '../../infra/repositories/university.repository';
 import {PageParams} from 'src/shared/core/PaginatorParams';
 import {PaginatedFindResult} from '../../../shared/core/PaginatedFindResult';
+import {User} from "../../domain/entities/user.entity";
+import {UserPaginatedDto} from "../dtos/user.paginated.dto";
+import {UserRepository} from "../../infra/repositories/user.repository";
+import {UserMapper} from "../../infra/mappers/user.mappers";
 
-export type PaginatedUniversityUseCaseResponse = Either<AppError.UnexpectedErrorResult<PaginatedFindResult<University>>
-    | AppError.ValidationErrorResult<PaginatedFindResult<University>>,
-    Result<PaginatedFindResult<University>>>;
+export type PaginatedUserUseCaseResponse = Either<AppError.UnexpectedErrorResult<PaginatedFindResult<User>>
+    | AppError.ValidationErrorResult<PaginatedFindResult<User>>,
+    Result<PaginatedFindResult<User>>>;
 
 @Injectable()
-export class PaginatedUniversityUseCase implements IUseCase<UniversityPaginatedDto, Promise<PaginatedUniversityUseCaseResponse>> {
+export class PaginatedUserUseCase implements IUseCase<UserPaginatedDto, Promise<PaginatedUserUseCaseResponse>> {
 
     private _logger: Logger;
 
-    constructor(private readonly universityRepository: UniversityRepository) {
-        this._logger = new Logger('PaginatedUniversityUseCase');
+    constructor(private readonly userRepository: UserRepository) {
+        this._logger = new Logger('PaginatedUserUseCase');
     }
 
-    async execute(request: UniversityPaginatedDto): Promise<PaginatedUniversityUseCaseResponse> {
+    async execute(request: UserPaginatedDto): Promise<PaginatedUserUseCaseResponse> {
         this._logger.log('Executing..');
 
         try {
@@ -30,7 +31,7 @@ export class PaginatedUniversityUseCase implements IUseCase<UniversityPaginatedD
                 await PageParams.create(
                     request.pageParams,
                 ).mapAsync(async (pageParams: PageParams) =>
-                    this.universityRepository.getPaginated(
+                    this.userRepository.getPaginated(
                         pageParams,
                         request.filter,
                     ),
