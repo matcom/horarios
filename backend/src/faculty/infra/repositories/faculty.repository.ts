@@ -1,22 +1,23 @@
 import { BaseRepository } from '../../../shared/modules/data-access/typeorm/base.respository';
-import { University } from '../../domain/entities/university.entity';
-import { UniversityPersistence } from '../entities/university.persistence';
-import { IUniversityRepository } from '../../domain/interfaces/IUniversityRepository';
+import { Faculty } from '../../domain/entities/faculty.entity';
+import { FacultyPersistence } from '../entities/faculty.persistence';
+import { IFacultyRepository } from '../../domain/interfaces/IFacultyRepository';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UniversityMapper } from '../mappers/university.mapper';
-import { Injectable } from '@nestjs/common';
-import { getDefaultPaginatedFindResult, PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { PageParams } from '../../../shared/core/PaginatorParams';
+import { getDefaultPaginatedFindResult, PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { FacultyMappers } from '../mappers/faculty.mappers';
 
 @Injectable()
-export class UniversityRepository extends BaseRepository<University, UniversityPersistence> implements IUniversityRepository {
-  constructor(@InjectRepository(UniversityPersistence) _repository: Repository<UniversityPersistence>) {
-    super(_repository, UniversityMapper.DomainToPersist, UniversityMapper.PersistToDomain, 'UniversityRepository');
+export class FacultyRepository extends BaseRepository<Faculty, FacultyPersistence> implements IFacultyRepository {
+  constructor(@InjectRepository(FacultyPersistence) _repository: Repository<FacultyPersistence>) {
+    super(_repository, FacultyMappers.DomainToPersist, FacultyMappers.PersistToDomain, 'FacultyRepository');
   }
 
-  async getPaginated(paginatorParams: PageParams, filter: {}): Promise<PaginatedFindResult<University>> {
+  async getPaginated(paginatorParams: PageParams, filter: {}): Promise<PaginatedFindResult<Faculty>> {
     const count = await this._entityRepository.count(filter);
+
     if (count == 0) return getDefaultPaginatedFindResult();
 
     const pageLimit: number =
@@ -44,7 +45,7 @@ export class UniversityRepository extends BaseRepository<University, UniversityP
 
     return {
       items: universities.map(u =>
-        UniversityMapper.PersistToDomain(u),
+        FacultyMappers.PersistToDomain(u),
       ),
       limit: pageLimit,
       currentPage,

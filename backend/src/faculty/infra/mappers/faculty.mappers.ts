@@ -1,11 +1,11 @@
-import { UniversityPersistence } from '../entities/university.persistence';
-import { University } from '../../domain/entities/university.entity';
-import { UniversityDto } from '../../application/dtos/university.dto';
+import { FacultyPersistence } from '../entities/faculty.persistence';
+import { Faculty } from '../../domain/entities/faculty.entity';
+import { FacultyDto } from '../../application/dtos/faculty.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 
-export class UniversityMapper {
-  public static PersistToDomain(persist: UniversityPersistence): University {
-    const domain = University.Create({
+export class FacultyMappers {
+  public static PersistToDomain(persist: FacultyPersistence): Faculty {
+    const domain = Faculty.Create({
       ...persist,
     }, persist.id);
 
@@ -16,7 +16,7 @@ export class UniversityMapper {
     return domain.unwrap();
   }
 
-  public static DomainToPersist(domain: University): Partial<UniversityPersistence> {
+  public static DomainToPersist(domain: Faculty): Partial<FacultyPersistence> {
     return {
       id: domain._id.toString(),
       shortName: domain.shortName,
@@ -25,10 +25,11 @@ export class UniversityMapper {
       priority: domain.priority,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
+      universityId: domain.universityId,
     };
   }
 
-  public static DomainToDto(domain: University): UniversityDto {
+  public static DomainToDto(domain: Faculty): FacultyDto {
     return {
       id: domain._id.toString(),
       shortName: domain.shortName,
@@ -37,11 +38,11 @@ export class UniversityMapper {
       priority: domain.priority,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-
+      universityId: domain.universityId,
     };
   }
 
-  public static PaginatedToDto(pag: PaginatedFindResult<University>): PaginatedFindResult<UniversityDto> {
+  public static PaginatedToDto(pag: PaginatedFindResult<Faculty>): PaginatedFindResult<FacultyDto> {
     return {
       items: pag.items.map(this.DomainToDto),
       limit: pag.limit,
