@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-md-3 g-4">
 
-        <div class="col" v-for="user in this.users" v-bind:key="user._id">
+        <div class="col" v-for="user in this.users" v-bind:key="user.id">
           <div class="card h-100">
             <img src="public/imagen.png" class="card-img-top" alt="...">
             <div class="card-body">
@@ -61,7 +61,7 @@ export default defineComponent( {
     return {
       page: 0,
       limit: 6,
-      totalPage: 2,
+      totalPage: 1,
       filter: {},
       users: [] as UserDto[]
     }
