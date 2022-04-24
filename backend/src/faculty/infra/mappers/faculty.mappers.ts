@@ -1,6 +1,7 @@
 import { FacultyPersistence } from '../entities/faculty.persistence';
 import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyDto } from '../../application/dtos/faculty.dto';
+import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 
 export class FacultyMappers {
   public static PersistToDomain(persist: FacultyPersistence): Faculty {
@@ -38,6 +39,15 @@ export class FacultyMappers {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       universityId: domain.universityId,
+    };
+  }
+
+  public static PaginatedToDto(pag: PaginatedFindResult<Faculty>): PaginatedFindResult<FacultyDto> {
+    return {
+      items: pag.items.map(this.DomainToDto),
+      limit: pag.limit,
+      totalPages: pag.totalPages,
+      currentPage: pag.currentPage,
     };
   }
 }
