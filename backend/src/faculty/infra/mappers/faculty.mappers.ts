@@ -44,7 +44,7 @@ export class FacultyMappers {
 
   public static PaginatedToDto(pag: PaginatedFindResult<Faculty>): PaginatedFindResult<FacultyDto> {
     return {
-      items: pag.items.map(this.DomainToDto),
+      items: pag.items.length > 0 ? pag.items.map(FacultyMappers.DomainToDto) : [],
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,

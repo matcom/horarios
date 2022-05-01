@@ -7,7 +7,7 @@ import { User } from 'src/user/domain/entities/user.entity';
 import { UserRepository } from 'src/user/infra/repositories/user.repository';
 import { ValidateDto } from '../dtos/validate.dto';
 import { compareSync } from 'bcrypt';
-import { EnumStatus } from 'src/user/domain/enums/enum.status';
+import { UserStatus } from 'src/user/domain/enums/user.status';
 
 export type ValidateUserUseCaseResponse = Either<AppError.UnexpectedErrorResult<User>
     | AppError.ValidationErrorResult<User>,
@@ -32,7 +32,7 @@ export class ValidateUserUseCase implements IUseCase<ValidateDto, Promise<Valida
             if (!userDomain) {
                 return left(Result.Fail(new AppError.ValidationError('invalid email')));
             }
-            if (userDomain.status == EnumStatus.Pending) {
+            if (userDomain.status == UserStatus.Pending) {
                 return left(Result.Fail(new AppError.ValidationError('user not register')));
             }
             if (!compareSync(request.password, userDomain.password)) {

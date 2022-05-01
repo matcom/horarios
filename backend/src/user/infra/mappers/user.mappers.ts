@@ -1,6 +1,7 @@
 import { User } from 'src/user/domain/entities/user.entity';
 import { UserPersistence } from '../entities/user.persistence';
 import { UserDto } from '../../application/dtos/user.dto';
+import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 
 
 export class UserMapper {
@@ -41,4 +42,14 @@ export class UserMapper {
       username: domain.username,
     };
   }
+
+  public static PaginatedToDto(pag: PaginatedFindResult<User>): PaginatedFindResult<UserDto> {
+    return {
+      items: pag.items.length > 0 ? pag.items.map(UserMapper.DomainToDto) : [],
+      limit: pag.limit,
+      totalPages: pag.totalPages,
+      currentPage: pag.currentPage,
+    };
+  }
+
 }
