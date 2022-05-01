@@ -1,14 +1,13 @@
-import {Either, left, right} from 'src/shared/core/Either';
-import {AppError} from '../../../shared/core/errors/AppError';
-import {Result} from '../../../shared/core/Result';
-import {IUseCase} from '../../../shared/core/interfaces/IUseCase';
-import {Injectable, Logger} from '@nestjs/common';
-import {User} from 'src/user/domain/entities/user.entity';
-import {EnumPermits} from 'src/shared/domain/enum.permits';
-import {EnumStatus} from 'src/user/domain/enums/enum.status';
-import {AppConfigService} from 'src/shared/modules/config/service/app-config-service';
-import {UpdateUserUseCase} from 'src/user/application/useCases/user.update.use-case';
-import {ConfirmRegisterDto} from '../dtos/confirm.register.dto';
+import { Either, left, right } from 'src/shared/core/Either';
+import { AppError } from '../../../shared/core/errors/AppError';
+import { Result } from '../../../shared/core/Result';
+import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
+import { Injectable, Logger } from '@nestjs/common';
+import { User } from 'src/user/domain/entities/user.entity';
+import { UserStatus } from 'src/user/domain/enums/user.status';
+import { AppConfigService } from 'src/shared/modules/config/service/app-config-service';
+import { UpdateUserUseCase } from 'src/user/application/useCases/user.update.use-case';
+import { ConfirmRegisterDto } from '../dtos/confirm.register.dto';
 
 
 export type ConfirmRegisterUseCaseResponse = Either<AppError.UnexpectedErrorResult<User>
@@ -36,7 +35,7 @@ export class ConfirmRegisterUseCase implements IUseCase<ConfirmRegisterDto, Prom
             const id = idOrError.unwrap()
             const userConfirmRegister = await this.updateUserUseCase.execute({
                 id: id,
-                data: {status: EnumStatus.Register}
+                data: {status: UserStatus.Register}
             })
             console.log(userConfirmRegister,'1')
 

@@ -43,7 +43,7 @@ export class UniversityMapper {
 
   public static PaginatedToDto(pag: PaginatedFindResult<University>): PaginatedFindResult<UniversityDto> {
     return {
-      items: pag.items.map(this.DomainToDto),
+      items: pag.items.length > 0 ? pag.items.map(UniversityMapper.DomainToDto) : [],
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,

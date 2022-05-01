@@ -1,7 +1,7 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { Column, Entity, Index } from 'typeorm';
 import { EnumPermits } from 'src/shared/domain/enum.permits';
-import { EnumStatus } from 'src/user/domain/enums/enum.status';
+import { UserStatus } from 'src/user/domain/enums/user.status';
 
 @Entity('user')
 @Index(['id'], { unique: true })
@@ -20,9 +20,9 @@ export class UserPersistence extends PersistentEntity {
 
   @Column({
     type: 'enum',
-    enum: EnumStatus,
-    default: EnumStatus.Pending,
+    enum: UserStatus,
+    default: UserStatus.Pending,
   })
-  status: EnumStatus;
+  status: UserStatus;
 
 }

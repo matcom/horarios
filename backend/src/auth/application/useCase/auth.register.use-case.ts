@@ -4,13 +4,11 @@ import { Result } from '../../../shared/core/Result';
 import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { Injectable, Logger } from '@nestjs/common';
 import { User } from 'src/user/domain/entities/user.entity';
-import { JwtService } from "@nestjs/jwt";
-import { ReturnLoginDto } from '../dtos/returnLoginDto';
 import { RegisterDto } from '../dtos/register.dto';
 import { CreateUserUseCase } from 'src/user/application/useCases/user.create.use-case';
 import { SendEmailUseCase } from 'src/email/application/useCases/email.send.use-case';
 import { EnumPermits } from 'src/shared/domain/enum.permits';
-import { EnumStatus } from 'src/user/domain/enums/enum.status';
+import { UserStatus } from 'src/user/domain/enums/user.status';
 import { AppConfigService } from 'src/shared/modules/config/service/app-config-service';
 
 
@@ -32,7 +30,7 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
 
         try {
             console.log('beofr')
-            const userOrError = await this.createUserUseCase.execute({ ...request, roles: [EnumPermits.RegularAction], status: EnumStatus.Pending })
+            const userOrError = await this.createUserUseCase.execute({ ...request, roles: [EnumPermits.RegularAction], status: UserStatus.Pending })
             console.log(userOrError,'userOreror')
             if (userOrError.isLeft()) {
                 console.log('entro')

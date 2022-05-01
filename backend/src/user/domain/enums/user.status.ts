@@ -1,4 +1,4 @@
-export enum EnumStatus {
+export enum UserStatus {
   Pending = 'Pending',
   Register = 'Register'
 }

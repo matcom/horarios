@@ -4,31 +4,30 @@ import { Result } from '../../../shared/core/Result';
 import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { Injectable, Logger } from '@nestjs/common';
 import { User } from 'src/user/domain/entities/user.entity';
-import { JwtService } from "@nestjs/jwt";
-import { ReturnLoginDto } from '../dtos/returnLoginDto';
+import { JwtService } from '@nestjs/jwt';
+import { ReturnLoginDto } from '../dtos/returnLogin.dto';
 
 export type LoginUseCaseResponse = Either<AppError.UnexpectedErrorResult<ReturnLoginDto>
-    | AppError.ValidationErrorResult<ReturnLoginDto>,
-    Result<ReturnLoginDto>>;
+  | AppError.ValidationErrorResult<ReturnLoginDto>,
+  Result<ReturnLoginDto>>;
 
 @Injectable()
 export class LoginUseCase implements IUseCase<User, Promise<LoginUseCaseResponse>> {
 
-    private _logger: Logger;
+  private _logger: Logger;
 
-    constructor(private readonly jwtService: JwtService) {
-        this._logger = new Logger('FindByIdUseCase');
-    }
+  constructor(private readonly jwtService: JwtService) {
+    this._logger = new Logger('FindByIdUseCase');
+  }
 
-    async execute(request: User): Promise<LoginUseCaseResponse> {
-        this._logger.log('Executing...');
-        console.log(request,'req')
-        try {
-            const payload = { email: request.email, sub: request._id.toString(), role: request.roles };
-            const token: string = await this.jwtService.signAsync(payload)
-            return right(Result.Ok({ acces_token: token }));
-        } catch (error) {
-            return left(Result.Fail(new AppError.UnexpectedError(error)));
-        }
+  async execute(request: User): Promise<LoginUseCaseResponse> {
+    this._logger.log('Executing...');
+    try {
+      const payload = { email: request.email, sub: request._id.toString(), role: request.roles };
+      const token: string = await this.jwtService.signAsync(payload);
+      return right(Result.Ok({ access_token: token }));
+    } catch (error) {
+      return left(Result.Fail(new AppError.UnexpectedError(error)));
     }
+  }
 }

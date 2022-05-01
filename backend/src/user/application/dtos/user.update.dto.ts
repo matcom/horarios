@@ -1,5 +1,5 @@
-import { EnumPermits } from "src/shared/domain/enum.permits";
-import { EnumStatus } from "src/user/domain/enums/enum.status";
+import { EnumPermits } from 'src/shared/domain/enum.permits';
+import { UserStatus } from 'src/user/domain/enums/user.status';
 
 export type UserUpdateDto = {
     id: string
@@ -7,6 +7,6 @@ export type UserUpdateDto = {
         username?: string;
         roles?: EnumPermits[]
         password?: string
-        status?: EnumStatus
+        status?: UserStatus
     }
 }

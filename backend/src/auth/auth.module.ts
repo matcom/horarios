@@ -3,16 +3,15 @@ import { PassportModule } from '@nestjs/passport';
 import { Module } from '@nestjs/common';
 import { EmailModule } from 'src/email/email.module';
 import { UserModule } from 'src/user/user.module';
-import { LocalStrategy } from './application/Strategies/localStrategy';
-import { JwtStrategy } from './application/Strategies/jwtStrategy';
+import { LocalStrategy } from './application/strategies/localStrategy';
+import { JwtStrategy } from './application/strategies/jwtStrategy';
 import { ValidateUserUseCase } from './application/useCase/auth.validate.use-case';
-import { AuthController } from './controller/AuthController';
+import { AuthController } from './controller/authController';
 import { AppConfigModule } from '../shared/modules/config/app-config.module';
 import { AppConfigService } from '../shared/modules/config/service/app-config-service';
 import { AuthUseCases } from './application/useCase';
 import { SendEmailUseCase } from 'src/email/application/useCases/email.send.use-case';
 import { RegisterUseCase } from './application/useCase/auth.register.use-case';
-import {UpdateUserUseCase} from "../user/application/useCases/user.update.use-case";
 
 @Module({
   imports: [
