@@ -42,17 +42,24 @@ export default {
     this.data.token = '';
     this.removeMinData();
   },
-  getAuthJson(username, password) {
+  getAuthJson(email, password) {
     Petitions.clearHeaders();
-    Petitions.set_JSONHeaders(username, password);
-    return Petitions.get(Endpoints.token).then(response => response.json(), response => console.log('Error getting the response.'));
+    Petitions.set_JSONHeaders(null, null);
+    const ans = Petitions.post(Endpoints.login, {
+      email,
+      password,
+    }).then(response => response.json(), response => console.log('Error getting the response.'));
+
+    console.log(ans);
+
+    return ans;
   },
   authenticate(username, password, remember) {
     return this.getAuthJson(username, password)
       .then(json => {
         if (json.hasOwnProperty('token')) {
           this.data.token = String(json.token);
-          this.data.remember = Boolean(json.remember);
+          this.data.remember = Boolean(json.remember || false);
           this.saveMinData();
           return true;
         }

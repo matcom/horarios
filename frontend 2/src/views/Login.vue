@@ -18,7 +18,7 @@
                       <div class='form-group'>
                         <input :class="{'form-control': true, 'form-control-user': true, 'border-danger': showError}"
                                id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Introduzca su usuario'
-                               v-model.trim='username'>
+                               v-model.trim='email'>
                       </div>
                       <div class='form-group'>
                         <input type='password'
@@ -70,14 +70,12 @@
 </template>
 
 <script>
-import Petitions from '@/controllers/petitions';
-import Endpoints from '@/endpoints/endpoints';
 
 export default {
   name: 'Login',
   data() {
     return {
-      username: '',
+      email: '',
       password: '',
       remember: false,
       showError: false,
@@ -86,16 +84,16 @@ export default {
   methods: {
     validateUser() {
 
-      Petitions.clearHeaders();
-      Petitions.set_JSONHeaders();
+      // Petitions.clearHeaders();
+      // Petitions.set_JSONHeaders();
+      //
+      // Petitions.post(Endpoints.login, {
+      //   email: 'yancarloglez98@gmail.com',
+      //   password: '12345678ABC',
+      // }).then(response => console.log(response.json()), response => console.log('Error getting the response.'));
 
-      Petitions.post(Endpoints.login, {
-        email: 'yancarloglez98@gmail.com',
-        password: '12345678ABC',
-      }).then(response => console.log(response.json()), response => console.log('Error getting the response.'));
 
-
-      //this.getToken(this.username, this.password, this.remember);
+      this.getToken(this.email, this.password, this.remember);
     },
     getToken(username, password, remember) {
       this.$store.state.profile.authenticate(username, password, remember)
