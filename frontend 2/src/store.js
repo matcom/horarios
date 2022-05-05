@@ -21,6 +21,8 @@ import UsersController from './controllers/users';
 import IntervalsController from './controllers/intervals';
 import FreeLocalsController from './controllers/free_locals';
 import FreeResourcesController from './controllers/free_resources';
+import UniversitiesController from './controllers/universities';
+import UniversityController from './controllers/university';
 
 Vue.use(Vuex);
 
@@ -47,9 +49,9 @@ const store = new Vuex.Store({
     intervals: IntervalsController,
     free_locals: FreeLocalsController,
     free_resources: FreeResourcesController,
-  },
-  mutations: {},
-  actions: {},
+    university: UniversityController,
+    universities: UniversitiesController,
+  }, mutations: {}, actions: {},
 });
 
 export default store;

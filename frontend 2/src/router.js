@@ -26,6 +26,8 @@ import Editor from './components/Editor';
 import Panel from './components/Panel';
 import Forbidden from './views/Forbidden';
 import Permission from './utils/permission';
+import Universities from '@/components/Universities';
+import University from '@/components/University';
 
 
 Vue.use(Router);
@@ -118,6 +120,7 @@ const router = new Router({
             requiresAuth: true,
           },
         },
+
         {
           path: '/groups',
           name: 'groupsPage',
@@ -125,6 +128,23 @@ const router = new Router({
           meta: {
             requiresAuth: true,
           },
+        },
+        {
+          path: '/universities',
+          name: 'universitiesPage',
+          component: Universities,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/universities/:universityId',
+          name: 'universityPage',
+          component: University,
+          meta: {
+            requiresAuth: true,
+          },
+
         },
         {
           path: '/locals/:localId',

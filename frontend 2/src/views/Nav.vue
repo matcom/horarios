@@ -20,6 +20,11 @@
             <span>Inicio</span></router-link>
         </li>
         <li class='nav-item'>
+          <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
+            <i class='fas fa-fw fa-building'></i>
+            <span>Universidades</span></router-link>
+        </li>
+        <li class='nav-item'>
           <router-link :to="{name: 'coursesPage'}" class='nav-link'>
             <i class='fas fa-fw fa-book'></i>
             <span>Asignaturas</span></router-link>
@@ -114,7 +119,8 @@
                    data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                   <i class='fas fa-bell fa-fw'></i>
                   <!-- Counter - Alerts -->
-                  <span v-if='notifications_unseened' class='badge badge-danger badge-counter'>{{ notifications_unseened }}</span>
+                  <span v-if='notifications_unseened' class='badge badge-danger badge-counter'>{{ notifications_unseened
+                    }}</span>
                 </a>
                 <!-- Dropdown - Alerts -->
                 <div class='dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in'
@@ -152,7 +158,7 @@
                       <h6 :class="noti.seened ? '': 'font-weight-bold'" class='mb-0'>{{ noti.title }}</h6>
                       <div :class="noti.seened ? '': 'font-weight-bold'" class='mb-0'>{{ noti.body }}</div>
                       <div v-if='noti.groups.length > 0' class='small text-gray-500'>Grupo(s): {{
-                        parseGroupsToStr(noti.groups) }}
+                          parseGroupsToStr(noti.groups) }}
                       </div>
                     </div>
                   </a>
