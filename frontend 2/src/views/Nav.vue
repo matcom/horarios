@@ -19,10 +19,12 @@
             <i class='fas fa-fw fa-home'></i>
             <span>Inicio</span></router-link>
         </li>
-        <li class='nav-item'>
+        <li class='nav-item form-inline'>
           <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
             <i class='fas fa-fw fa-building'></i>
-            <span>Universidades</span></router-link>
+            <span>Universidades</span>
+            <i class='fas fa-lock px-4'></i>
+          </router-link>
         </li>
         <li class='nav-item'>
           <router-link :to="{name: 'coursesPage'}" class='nav-link'>
