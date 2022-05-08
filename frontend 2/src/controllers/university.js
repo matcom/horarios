@@ -19,8 +19,26 @@ export default {
   },
   getData(token, id) {
     Petitions.clearHeaders();
-    Petitions.set_JSONHeaders(token, '');
+    Petitions.set_JSONHeaders(null, null, token);
     return Petitions.get(Endpoints.universities + '/' + id)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      });
+  },
+  edit(token, university) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.put(Endpoints.universities, {
+      universityId: university.id,
+      ...university,
+    })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {

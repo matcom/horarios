@@ -26,8 +26,8 @@ import Editor from './components/Editor';
 import Panel from './components/Panel';
 import Forbidden from './views/Forbidden';
 import Permission from './utils/permission';
-import Universities from '@/components/Universities';
-import University from '@/components/University';
+import Universities from '@/components/University/Universities';
+import University from '@/components/University/University';
 
 
 Vue.use(Router);

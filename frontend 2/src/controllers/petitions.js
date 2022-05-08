@@ -44,10 +44,10 @@ export default {
     return fetch(url, {
       method: 'delete',
       headers: this.headers,
-      body: body,
+      body: JSON.stringify(body),
     });
   },
-  set_JSONHeaders(username, password) {
+  set_JSONHeaders(username, password, token) {
     let headers =
       [
         {
@@ -63,6 +63,13 @@ export default {
       headers.push({
         key: 'Authorization',
         value: 'Basic ' + encode(username + ':' + password),
+      });
+    }
+
+    if (token !== null) {
+      headers.push({
+        key: 'Authorization',
+        value: `Bearer ${token}`,
       });
     }
     this.setHeaders(headers);
