@@ -24,6 +24,8 @@ export class FacultyController {
     private readonly updateFaculty: UpdateFacultyUseCase,
     private readonly removeFaculty: RemoveFacultyUseCase,
     private readonly paginatedFaculty: PaginatedFacultyUseCase) {
+
+    this._logger = new Logger('FacultyController');
   }
 
   @Get(':id')
@@ -40,7 +42,7 @@ export class FacultyController {
     this._logger.log('Paginated');
 
     const pag = await this.paginatedFaculty.execute(body);
-    return ProcessResponse.setResponse(res, pag, (a) => a);
+    return ProcessResponse.setResponse(res, pag, FacultyMappers.PaginatedToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

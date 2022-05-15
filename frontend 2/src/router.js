@@ -28,6 +28,8 @@ import Forbidden from './views/Forbidden';
 import Permission from './utils/permission';
 import Universities from '@/components/University/Universities';
 import University from '@/components/University/University';
+import Faculties from '@/components/Faculty/Faculties';
+import Faculty from '@/components/Faculty/Faculty';
 
 
 Vue.use(Router);
@@ -81,6 +83,39 @@ const router = new Router({
           },
         },
         {
+          path: '/universities',
+          name: 'universitiesPage',
+          component: Universities,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/universities/:universityId',
+          name: 'universityPage',
+          component: University,
+          meta: {
+            requiresAuth: true,
+          },
+
+        },
+        {
+          path: '/faculties/:universityId',
+          name: 'facultiesPage',
+          component: Faculties,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/faculties/:facultyId',
+          name: 'facultyPage',
+          component: Faculty,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: '/courses/:courseId',
           name: 'coursePage',
           component: Course,
@@ -129,23 +164,7 @@ const router = new Router({
             requiresAuth: true,
           },
         },
-        {
-          path: '/universities',
-          name: 'universitiesPage',
-          component: Universities,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: '/universities/:universityId',
-          name: 'universityPage',
-          component: University,
-          meta: {
-            requiresAuth: true,
-          },
 
-        },
         {
           path: '/locals/:localId',
           name: 'localPage',

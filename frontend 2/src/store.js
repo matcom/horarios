@@ -21,8 +21,10 @@ import UsersController from './controllers/users';
 import IntervalsController from './controllers/intervals';
 import FreeLocalsController from './controllers/free_locals';
 import FreeResourcesController from './controllers/free_resources';
-import UniversitiesController from './controllers/universities';
-import UniversityController from './controllers/university';
+import UniversitiesController from './controllers/University/universities';
+import UniversityController from './controllers/University/university';
+import FacultiesController from './controllers/Faculty/faculties';
+import FacultyController from './controllers/Faculty/faculty';
 
 Vue.use(Vuex);
 
@@ -51,6 +53,8 @@ const store = new Vuex.Store({
     free_resources: FreeResourcesController,
     university: UniversityController,
     universities: UniversitiesController,
+    faculties: FacultiesController,
+    faculty: FacultyController,
   }, mutations: {}, actions: {},
 });
 

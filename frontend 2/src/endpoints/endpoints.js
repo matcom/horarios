@@ -21,4 +21,5 @@ export default {
   free_locals: baseUrl + 'locals/free',
   free_resources: baseUrl + 'resources/free',
   universities: baseUrl + 'university',
+  faculties: baseUrl + 'faculty',
 };

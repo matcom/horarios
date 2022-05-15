@@ -26,36 +26,36 @@
             <i class='fas fa-lock px-4'></i>
           </router-link>
         </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'coursesPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-book'></i>
-            <span>Asignaturas</span></router-link>
-        </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'eventsPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-calendar'></i>
-            <span>Eventos</span></router-link>
-        </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'groupsPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-users'></i>
-            <span>Grupos</span></router-link>
-        </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'localsPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-warehouse'></i>
-            <span>Locales</span></router-link>
-        </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'resourcesPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-tv'></i>
-            <span>Recursos</span></router-link>
-        </li>
-        <li class='nav-item'>
-          <router-link :to="{name: 'tagsPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-tag'></i>
-            <span>Tipos</span></router-link>
-        </li>
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'coursesPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-book'></i>-->
+        <!--            <span>Asignaturas</span></router-link>-->
+        <!--        </li>-->
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'eventsPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-calendar'></i>-->
+        <!--            <span>Eventos</span></router-link>-->
+        <!--        </li>-->
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'groupsPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-users'></i>-->
+        <!--            <span>Grupos</span></router-link>-->
+        <!--        </li>-->
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'localsPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-warehouse'></i>-->
+        <!--            <span>Locales</span></router-link>-->
+        <!--        </li>-->
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'resourcesPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-tv'></i>-->
+        <!--            <span>Recursos</span></router-link>-->
+        <!--        </li>-->
+        <!--        <li class='nav-item'>-->
+        <!--          <router-link :to="{name: 'tagsPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-tag'></i>-->
+        <!--            <span>Tipos</span></router-link>-->
+        <!--        </li>-->
         <li class='nav-item'>
           <router-link :to="{name: 'usersPage'}" class='nav-link'>
             <i class='fas fa-fw fa-user'></i>

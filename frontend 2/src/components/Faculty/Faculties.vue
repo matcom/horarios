@@ -1,12 +1,12 @@
 <template>
-  <div id='universities'>
+  <div id='faculties'>
     <div class='row'>
       <div class='col-12'>
         <div class='card w-100 border-bottom-primary mb-1'>
           <div class='card-header py-2 bg-white'>
             <div class='row align-items-center'>
               <div class='col'>
-                <h5 class='m-0 font-weight-bold text-primary'>Universidades
+                <h5 class='m-0 font-weight-bold text-primary'> Facultades de {{ university.fullName }}
                 </h5>
               </div>
               <div class='col'>
@@ -19,7 +19,7 @@
                   <button class='btn ml-2' @click.prevent='unsetVal()'>
                     <i class='fas fa-sort-alpha-up'></i>
                   </button>
-                  <button class='btn ml-2' @click.prevent='addUniversity()'>
+                  <button class='btn ml-2' @click.prevent='addFaculty()'>
                     <i role='button' class='fas fa-plus'></i>
                   </button>
                 </form>
@@ -30,14 +30,14 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(universities, text, 'fullName').length === 0" type='button'
+              <button v-if="filterList(faculties, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="uni in filterList(universities, text, 'fullName')" :key='uni.id'
-                           :to="{name: 'universityPage', params: {universityId: uni.id}}"
-                           class='list-group-item list-group-item-action'>{{ uni.fullName }} ({{ uni.shortName }})
+              <router-link v-for="fac in filterList(faculties, text, 'fullName')" :key='fac.id'
+                           :to="{name: 'facultyPage', params: {facultyId: fac.id}}"
+                           class='list-group-item list-group-item-action'>{{ fac.fullName }} ({{ fac.shortName }})
                 <div class='form-inline justify-content-end'>
-                  <i class='fas fa-trash' @click.prevent='removeUniversity(uni.id)'></i>
+                  <i class='fas fa-trash' @click.prevent='removeFaculty(fac.id)'></i>
                 </div>
               </router-link>
             </div>
@@ -52,7 +52,7 @@
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Nueva Univesidad</h5>
+            <h5 class='modal-title' id='exampleModalLabel'>Nueva Facultad</h5>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
@@ -61,25 +61,25 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newUniversity.fullName'>
+                <input type='text' class='form-control' id='input-fullName' v-model='newFaculty.fullName'>
               </div>
               <div class='form-group'>
                 <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newUniversity.shortName'>
+                <input type='text' class='form-control' id='input-shortName' v-model='newFaculty.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority' v-model='newUniversity.priority' />
+                <input type='number' class='form-control' id='input-priority' v-model='newFaculty.priority' />
               </div>
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newUniversity.description'></textarea>
+                <textarea class='form-control' id='input-description' v-model='newFaculty.description'></textarea>
               </div>
             </form>
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveUniversity()'>
+            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveFaculty()'>
               Guardar
             </button>
           </div>
@@ -92,17 +92,23 @@
 
 <script>
 export default {
-  name: 'Universities',
+  name: 'Faculties',
   data() {
     return {
-      universities: [],
+      university: {
+        id: '',
+        fullName: '',
+        shortName: '',
+      },
+      faculties: [],
       text: '',
       val: 1,
-      newUniversity: {
+      newFaculty: {
         fullName: '',
         shortName: '',
         priority: '',
         description: '',
+        universityId: '',
       },
     };
   },
@@ -110,14 +116,25 @@ export default {
     loadData() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.universities.getData(token).then(result => {
-        if (result === true) {
-          this.universities = this.$store.state.universities.data;
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
-        } else {
-          this.$router.push({ name: 'notFoundPage' });
-        }
-      });
+
+      let universityId = this.$route.params.universityId;
+
+      this.$store.state.university.getData(token, universityId)
+        .then(result => {
+          if (result === true) {
+            this.university = this.$store.state.university.data;
+          }
+        });
+
+      this.$store.state.faculties.getData(token, universityId)
+        .then(result => {
+          if (result === true) {
+            this.faculties = this.$store.state.faculties.data;
+            this.faculties = this.faculties.slice().sort((a, b) => b.shortName - a.shortName);
+          } else {
+            this.$router.push({ name: 'notFoundPage' });
+          }
+        });
     },
     filterList(list, box, prop) {
       let tmp = list.slice().sort(this.comparer(prop, this.val));
@@ -131,30 +148,32 @@ export default {
     unsetVal() {
       this.val = -1;
     },
-    removeUniversity(universityId) {
+    removeFaculty(facultyId) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.universities.delete(token, universityId).then(result => {
+      this.$store.state.faculties.delete(token, facultyId).then(result => {
         if (result === true) {
-          this.universities = this.universities.filter(u => u.id != universityId);
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
+          this.faculties = this.faculties.filter(u => u.id != facultyId);
+          this.faculties = this.faculties.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
     },
-    addUniversity() {
+    addFaculty() {
       $('#modalCreate').modal('show');
     },
-    saveUniversity() {
+    saveFaculty() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.universities.create(token, this.newUniversity).then(result => {
 
+      this.newFaculty.universityId = this.university.id;
+
+      this.$store.state.faculties.create(token, this.newFaculty).then(result => {
         if (result === true) {
-          this.universities.push(this.$store.state.universities.data);
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
+          this.faculties.push(this.$store.state.faculties.data);
+          this.faculties = this.faculties.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
