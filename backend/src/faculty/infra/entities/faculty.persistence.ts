@@ -4,7 +4,7 @@ import { UniversityPersistence } from '../../../university/infra/entities/univer
 
 @Entity('faculty')
 @Index(['id'], { unique: true })
-export class LocalPersistence extends PersistentEntity {
+export class FacultyPersistence extends PersistentEntity {
   @Column({ type: 'text' })
   shortName: string;
 
