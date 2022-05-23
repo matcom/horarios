@@ -1,10 +1,10 @@
-import { FacultyPersistence } from '../entities/faculty.persistence';
+import { LocalPersistence } from '../entities/faculty.persistence';
 import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyDto } from '../../application/dtos/faculty.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 
 export class FacultyMappers {
-  public static PersistToDomain(persist: FacultyPersistence): Faculty {
+  public static PersistToDomain(persist: LocalPersistence): Faculty {
     const domain = Faculty.Create({
       ...persist,
     }, persist.id);
@@ -16,7 +16,7 @@ export class FacultyMappers {
     return domain.unwrap();
   }
 
-  public static DomainToPersist(domain: Faculty): Partial<FacultyPersistence> {
+  public static DomainToPersist(domain: Faculty): Partial<LocalPersistence> {
     return {
       id: domain._id.toString(),
       shortName: domain.shortName,

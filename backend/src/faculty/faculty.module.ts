@@ -4,10 +4,10 @@ import { FacultyUseCases } from './application/useCases';
 import { FacultyRepository } from './infra/repositories/faculty.repository';
 import { DataAccessModule } from '../shared/modules/data-access/data-access.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FacultyPersistence } from './infra/entities/faculty.persistence';
+import { LocalPersistence } from './infra/entities/faculty.persistence';
 
 @Module({
-  imports: [DataAccessModule, TypeOrmModule.forFeature([FacultyPersistence])],
+  imports: [DataAccessModule, TypeOrmModule.forFeature([LocalPersistence])],
   providers: [...FacultyUseCases, FacultyRepository],
   exports: [],
   controllers: [FacultyController],
