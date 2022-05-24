@@ -24,8 +24,6 @@ export class FacultyController {
     private readonly updateFaculty: UpdateFacultyUseCase,
     private readonly removeFaculty: RemoveFacultyUseCase,
     private readonly paginatedFaculty: PaginatedFacultyUseCase) {
-
-    this._logger = new Logger('FacultyController');
   }
 
   @Get(':id')

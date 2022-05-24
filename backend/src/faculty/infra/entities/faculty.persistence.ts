@@ -1,6 +1,7 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { UniversityPersistence } from '../../../university/infra/entities/university.persistence';
+import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
 
 @Entity('faculty')
 @Index(['id'], { unique: true })
@@ -23,8 +24,15 @@ export class FacultyPersistence extends PersistentEntity {
   @ManyToOne(
     () => UniversityPersistence,
     university => university.faculties,
-    { cascade: ['remove', 'update'], eager: true },
+    { cascade: ['remove', 'update'] },
   )
   @JoinColumn({ name: 'university_id' })
   university: UniversityPersistence;
+
+  @ManyToMany(
+    () => TeacherPersistence,
+    teacher => teacher.faculties,
+    { cascade: ['remove', 'update'], eager: true },
+  )
+  teachers: TeacherPersistence[];
 }
