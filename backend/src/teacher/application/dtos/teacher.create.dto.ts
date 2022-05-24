@@ -1,5 +1,5 @@
 import { TeacherDto } from './teacher.dto';
 
-export type TeacherCreateDto = TeacherDto & {
-  teacherFaculties: [{ id: string }];
+export type TeacherCreateDto = Omit<TeacherDto, 'id' | 'createdAt' | 'updatedAt'> & {
+  facultyIds: { id: string }[];
 };

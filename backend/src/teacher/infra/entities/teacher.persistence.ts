@@ -1,6 +1,6 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
-import { TeacherFacultyPersistence } from '../../../teacherFaculty/infra/entities/teacherFaculty.persistence';
+import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 
 @Entity('teacher')
 @Index(['id'], { unique: true })
@@ -20,10 +20,11 @@ export class TeacherPersistence extends PersistentEntity {
   @Column({ type: 'text' })
   email: string;
 
-  @OneToMany(
-    () => TeacherFacultyPersistence,
-    f => f.teacher,
-    { cascade: ['remove', 'update'], eager: true },
+  @ManyToMany(
+    () => FacultyPersistence,
+    f => f.teachers,
+    { cascade: ['update'] },
   )
-  teacherFaculties: TeacherFacultyPersistence[];
+  @JoinTable()
+  faculties: FacultyPersistence[] | any;
 }

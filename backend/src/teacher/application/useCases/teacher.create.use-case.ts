@@ -6,7 +6,7 @@ import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { TeacherCreateDto } from '../dtos/teacher.create.dto';
 import { Teacher } from 'src/teacher/domain/entities/teacher.entity';
 import { TeacherRepository } from '../../infra/repositories/teacher.repository';
-import { TeacherFacultyRepository } from '../../../teacherFaculty/infra/repositories/teacherFaculty.repository';
+import { FindByIdFacultyUseCase } from '../../../faculty/application/useCases';
 
 export type CreateTeacherUseCaseResponse = Either<AppError.UnexpectedErrorResult<Teacher>
   | AppError.ValidationErrorResult<Teacher>,
@@ -17,15 +17,17 @@ export class CreateTeacherUseCase implements IUseCase<TeacherCreateDto, Promise<
 
   private _logger: Logger;
 
-  constructor(private readonly facultyRepository: TeacherRepository,
-              private readonly teacherFacultyRepository: TeacherFacultyRepository) {
+  constructor(
+    private readonly teacherRepository: TeacherRepository,
+    private readonly facultyFindById: FindByIdFacultyUseCase,
+  ) {
     this._logger = new Logger('CreateTeacherUseCase');
   }
 
   async execute(request: TeacherCreateDto): Promise<CreateTeacherUseCaseResponse> {
     this._logger.log('Executing...');
 
-    const teacherOrError: Result<Teacher> = Teacher.New({ ...request });
+    const teacherOrError: Result<Teacher> = Teacher.New({ ...request, facultyIds: request.facultyIds });
 
     if (teacherOrError.isFailure)
       return left(teacherOrError);
@@ -33,7 +35,7 @@ export class CreateTeacherUseCase implements IUseCase<TeacherCreateDto, Promise<
     const teacher: Teacher = teacherOrError.unwrap();
 
     try {
-      await this.facultyRepository.save(teacher);
+      await this.teacherRepository.save(teacher);
 
       // const teacherFacultyEntries: TeacherFaculty[] = [];
       //

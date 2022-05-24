@@ -6,7 +6,7 @@ import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 
 type TeacherProps = DomainBaseProps & DomainTimestamp & {
   email: string;
-  teacherFaculties: [{ id: string }];
+  facultyIds?: { id: string }[];
 };
 
 type newTeacherProps = Omit<TeacherProps, 'id' | 'createdAt' | 'updatedAt'>;
@@ -21,9 +21,13 @@ export class Teacher extends DomainEntity<TeacherProps> {
     return this.props.shortName;
   }
 
-  get teacherFaculties(): [{ id: string }] {
-    return this.props.teacherFaculties;
+  get facultyIds(): { id: string }[] {
+    return this.props.facultyIds;
   }
+
+  // get faculties(): Faculty[] {
+  //   return this.props.faculties;
+  // }
 
   get fullName(): string {
     return this.props.fullName;
@@ -43,6 +47,10 @@ export class Teacher extends DomainEntity<TeacherProps> {
 
   get updatedAt(): Date {
     return this.props.updatedAt;
+  }
+
+  public SetFaculties(facs: { id: string }[]): void {
+    this.props.facultyIds = facs;
   }
 
   public static New(props: newTeacherProps): Result<Teacher> {

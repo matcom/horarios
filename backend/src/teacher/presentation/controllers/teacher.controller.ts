@@ -34,7 +34,6 @@ export class TeacherController {
 
     const university = await this.findOneUseCase.execute({ id: params.id });
     return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
-
   }
 
   @Post()
@@ -72,6 +71,4 @@ export class TeacherController {
     const university = await this.removeTeacher.execute(body);
     return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
   }
-
-
 }

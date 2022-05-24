@@ -26,6 +26,7 @@ export class TeacherMappers {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       email: domain.email,
+      faculties: domain.facultyIds,
     };
   }
 
