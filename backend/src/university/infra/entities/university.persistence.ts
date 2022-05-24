@@ -1,6 +1,6 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { LocalPersistence } from '../../../faculty/infra/entities/faculty.persistence';
+import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 
 @Entity('university')
 @Index(['id'], { unique: true })
@@ -18,9 +18,9 @@ export class UniversityPersistence extends PersistentEntity {
   priority: number;
 
   @OneToMany(
-    () => LocalPersistence,
+    () => FacultyPersistence,
     f => f.university,
     {},
   )
-  faculties: LocalPersistence[];
+  faculties: FacultyPersistence[];
 }
