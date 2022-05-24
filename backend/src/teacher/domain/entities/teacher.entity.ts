@@ -6,6 +6,7 @@ import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 
 type TeacherProps = DomainBaseProps & DomainTimestamp & {
   email: string;
+  teacherFaculties: [{ id: string }];
 };
 
 type newTeacherProps = Omit<TeacherProps, 'id' | 'createdAt' | 'updatedAt'>;
@@ -18,6 +19,10 @@ export class Teacher extends DomainEntity<TeacherProps> {
 
   get shortName(): string {
     return this.props.shortName;
+  }
+
+  get teacherFaculties(): [{ id: string }] {
+    return this.props.teacherFaculties;
   }
 
   get fullName(): string {
