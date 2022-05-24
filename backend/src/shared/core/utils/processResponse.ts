@@ -15,10 +15,7 @@ export class ProcessResponse {
 
     if (!data.isLeft()) {
       const value = data.value.unwrap();
-      console.log(value)
-      //res.setHeader('Access-Control-Allow-Origin','*')
-      //return funcMapper(value)
-      return res.status(200).json(funcMapper(value))
+      return res.status(200).json(funcMapper(value));
     }
 
     const error = data.value.unwrapError();

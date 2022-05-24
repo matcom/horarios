@@ -23,7 +23,7 @@ export class FacultyPersistence extends PersistentEntity {
   @ManyToOne(
     () => UniversityPersistence,
     university => university.faculties,
-    { cascade: ['remove', 'update'] },
+    { cascade: ['remove', 'update'], eager: true },
   )
   @JoinColumn({ name: 'university_id' })
   university: UniversityPersistence;

@@ -17,15 +17,16 @@ export class LoginUseCase implements IUseCase<User, Promise<LoginUseCaseResponse
   private _logger: Logger;
 
   constructor(private readonly jwtService: JwtService) {
-    this._logger = new Logger('FindByIdUseCase');
+    this._logger = new Logger('LoginUseCase');
   }
 
   async execute(request: User): Promise<LoginUseCaseResponse> {
-    this._logger.log('Executing...');
+    this._logger.log(`Executing. Request: ${JSON.stringify(request)}`);
+
     try {
       const payload = { email: request.email, sub: request._id.toString(), role: request.roles };
       const token: string = await this.jwtService.signAsync(payload);
-      return right(Result.Ok({ access_token: token }));
+      return right(Result.Ok({ token: token }));
     } catch (error) {
       return left(Result.Fail(new AppError.UnexpectedError(error)));
     }
