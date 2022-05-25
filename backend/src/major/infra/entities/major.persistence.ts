@@ -1,0 +1,33 @@
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
+import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
+
+@Entity('major')
+@Index(['id'], { unique: true })
+export class MajorPersistence extends PersistentEntity {
+  @Column({ type: 'text' })
+  shortName: string;
+
+  @Column({ type: 'text' })
+  fullName: string;
+
+  @Column({ type: 'text' })
+  description: string;
+
+  @Column({ type: 'int' })
+  priority: number;
+
+  @Column({ type: 'int' })
+  duration: number;
+
+  @Column({ type: 'text' })
+  facultyId: string;
+
+  @ManyToOne(
+    () => FacultyPersistence,
+    faculty => faculty.majors, {},
+  )
+  @JoinColumn({ name: 'faculty_id' })
+  faculty: FacultyPersistence;
+
+}

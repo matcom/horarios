@@ -8,14 +8,14 @@ import {IUseCase} from '../../../shared/core/interfaces/IUseCase';
 import {Result} from '../../../shared/core/Result';
 import Optional from 'src/shared/core/Option';
 
-export type UpdateFacultyUseCaseResponse =
+export type UpdateLocalUseCaseResponse =
     Either<AppError.UnexpectedErrorResult<Local>
         | AppError.ValidationErrorResult<Local>
         | AppError.ObjectNotExistResult<Local>,
         Result<Local>>;
 
 @Injectable()
-export class UpdateLocalUseCase implements IUseCase<LocalUpdateDto, Promise<UpdateFacultyUseCaseResponse>> {
+export class UpdateLocalUseCase implements IUseCase<LocalUpdateDto, Promise<UpdateLocalUseCaseResponse>> {
 
     private _logger: Logger;
 
@@ -23,7 +23,7 @@ export class UpdateLocalUseCase implements IUseCase<LocalUpdateDto, Promise<Upda
         this._logger = new Logger('UpdateFacultyUseCase');
     }
 
-    async execute(request: LocalUpdateDto): Promise<UpdateFacultyUseCaseResponse> {
+    async execute(request: LocalUpdateDto): Promise<UpdateLocalUseCaseResponse> {
         this._logger.log('Executing');
 
         const toUpdate = Optional(await this.localRepository.findById(request.localId));
