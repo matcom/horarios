@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { FacultyModule } from './faculty/faculty.module';
 import { LocalModule } from './local/local.module';
 import { TypeclassModule } from './typeclass/typeclass.module';
+import { MajorModule } from './major/major.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TypeclassModule } from './typeclass/typeclass.module';
     FacultyModule,
     LocalModule,
     TypeclassModule,
+    MajorModule,
   ],
   controllers: [],
   providers: [],
