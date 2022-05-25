@@ -7,6 +7,7 @@ import { EmailModule } from './email/email.module';
 import { AuthModule } from './auth/auth.module';
 import { FacultyModule } from './faculty/faculty.module';
 import { LocalModule } from './local/local.module';
+import { TypeclassModule } from './typeclass/typeclass.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LocalModule } from './local/local.module';
     AuthModule,
     FacultyModule,
     LocalModule,
+    TypeclassModule,
   ],
   controllers: [],
   providers: [],
