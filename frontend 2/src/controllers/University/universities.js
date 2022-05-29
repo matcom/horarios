@@ -4,16 +4,20 @@ import Endpoints from '../../endpoints/endpoints';
 const data_key = 'calendario-matcom-universities';
 
 export default {
-  data: [], saveMinData() {
+  data: [],
+  saveMinData() {
     localStorage.setItem(data_key, JSON.stringify(this.data));
-  }, loadMinData() {
+  },
+  loadMinData() {
     let stored = localStorage.getItem(data_key);
     if (stored !== null) {
       this.data = JSON.parse(stored);
     }
-  }, removeMinData() {
+  },
+  removeMinData() {
     localStorage.removeItem(data_key);
-  }, create(token, body) {
+  },
+  create(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -28,7 +32,8 @@ export default {
         return false;
       });
 
-  }, delete(token, id) {
+  },
+  delete(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -43,7 +48,8 @@ export default {
         return false;
       })
       .catch(err => console.log(err));
-  }, getAll(token, filter = {}) {
+  },
+  getAll(token, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -61,7 +67,8 @@ export default {
         }
         return false;
       });
-  }, getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
+  },
+  getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.universities, {

@@ -77,13 +77,42 @@
                 <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-description' class='col-form-label'>Email:</label>
-                    <input class='form-control' id='input-description' v-model='newTeacher.email'></input>
+                    <input class='form-control' id='input-description' v-model='newTeacher.email'>
                   </div>
 
                   <div class='form-group'>
-                    <label for='input-description' class='col-form-label'>Descripcion:</label>
-                    <textarea class='form-control' id='input-description' v-model='newTeacher.description'></textarea>
+                    <label class='col-form-label'> Elegir univerisidad:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                    >
+                      {{ btnSelectUniversityText }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
+                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
+                    </div>
                   </div>
+
+                  <div class='form-group'>
+                    <label class='col-form-label'> Elegir facultad:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                            :disabled='true'
+                    >
+                      {{ btnSelectFacultyText }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'
+                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>
+                    </div>
+                  </div>
+
 
                   <div class='form-group'>
                     <label for='input-description' class='col-form-label'>Descripcion:</label>
@@ -112,6 +141,8 @@ export default {
   name: 'Teachers',
   data() {
     return {
+      btnSelectUniversityText: 'Elegir universidad',
+      btnSelectFacultyText: 'Elegir facultad',
       teachers: [],
       text: '',
       val: 1,
@@ -140,7 +171,8 @@ export default {
 
       this.$store.state.universities.getAll(token)
         .then(result => {
-
+          if (result === true)
+            this.universities = this.$store.state.universities.data;
         });
     },
     filterList(list, box, prop) {
@@ -193,6 +225,23 @@ export default {
           return 0;
         }
       };
+    },
+    chooseUniversity(universityFullName) {
+      this.btnSelectUniversityText = (this.universities.find(x => x.fullName === universityFullName)).shortName;
+
+      // this.$store.state.profile.loadMinData();
+      // let token = this.$store.state.profile.data.token;
+      //
+      // this.$store.state.faculties.getData(token)
+      //   .then(result => {
+      //     if (result === true) {
+      //       this.teachers = this.$store.state.faculties.data;
+      //     }
+      //   });
+
+    },
+    chooseFaculty(facultyFullName) {
+      this.btnSelectFacultyText = (this.faculties.find(x => x.fullName === facultyFullName)).shortName;
     },
   },
   created() {
