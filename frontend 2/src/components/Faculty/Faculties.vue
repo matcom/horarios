@@ -126,7 +126,7 @@ export default {
           }
         });
 
-      this.$store.state.faculties.getData(token, universityId)
+      this.$store.state.faculties.getData(token, { universityId })
         .then(result => {
           if (result === true) {
             this.faculties = this.$store.state.faculties.data;
