@@ -102,7 +102,7 @@
                             data-toggle='dropdown'
                             aria-haspopup='true' aria-expanded='false'
                             style='width: 220px; height: 40px;'
-                            :disabled='true'
+                            :disabled='this.faculties.length === 0'
                     >
                       {{ btnSelectFacultyText }}
                     </button>
@@ -113,14 +113,14 @@
                     </div>
                   </div>
 
-
-                  <div class='form-group'>
-                    <label for='input-description' class='col-form-label'>Descripcion:</label>
-                    <textarea class='form-control' id='input-description' v-model='newTeacher.description'></textarea>
-                  </div>
-
                 </div>
               </div>
+
+              <div class='form-group'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='newTeacher.description'></textarea>
+              </div>
+
             </form>
           </div>
           <div class='modal-footer'>
@@ -147,13 +147,14 @@ export default {
       text: '',
       val: 1,
       universities: [],
-      faculties: [], // indica la facultad de la universidad elegida
+      faculties: [], // indica las facultades de la universidad elegida
       newTeacher: {
         fullName: '',
         shortName: '',
         priority: '',
         description: '',
         email: '',
+        facultyIds: [],
       },
     };
   },
@@ -206,6 +207,11 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
+      const fac = this.faculties.find(f => f.shortName === this.btnSelectFacultyText);
+
+      if (fac)
+        this.newTeacher.facultyIds.push({ id: fac.id });
+
       this.$store.state.teachers.create(token, this.newTeacher).then(result => {
         if (result === true) {
           this.teachers.push(this.$store.state.teachers.data);
@@ -227,17 +233,20 @@ export default {
       };
     },
     chooseUniversity(universityFullName) {
-      this.btnSelectUniversityText = (this.universities.find(x => x.fullName === universityFullName)).shortName;
+      const university = this.universities.find(x => x.fullName === universityFullName);
 
-      // this.$store.state.profile.loadMinData();
-      // let token = this.$store.state.profile.data.token;
-      //
-      // this.$store.state.faculties.getData(token)
-      //   .then(result => {
-      //     if (result === true) {
-      //       this.teachers = this.$store.state.faculties.data;
-      //     }
-      //   });
+      this.btnSelectUniversityText = university.shortName;
+
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.faculties.getAll(token, { universityId: university.id })
+        .then(result => {
+          if (result === true) {
+            this.faculties = this.$store.state.faculties.data;
+            this.btnSelectFacultyText = 'Elegir facultad';
+          }
+        });
 
     },
     chooseFaculty(facultyFullName) {
