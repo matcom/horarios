@@ -3,10 +3,12 @@ import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
+import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
 
 type TeacherProps = DomainBaseProps & DomainTimestamp & {
   email: string;
   facultyIds?: { id: string }[];
+  faculties?: Faculty[];
 };
 
 type newTeacherProps = Omit<TeacherProps, 'id' | 'createdAt' | 'updatedAt'>;
@@ -23,6 +25,10 @@ export class Teacher extends DomainEntity<TeacherProps> {
 
   get facultyIds(): { id: string }[] {
     return this.props.facultyIds;
+  }
+
+  get faculties(): Faculty[] {
+    return this.props.faculties;
   }
 
   // get faculties(): Faculty[] {

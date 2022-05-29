@@ -32,7 +32,7 @@ export class FacultyPersistence extends PersistentEntity {
   @ManyToMany(
     () => TeacherPersistence,
     teacher => teacher.faculties,
-    { cascade: ['remove', 'update'], eager: true },
+    { cascade: ['remove', 'update'] },
   )
   teachers: TeacherPersistence[];
 }

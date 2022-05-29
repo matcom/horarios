@@ -3,12 +3,14 @@ import { PaginatedTeacherUseCase } from './teacher.paginated.use-case';
 import { RemoveTeacherUseCase } from './teacher.remove.use-case';
 import { UpdateTeacherUseCase } from './teacher.update.use-case';
 import { FindByIdTeacherUseCase } from './teacher.find-by-id.use-case';
+import { FindDetailsTeacherUseCase } from './teacher.get-one-details.use-case';
 
 export * from './teacher.create.use-case';
 export * from './teacher.paginated.use-case';
 export * from './teacher.remove.use-case';
 export * from './teacher.update.use-case';
 export * from './teacher.find-by-id.use-case';
+export * from './teacher.get-one-details.use-case';
 
 export const TeacherUseCases = [
   CreateTeacherUseCase,
@@ -16,4 +18,5 @@ export const TeacherUseCases = [
   RemoveTeacherUseCase,
   UpdateTeacherUseCase,
   FindByIdTeacherUseCase,
+  FindDetailsTeacherUseCase,
 ];
