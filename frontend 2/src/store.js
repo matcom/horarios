@@ -25,6 +25,7 @@ import UniversitiesController from './controllers/University/universities';
 import UniversityController from './controllers/University/university';
 import FacultiesController from './controllers/Faculty/faculties';
 import FacultyController from './controllers/Faculty/faculty';
+import TeachersController from './controllers/Teacher/teachers';
 
 Vue.use(Vuex);
 
@@ -55,6 +56,7 @@ const store = new Vuex.Store({
     universities: UniversitiesController,
     faculties: FacultiesController,
     faculty: FacultyController,
+    teachers: TeachersController,
   }, mutations: {}, actions: {},
 });
 
