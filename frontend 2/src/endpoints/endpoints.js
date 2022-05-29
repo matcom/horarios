@@ -23,4 +23,5 @@ export default {
   universities: baseUrl + 'university',
   universitiesGetAll: baseUrl + 'university/all',
   faculties: baseUrl + 'faculty',
+  facultiesGetAll: baseUrl + 'faculty/all',
 };
