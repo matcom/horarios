@@ -2,11 +2,15 @@ import { TeacherPersistence } from '../entities/teacher.persistence';
 import { Teacher } from '../../domain/entities/teacher.entity';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { TeacherDto } from '../../application/dtos/teacher.dto';
+import { TeacherDetailsDto } from '../../application/dtos/teacher.details.dto';
+import { FacultyMappers } from '../../../faculty/infra/mappers/faculty.mappers';
 
 export class TeacherMappers {
   public static PersistToDomain(persist: TeacherPersistence): Teacher {
     const domain = Teacher.Create({
       ...persist,
+      faculties:
+        persist.faculties ? persist.faculties.map(f => FacultyMappers.PersistToDomain(f)) : [],
     }, persist.id);
 
     if (domain.isFailure)
@@ -52,4 +56,12 @@ export class TeacherMappers {
     };
   }
 
+  public static DomainToDetails(domain: Teacher): TeacherDetailsDto {
+    let base = TeacherMappers.DomainToDto(domain);
+
+    return {
+      ...base,
+      faculties: domain.faculties ? domain.faculties.map(f => FacultyMappers.DomainToDto(f)) : [],
+    };
+  }
 }

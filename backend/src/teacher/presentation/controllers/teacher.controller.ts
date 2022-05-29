@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } fro
 import {
   CreateTeacherUseCase,
   FindByIdTeacherUseCase,
+  FindDetailsTeacherUseCase,
   PaginatedTeacherUseCase,
   RemoveTeacherUseCase,
   UpdateTeacherUseCase,
@@ -23,7 +24,8 @@ export class TeacherController {
     private readonly createTeacher: CreateTeacherUseCase,
     private readonly updateTeacher: UpdateTeacherUseCase,
     private readonly removeTeacher: RemoveTeacherUseCase,
-    private readonly paginatedTeacher: PaginatedTeacherUseCase) {
+    private readonly paginatedTeacher: PaginatedTeacherUseCase,
+    private readonly findDetailsTeacher: FindDetailsTeacherUseCase) {
 
     this._logger = new Logger('TeacherController');
   }
@@ -32,9 +34,18 @@ export class TeacherController {
   async findOne(@Param() params, @Response() res) {
     this._logger.log('Find One');
 
-    const university = await this.findOneUseCase.execute({ id: params.id });
-    return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
+    const teacher = await this.findOneUseCase.execute({ id: params.id });
+    return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
+
+  @Get('details/:id')
+  async findDetails(@Param() params, @Response() res) {
+    this._logger.log('Find One');
+
+    const teacher = await this.findDetailsTeacher.execute({ id: params.id });
+    return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDetails);
+  }
+
 
   @Post()
   async getAllPaginated(@Body() body: TeacherPaginatedDto, @Response() res) {
@@ -50,8 +61,8 @@ export class TeacherController {
 
     this._logger.log('Create');
 
-    const university = await this.createTeacher.execute(body);
-    return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
+    const teacher = await this.createTeacher.execute(body);
+    return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -59,8 +70,8 @@ export class TeacherController {
   async update(@Body() body: TeacherUpdateDto, @Response() res) {
     this._logger.log('Update');
 
-    const university = await this.updateTeacher.execute(body);
-    return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
+    const teacher = await this.updateTeacher.execute(body);
+    return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -68,7 +79,7 @@ export class TeacherController {
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');
 
-    const university = await this.removeTeacher.execute(body);
-    return ProcessResponse.setResponse<Teacher>(res, university, TeacherMappers.DomainToDto);
+    const teacher = await this.removeTeacher.execute(body);
+    return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
 }
