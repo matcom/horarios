@@ -2,6 +2,7 @@ import { FacultyPersistence } from '../entities/faculty.persistence';
 import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyDto } from '../../application/dtos/faculty.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 import { UniversityMapper } from '../../../university/infra/mappers/university.mapper';
 
 export class FacultyMappers {
@@ -53,4 +54,11 @@ export class FacultyMappers {
       currentPage: pag.currentPage,
     };
   }
+
+  public static AllToDto(all: FindAllResult<Faculty>): FindAllResult<FacultyDto> {
+    return {
+      items: all.items.map(FacultyMappers.DomainToDto),
+    };
+  }
+
 }
