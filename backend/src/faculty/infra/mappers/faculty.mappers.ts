@@ -2,11 +2,13 @@ import { FacultyPersistence } from '../entities/faculty.persistence';
 import { Faculty } from '../../domain/entities/faculty.entity';
 import { FacultyDto } from '../../application/dtos/faculty.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { UniversityMapper } from '../../../university/infra/mappers/university.mapper';
 
 export class FacultyMappers {
   public static PersistToDomain(persist: FacultyPersistence): Faculty {
     const domain = Faculty.Create({
       ...persist,
+      university: persist.university ? UniversityMapper.PersistToDomain(persist.university) : null,
     }, persist.id);
 
     // TODO: handle this
@@ -39,6 +41,7 @@ export class FacultyMappers {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       universityId: domain.universityId,
+      university: domain.university ? UniversityMapper.DomainToDto(domain.university) : null,
     };
   }
 

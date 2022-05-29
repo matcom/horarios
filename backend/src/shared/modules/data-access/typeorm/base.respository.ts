@@ -84,9 +84,7 @@ export abstract class BaseRepository<E extends IEntity,
 
   async findOne(filter: {}): Promise<E> {
     this._logger.log(`Find`);
-    console.log(filter);
     const ans: P = await this._entityRepository.findOne(filter);
-    console.log(ans);
     return this._persistToDomainFunc(ans);
   }
 

@@ -3,9 +3,11 @@ import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
+import { University } from '../../../university/domain/entities/university.entity';
 
 type FacultyProps = DomainBaseProps & DomainTimestamp & {
   universityId: string;
+  university?: University;
 };
 
 type newFacultyProps = Omit<FacultyProps,
@@ -15,6 +17,10 @@ export class Faculty extends DomainEntity<FacultyProps> {
 
   get universityId(): string {
     return this.props.universityId;
+  }
+
+  get university(): University {
+    return this.props.university;
   }
 
   get shortName(): string {
