@@ -1,10 +1,10 @@
 <template>
-  <div id='faculty'>
+  <div id='teacher'>
     <div class='row'>
       <div class='col-12'>
         <div class='card mb-4 w-100 border-bottom-primary'>
           <div class='card-header py-3 bg-white'>
-            <h5 class='m-0 font-weight-bold text-primary'>Facultad: {{ faculty.fullName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Profesor: {{ teacher.fullName }}</h5>
 
             <div class='form-inline justify-content-end'>
               <button class='btn sm-2'>
@@ -22,7 +22,7 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Nombre Completo </strong></h5>
-              <p class='card-text'>{{ faculty.fullName }}</p>
+              <p class='card-text'>{{ teacher.fullName }}</p>
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Nombre Reducido </strong></h5>
-              <p class='card-text'>{{ faculty.shortName }}</p>
+              <p class='card-text'>{{ teacher.shortName }}</p>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Prioridad </strong></h5>
-              <p class='card-text'>{{ faculty.priority }}</p>
+              <p class='card-text'>{{ teacher.priority }}</p>
             </div>
           </div>
         </div>
@@ -51,10 +51,20 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Descripcion </strong></h5>
-              <p class='card-text'>{{ faculty.description }}</p>
+              <p class='card-text'>{{ teacher.description }}</p>
             </div>
           </div>
         </div>
+
+        <div class='col-sm-6 py-4'>
+          <div class='card text-center'>
+            <div class='card-body'>
+              <h5 class='card-title text-black-50'><strong> Email </strong></h5>
+              <p class='card-text'>{{ teacher.email }}</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -65,7 +75,7 @@
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Editando {{ faculty.fullName }}</h5>
+            <h5 class='modal-title' id='exampleModalLabel'>Editando {{ teacher.fullName }}</h5>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
@@ -74,20 +84,20 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='faculty.fullName'>
+                <input type='text' class='form-control' id='input-fullName' v-model='teacher.fullName'>
               </div>
               <div class='form-group'>
                 <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='faculty.shortName'>
+                <input type='text' class='form-control' id='input-shortName' v-model='teacher.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
                 <input type='number' class='form-control' id='input-priority'
-                       v-model='faculty.priority' />
+                       v-model='teacher.priority' />
               </div>
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='faculty.description'></textarea>
+                <textarea class='form-control' id='input-description' v-model='teacher.description'></textarea>
               </div>
             </form>
           </div>
@@ -105,16 +115,19 @@
 
 <script>
 export default {
-  name: 'Faculty',
+  name: 'Teacher',
   data() {
     return {
-      faculty: {
+      teacher: {
         id: '',
         fullName: '',
         shortName: '',
         description: '',
         priority: '',
+        email: '',
       },
+      facultyName: '',
+      universityName: '',
     };
   },
 
@@ -122,9 +135,10 @@ export default {
     loadData() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.faculty.getData(token, this.faculty.id).then(result => {
+
+      this.$store.state.teacher.getData(token, this.teacher.id).then(result => {
         if (result === true) {
-          this.faculty = this.$store.state.faculty.data;
+          this.teacher = this.$store.state.teacher.data;
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -142,10 +156,10 @@ export default {
     saveEdited() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.faculty.edit(token, this.faculty)
+      this.$store.state.teacher.edit(token, this.teacher)
         .then(result => {
           if (result === true) {
-            this.faculty = this.$store.state.faculty.data;
+            this.teacher = this.$store.state.teacher.data;
           } else {
             this.$router.push({ name: 'notFoundPage' });
           }
@@ -179,8 +193,8 @@ export default {
   },
 
   created() {
-    this.faculty.id = this.$route.params.facultyId;
-    if (!this.faculty.id) {
+    this.teacher.id = this.$route.params.teacherId;
+    if (!this.teacher.id) {
       this.$router.push({ name: 'notFoundPage' });
     }
     this.loadData();
