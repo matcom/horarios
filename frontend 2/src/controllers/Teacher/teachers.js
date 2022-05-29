@@ -1,7 +1,7 @@
 import Petitions from '../petitions';
 import Endpoints from '../../endpoints/endpoints';
 
-const data_key = 'calendario-matcom-universities';
+const data_key = 'calendario-matcom-teachers';
 
 export default {
   data: [],
@@ -21,7 +21,7 @@ export default {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.post(`${Endpoints.universities}/create`, body)
+    return Petitions.post(`${Endpoints.teachers}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {
@@ -37,7 +37,7 @@ export default {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.delete(Endpoints.universities, { id: id })
+    return Petitions.delete(Endpoints.teachers, { id: id })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {
@@ -49,16 +49,10 @@ export default {
       })
       .catch(err => console.log(err));
   },
-  getAll(token) {
-    Petitions.clearHeaders();
-    Petitions.set_JSONHeaders(null, null, token);
-
-
-  },
   getData(token) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-    return Petitions.post(Endpoints.universities, {
+    return Petitions.post(Endpoints.teachers, {
       pageParams: {
         'pageNum': 1,
         'pageLimit': 10,

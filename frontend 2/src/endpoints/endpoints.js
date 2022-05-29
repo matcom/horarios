@@ -22,4 +22,5 @@ export default {
   free_resources: baseUrl + 'resources/free',
   universities: baseUrl + 'university',
   faculties: baseUrl + 'faculty',
+  teachers: baseUrl + 'teacher',
 };
