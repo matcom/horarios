@@ -22,4 +22,14 @@ export class TeacherRepository extends BaseRepository<Teacher, TeacherPersistenc
 
     return TeacherMappers.PersistToDomain(teacher);
   }
+
+  async findDetails(id: string): Promise<Teacher> {
+    const teacher = await this
+      ._entityRepository
+      .findOne(id, {
+        relations: ['faculties', 'faculties.university'],
+      });
+
+    return TeacherMappers.PersistToDomain(teacher);
+  }
 }
