@@ -5,9 +5,8 @@
         <div class='card mb-4 w-100 border-bottom-primary'>
           <div class='card-header py-3 bg-white'>
             <h5 class='m-0 font-weight-bold text-primary'>Profesor: {{ teacher.fullName }}</h5>
-            <h5 class='m-0 font-weight-bold text-primary'>Universidad:
-              {{ teacher.faculties[0].university.fullName }}</h5>
-            <h5 class='m-0 font-weight-bold text-primary'>Facultad: {{ teacher.faculties[0].fullName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Universidad: {{ this.universityName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Facultad: {{ this.facultyName }}</h5>
 
             <div class='form-inline justify-content-end'>
               <button class='btn sm-2'>
@@ -197,14 +196,20 @@ export default {
         if (result === true) {
           this.teacher = this.$store.state.teacher.data;
 
-          this.btnSelectFacultyText = this.teacher.faculties.length > 0
-            ? this.teacher.faculties[0].shortName
+          const faculty = this.teacher.faculties.length > 0
+            ? this.teacher.faculties[0]
             : 'Elegir facultad';
 
-          this.btnSelectUniversityText = this.teacher.faculties.length > 0
-            ? this.teacher.faculties[0].university.shortName
+          const university = this.teacher.faculties.length > 0
+            ? this.teacher.faculties[0].university
             : 'Elegir universidad';
 
+
+          this.btnSelectFacultyText = faculty.shortName;
+          this.btnSelectUniversityText = university.shortName;
+
+          this.facultyName = faculty.fullName;
+          this.universityName = university.fullName;
 
           const universityId = this.teacher.faculties[0].university.id;
           this.getAllFaculties(universityId);
@@ -226,11 +231,12 @@ export default {
     },
     saveEdited() {
 
-      const faculty = this
+      const faculty = (this
         .faculties
-        .filter(x => x.shortName === this.btnSelectFacultyText);
+        .find(x => x.shortName === this.btnSelectFacultyText));
 
-      this.teacher.facultyIds = [{ id: faculty.id }];
+      if (faculty)
+        this.teacher.facultyIds = [{ id: faculty.id }];
 
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
@@ -238,6 +244,12 @@ export default {
         .then(result => {
           if (result === true) {
             this.teacher = this.$store.state.teacher.data;
+
+            this.facultyName = faculty.fullName;
+            this.universityName = (this
+              .universities
+              .find(x => x.id === faculty.universityId)).fullName;
+
           } else {
             this.$router.push({ name: 'notFoundPage' });
           }

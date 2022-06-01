@@ -60,7 +60,4 @@ export class FacultyMappers {
       items: all.items.map(FacultyMappers.DomainToDto),
     };
   }
-
-}
-
 }
