@@ -10,7 +10,7 @@ import { ITeacherRepository } from '../../domain/interfaces/ITeacherRepository';
 @Injectable()
 export class TeacherRepository extends BaseRepository<Teacher, TeacherPersistence> implements ITeacherRepository {
   constructor(@InjectRepository(TeacherPersistence) _repository: Repository<TeacherPersistence>) {
-    super(_repository, TeacherMappers.DomainToPersist, TeacherMappers.PersistToDomain, 'FacultyRepository');
+    super(_repository, TeacherMappers.DomainToPersist, TeacherMappers.PersistToDomain, 'TeacherRepository');
   }
 
   async findDetails(id: string): Promise<Teacher> {

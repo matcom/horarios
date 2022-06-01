@@ -56,6 +56,9 @@ export class Teacher extends DomainEntity<TeacherProps> {
   }
 
   public SetFaculties(facs: { id: string }[]): void {
+
+    if (!facs) return;
+
     this.props.facultyIds = facs;
   }
 
@@ -82,6 +85,8 @@ export class Teacher extends DomainEntity<TeacherProps> {
     this.props.description = props.description ?? this.props.description;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
+
+    this.SetFaculties(props.facultyIds);
 
     this.props.updatedAt = new Date();
   }
