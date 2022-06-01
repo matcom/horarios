@@ -5,6 +5,9 @@
         <div class='card mb-4 w-100 border-bottom-primary'>
           <div class='card-header py-3 bg-white'>
             <h5 class='m-0 font-weight-bold text-primary'>Profesor: {{ teacher.fullName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Universidad:
+              {{ teacher.faculties[0].university.fullName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Facultad: {{ teacher.faculties[0].fullName }}</h5>
 
             <div class='form-inline justify-content-end'>
               <button class='btn sm-2'>
@@ -80,27 +83,76 @@
               <span aria-hidden='true'>&times;</span>
             </button>
           </div>
+
+
           <div class='modal-body'>
             <form>
-              <div class='form-group'>
-                <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='teacher.fullName'>
+              <div class='row'>
+                <div class='col-md-6'>
+                  <div class='form-group'>
+                    <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
+                    <input type='text' class='form-control' id='input-fullName' v-model='teacher.fullName'>
+                  </div>
+                  <div class='form-group'>
+                    <label for='input-shortName' class='col-form-label'>Nombre:</label>
+                    <input type='text' class='form-control' id='input-shortName' v-model='teacher.shortName'>
+                  </div>
+                  <div class='form-group'>
+                    <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                    <input type='number' class='form-control' id='input-priority' v-model='teacher.priority' />
+                  </div>
+                </div>
+                <div class='col-md-6'>
+                  <div class='form-group'>
+                    <label for='input-description' class='col-form-label'>Email:</label>
+                    <input class='form-control' id='input-description' v-model='teacher.email'>
+                  </div>
+
+                  <div class='form-group'>
+                    <label class='col-form-label'> Elegir univerisidad:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                    >
+                      {{ btnSelectUniversityText }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
+                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
+                    </div>
+                  </div>
+
+                  <div class='form-group'>
+                    <label class='col-form-label'> Elegir facultad:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                            :disabled='this.faculties.length === 0'
+                    >
+                      {{ btnSelectFacultyText }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'
+                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>
+                    </div>
+                  </div>
+
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='teacher.shortName'>
-              </div>
-              <div class='form-group'>
-                <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority'
-                       v-model='teacher.priority' />
-              </div>
+
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
                 <textarea class='form-control' id='input-description' v-model='teacher.description'></textarea>
               </div>
+
             </form>
           </div>
+
+
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
             <button type='button' class='btn btn-primary' data-dismiss='modal' @click.prevent='saveEdited()'>
@@ -125,9 +177,14 @@ export default {
         description: '',
         priority: '',
         email: '',
+        faculties: [],
       },
+      faculties: [],
+      universities: [],
       facultyName: '',
       universityName: '',
+      btnSelectFacultyText: 'Elegir facultad',
+      btnSelectUniversityText: 'Elegir universidad',
     };
   },
 
@@ -136,9 +193,23 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.teacher.getData(token, this.teacher.id).then(result => {
+      this.$store.state.teacher.getDetails(token, this.teacher.id).then(result => {
         if (result === true) {
           this.teacher = this.$store.state.teacher.data;
+
+          this.btnSelectFacultyText = this.teacher.faculties.length > 0
+            ? this.teacher.faculties[0].shortName
+            : 'Elegir facultad';
+
+          this.btnSelectUniversityText = this.teacher.faculties.length > 0
+            ? this.teacher.faculties[0].university.shortName
+            : 'Elegir universidad';
+
+
+          const universityId = this.teacher.faculties[0].university.id;
+          this.getAllFaculties(universityId);
+          this.getAllUniversities();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -154,6 +225,13 @@ export default {
       $('#modalEdit').modal('show');
     },
     saveEdited() {
+
+      const faculty = this
+        .faculties
+        .filter(x => x.shortName === this.btnSelectFacultyText);
+
+      this.teacher.facultyIds = [{ id: faculty.id }];
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
       this.$store.state.teacher.edit(token, this.teacher)
@@ -189,6 +267,40 @@ export default {
           return 0;
         }
       };
+    },
+    chooseUniversity(universityFullName) {
+      const university = this.universities.find(x => x.fullName === universityFullName);
+
+      this.btnSelectUniversityText = university.shortName;
+
+      this.getAllFaculties(university.id);
+
+      this.btnSelectFacultyText = 'Elegir facultad';
+
+    },
+    chooseFaculty(facultyFullName) {
+      this.btnSelectFacultyText = (this.faculties.find(x => x.fullName === facultyFullName)).shortName;
+    },
+    getAllUniversities() {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.universities.getAll(token)
+        .then(result => {
+          if (result === true)
+            this.universities = this.$store.state.universities.data;
+        });
+    },
+    getAllFaculties(universityId) {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.faculties.getAll(token, { universityId: universityId })
+        .then(result => {
+          if (result === true) {
+            this.faculties = this.$store.state.faculties.data;
+          }
+        });
     },
   },
 

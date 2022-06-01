@@ -49,15 +49,15 @@ export default {
       })
       .catch(err => console.log(err));
   },
-  getData(token) {
+  getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.teachers, {
       pageParams: {
-        'pageNum': 1,
-        'pageLimit': 10,
+        'pageNum': pageNum,
+        'pageLimit': pageLimit,
       },
-      filter: {},
+      filter: filter,
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
