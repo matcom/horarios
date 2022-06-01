@@ -10,6 +10,7 @@ type newUniversityProps = Omit<UniversityProps,
   'id' | 'createdAt' | 'updatedAt'>;
 
 export class University extends DomainEntity<UniversityProps> {
+
   get shortName(): string {
     return this.props.shortName;
   }

@@ -26,6 +26,13 @@
             <i class='fas fa-lock px-4'></i>
           </router-link>
         </li>
+        <li class='nav-item form-inline'>
+          <router-link :to="{name: 'teachersPage'}" class='nav-link'>
+            <i class='fas fa-fw fa-people-carry'></i>
+            <span>Teachers</span>
+            <i class='fas fa-lock px-4'></i>
+          </router-link>
+        </li>
         <!--        <li class='nav-item'>-->
         <!--          <router-link :to="{name: 'coursesPage'}" class='nav-link'>-->
         <!--            <i class='fas fa-fw fa-book'></i>-->
@@ -216,7 +223,7 @@
         <footer class='sticky-footer bg-white'>
           <div class='container my-auto'>
             <div class='copyright text-center my-auto'>
-              <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</strong>
+              <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2022</strong>
             </div>
           </div>
         </footer>

@@ -49,15 +49,32 @@ export default {
       })
       .catch(err => console.log(err));
   },
-  getData(token) {
+  getAll(token, filter = {}) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.post(Endpoints.universitiesGetAll, {
+      'filter': filter,
+    })
+      .then(response => response.json())
+      .then(json => {
+        json = json.items;
+
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      });
+  },
+  getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.universities, {
       pageParams: {
-        'pageNum': 1,
-        'pageLimit': 10,
-      },
-      filter: {},
+        'pageNum': pageNum, 'pageLimit': pageLimit,
+      }, 'filter': filter,
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {

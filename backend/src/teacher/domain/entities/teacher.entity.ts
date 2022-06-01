@@ -1,31 +1,39 @@
 import { DomainBaseProps } from '../../../shared/domain/domain.base-props';
-import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
+import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
-import { University } from '../../../university/domain/entities/university.entity';
+import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
 
-type FacultyProps = DomainBaseProps & DomainTimestamp & {
-  universityId: string;
-  university?: University;
+type TeacherProps = DomainBaseProps & DomainTimestamp & {
+  email: string;
+  facultyIds?: { id: string }[];
+  faculties?: Faculty[];
 };
 
-type newFacultyProps = Omit<FacultyProps,
-  'id' | 'createdAt' | 'updatedAt'>;
+type newTeacherProps = Omit<TeacherProps, 'id' | 'createdAt' | 'updatedAt'>;
 
-export class Faculty extends DomainEntity<FacultyProps> {
+export class Teacher extends DomainEntity<TeacherProps> {
 
-  get universityId(): string {
-    return this.props.universityId;
-  }
-
-  get university(): University {
-    return this.props.university;
+  get email(): string {
+    return this.props.email;
   }
 
   get shortName(): string {
     return this.props.shortName;
   }
+
+  get facultyIds(): { id: string }[] {
+    return this.props.facultyIds;
+  }
+
+  get faculties(): Faculty[] {
+    return this.props.faculties;
+  }
+
+  // get faculties(): Faculty[] {
+  //   return this.props.faculties;
+  // }
 
   get fullName(): string {
     return this.props.fullName;
@@ -47,8 +55,15 @@ export class Faculty extends DomainEntity<FacultyProps> {
     return this.props.updatedAt;
   }
 
-  public static New(props: newFacultyProps): Result<Faculty> {
-    const ans: Result<Faculty> = this.Create({
+  public SetFaculties(facs: { id: string }[]): void {
+
+    if (!facs) return;
+
+    this.props.facultyIds = facs;
+  }
+
+  public static New(props: newTeacherProps): Result<Teacher> {
+    const ans: Result<Teacher> = this.Create({
       ...props,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -59,17 +74,21 @@ export class Faculty extends DomainEntity<FacultyProps> {
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: FacultyProps, id: string = null): Result<Faculty> {
-    return Result.Ok(new Faculty(props, new UniqueEntityID(id)));
+  public static Create(props: TeacherProps, id: string = null): Result<Teacher> {
+    // set guards here
+    return Result.Ok(new Teacher(props, new UniqueEntityID(id)));
   }
 
   public Update(props: any) {
     this.props.priority = props.priority ?? this.props.priority;
+    this.props.email = props.email ?? this.props.email;
     this.props.description = props.description ?? this.props.description;
-    this.props.universityId = props.universityId ?? this.props.universityId;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
 
+    this.SetFaculties(props.facultyIds);
+
     this.props.updatedAt = new Date();
   }
+
 }

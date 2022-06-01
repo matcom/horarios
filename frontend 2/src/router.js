@@ -30,6 +30,8 @@ import Universities from '@/components/University/Universities';
 import University from '@/components/University/University';
 import Faculties from '@/components/Faculty/Faculties';
 import Faculty from '@/components/Faculty/Faculty';
+import Teachers from '@/components/Teacher/Teachers';
+import Teacher from '@/components/Teacher/Teacher';
 
 
 Vue.use(Router);
@@ -111,6 +113,22 @@ const router = new Router({
           path: '/faculties/:facultyId',
           name: 'facultyPage',
           component: Faculty,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/teachers',
+          name: 'teachersPage',
+          component: Teachers,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/teachers/:teacherId',
+          name: 'teacherPage',
+          component: Teacher,
           meta: {
             requiresAuth: true,
           },

@@ -7,6 +7,7 @@ import { PersistentEntity } from './base.entity';
 import { IEntity } from 'src/shared/core/interfaces/IEntity';
 import { PageParams } from '../../../core/PaginatorParams';
 import { getDefaultPaginatedFindResult, PaginatedFindResult } from '../../../core/PaginatedFindResult';
+import { FindAllResult } from '../../../core/FindAllResult';
 
 export abstract class BaseRepository<E extends IEntity,
   P extends PersistentEntity> implements IRepository<E> {
@@ -65,11 +66,25 @@ export abstract class BaseRepository<E extends IEntity,
     return this._persistToDomainFunc(ans);
   }
 
+  async findAll(filter: {}): Promise<FindAllResult<E>> {
+    this._logger.log('Find All');
+
+    const count = await this.count(filter);
+
+    if (count == 0) return getDefaultPaginatedFindResult();
+
+    const ans = await this._entityRepository.find({
+      where: filter,
+    });
+
+    return {
+      items: ans.map(this._persistToDomainFunc),
+    };
+  }
+
   async findOne(filter: {}): Promise<E> {
     this._logger.log(`Find`);
-    console.log(filter);
     const ans: P = await this._entityRepository.findOne(filter);
-    console.log(ans);
     return this._persistToDomainFunc(ans);
   }
 
