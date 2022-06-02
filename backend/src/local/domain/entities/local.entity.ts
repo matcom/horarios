@@ -1,62 +1,69 @@
-import {DomainBaseProps} from '../../../shared/domain/domain.base-props';
-import {DomainEntity} from '../../../shared/domain/entity.abstract';
-import {DomainTimestamp} from '../../../shared/domain/domain.timestamp';
-import {Result} from '../../../shared/core/Result';
-import {UniqueEntityID} from '../../../shared/domain/UniqueEntityID';
+import { DomainBaseProps } from '../../../shared/domain/domain.base-props';
+import { DomainEntity } from '../../../shared/domain/entity.abstract';
+import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
+import { Result } from '../../../shared/core/Result';
+import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 
-type LocalProps = DomainBaseProps & DomainTimestamp
+type LocalProps = DomainBaseProps & DomainTimestamp & {
+  facultyId: string;
+};
 
 type newLocalProps = Omit<LocalProps,
-    'id' | 'createdAt' | 'updatedAt'>;
+  'id' | 'createdAt' | 'updatedAt'>;
 
 export class Local extends DomainEntity<LocalProps> {
 
-    get shortName(): string {
-        return this.props.shortName;
-    }
+  get shortName(): string {
+    return this.props.shortName;
+  }
 
-    get fullName(): string {
-        return this.props.fullName;
-    }
+  get facultyId(): string {
+    return this.props.facultyId;
+  }
 
-    get description(): string {
-        return this.props.description;
-    }
+  get fullName(): string {
+    return this.props.fullName;
+  }
 
-    get priority(): number {
-        return this.props.priority;
-    }
+  get description(): string {
+    return this.props.description;
+  }
 
-    get createdAt(): Date {
-        return this.props.createdAt;
-    }
+  get priority(): number {
+    return this.props.priority;
+  }
 
-    get updatedAt(): Date {
-        return this.props.updatedAt;
-    }
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
 
-    public static New(props: newLocalProps): Result<Local> {
-        const ans: Result<Local> = this.Create({
-            ...props,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        });
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
 
-        if (ans.isFailure) return Result.Fail(ans.unwrapError());
+  public static New(props: newLocalProps): Result<Local> {
+    const ans: Result<Local> = this.Create({
+      ...props,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
 
-        return Result.Ok(ans.unwrap());
-    }
+    if (ans.isFailure) return Result.Fail(ans.unwrapError());
 
-    public static Create(props: LocalProps, id: string = null): Result<Local> {
-        return Result.Ok(new Local(props, new UniqueEntityID(id)));
-    }
+    return Result.Ok(ans.unwrap());
+  }
 
-    public Update(props: any) {
-        this.props.priority = props.priority ?? this.props.priority;
-        this.props.description = props.description ?? this.props.description;
-        this.props.fullName = props.fullName ?? this.props.fullName;
-        this.props.shortName = props.shortName ?? this.props.shortName;
+  public static Create(props: LocalProps, id: string = null): Result<Local> {
+    return Result.Ok(new Local(props, new UniqueEntityID(id)));
+  }
 
-        this.props.updatedAt = new Date();
-    }
+  public Update(props: any) {
+    this.props.priority = props.priority ?? this.props.priority;
+    this.props.description = props.description ?? this.props.description;
+    this.props.fullName = props.fullName ?? this.props.fullName;
+    this.props.shortName = props.shortName ?? this.props.shortName;
+    this.props.facultyId = props.facultyIds ?? this.props.facultyId;
+
+    this.props.updatedAt = new Date();
+  }
 }

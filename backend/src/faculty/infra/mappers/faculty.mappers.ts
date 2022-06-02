@@ -4,6 +4,7 @@ import { FacultyDto } from '../../application/dtos/faculty.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { UniversityMapper } from '../../../university/infra/mappers/university.mapper';
 import { FindAllResult } from '../../../shared/core/FindAllResult';
+import { FacultyDetailsDto } from '../../application/dtos/facultyDetailsDto';
 
 export class FacultyMappers {
   public static PersistToDomain(persist: FacultyPersistence): Faculty {
@@ -19,18 +20,18 @@ export class FacultyMappers {
     return domain.unwrap();
   }
 
-    public static DomainToPersist(domain: Faculty): Partial<FacultyPersistence> {
-        return {
-            id: domain._id.toString(),
-          shortName: domain.shortName,
-          fullName: domain.fullName,
-          description: domain.description,
-          priority: domain.priority,
-          createdAt: domain.createdAt,
-          updatedAt: domain.updatedAt,
-          universityId: domain.universityId,
-        };
-    }
+  public static DomainToPersist(domain: Faculty): Partial<FacultyPersistence> {
+    return {
+      id: domain._id.toString(),
+      shortName: domain.shortName,
+      fullName: domain.fullName,
+      description: domain.description,
+      priority: domain.priority,
+      createdAt: domain.createdAt,
+      updatedAt: domain.updatedAt,
+      universityId: domain.universityId,
+    };
+  }
 
   public static DomainToDto(domain: Faculty): FacultyDto {
     return {
@@ -58,6 +59,16 @@ export class FacultyMappers {
   public static AllToDto(all: FindAllResult<Faculty>): FindAllResult<FacultyDto> {
     return {
       items: all.items.map(FacultyMappers.DomainToDto),
+    };
+  }
+
+
+  public static DomainToDetails(domain: Faculty): FacultyDetailsDto {
+    let base = FacultyMappers.DomainToDto(domain);
+
+    return {
+      ...base,
+      university: domain.university ? UniversityMapper.DomainToDto(domain.university) : null,
     };
   }
 }

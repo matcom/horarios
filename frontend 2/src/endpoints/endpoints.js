@@ -7,7 +7,7 @@ export default {
   groups: baseUrl + 'groups',
   events: baseUrl + 'events',
   query: baseUrl + 'events/query',
-  locals: baseUrl + 'locals',
+  local: baseUrl + 'local',
   permissions: baseUrl + 'permissions',
   profile: baseUrl + 'profile',
   register: baseUrl + 'auth/register',

@@ -6,8 +6,6 @@ import EventController from './controllers/event';
 import EventsController from './controllers/events';
 import GroupController from './controllers/group';
 import GroupsController from './controllers/groups';
-import LocalController from './controllers/local';
-import LocalsController from './controllers/locals';
 import ProfileController from './controllers/profile';
 import QueryController from './controllers/query';
 import ResourceController from './controllers/resource';
@@ -27,6 +25,8 @@ import FacultiesController from './controllers/Faculty/faculties';
 import FacultyController from './controllers/Faculty/faculty';
 import TeachersController from './controllers/Teacher/teachers';
 import TeacherController from './controllers/Teacher/teacher';
+import LocalsController from './controllers/Local/locals';
+import LocalController from './controllers/Local/local';
 
 Vue.use(Vuex);
 
@@ -38,8 +38,6 @@ const store = new Vuex.Store({
     events: EventsController,
     group: GroupController,
     groups: GroupsController,
-    local: LocalController,
-    locals: LocalsController,
     profile: ProfileController,
     query: QueryController,
     resource: ResourceController,
@@ -59,6 +57,8 @@ const store = new Vuex.Store({
     faculty: FacultyController,
     teachers: TeachersController,
     teacher: TeacherController,
+    local: LocalController,
+    locals: LocalsController,
   }, mutations: {}, actions: {},
 });
 

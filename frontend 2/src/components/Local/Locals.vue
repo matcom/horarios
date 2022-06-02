@@ -1,5 +1,5 @@
 <template>
-  <div id='universities'>
+  <div id='locals'>
     <div class='row'>
       <div class='col-12'>
         <div class='card w-100 border-bottom-primary mb-1'>
@@ -19,7 +19,7 @@
                   <button class='btn ml-2' @click.prevent='unsetVal()'>
                     <i class='fas fa-sort-alpha-up'></i>
                   </button>
-                  <button class='btn ml-2' @click.prevent='addUniversity()'>
+                  <button class='btn ml-2' @click.prevent='addLocal()'>
                     <i role='button' class='fas fa-plus'></i>
                   </button>
                 </form>
@@ -30,14 +30,15 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(universities, text, 'fullName').length === 0" type='button'
+              <button v-if="filterList(locals, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="uni in filterList(universities, text, 'fullName')" :key='uni.id'
-                           :to="{name: 'universityPage', params: {universityId: uni.id}}"
-                           class='list-group-item list-group-item-action'>{{ uni.fullName }} ({{ uni.shortName }})
+              <router-link v-for="l in filterList(locals, text, 'fullName')" :key='l.id'
+                           :to="{name: 'localPage', params: {localId: l.id}}"
+                           class='list-group-item list-group-item-action'>{{ l.fullName }}
+                ({{ faculty.university.shortName }} / {{ faculty.shortName }})
                 <div class='form-inline justify-content-end'>
-                  <i class='fas fa-trash' @click.prevent='removeUniversity(uni.id)'></i>
+                  <i class='fas fa-trash' @click.prevent='removeLocal(l.id)'></i>
                 </div>
               </router-link>
             </div>
@@ -52,7 +53,7 @@
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Nueva Univesidad</h5>
+            <h5 class='modal-title' id='exampleModalLabel'>Nueva Local</h5>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
@@ -61,25 +62,25 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newUniversity.fullName'>
+                <input type='text' class='form-control' id='input-fullName' v-model='newLocal.fullName'>
               </div>
               <div class='form-group'>
                 <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newUniversity.shortName'>
+                <input type='text' class='form-control' id='input-shortName' v-model='newLocal.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority' v-model='newUniversity.priority' />
+                <input type='number' class='form-control' id='input-priority' v-model='newLocal.priority' />
               </div>
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newUniversity.description'></textarea>
+                <textarea class='form-control' id='input-description' v-model='newLocal.description'></textarea>
               </div>
             </form>
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveUniversity()'>
+            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveLocal()'>
               Guardar
             </button>
           </div>
@@ -98,11 +99,14 @@ export default {
       locals: [],
       text: '',
       val: 1,
+      facultyId: '',
+      faculty: {},
       newLocal: {
         fullName: '',
         shortName: '',
         priority: '',
         description: '',
+        facultyId: '',
       },
     };
   },
@@ -110,10 +114,23 @@ export default {
     loadData() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.universities.getData(token).then(result => {
+
+      this.facultyId = this.$route.params.facultyId;
+
+      this.$store.state.faculty.getDetails(token, this.facultyId).then(result => {
         if (result === true) {
-          this.universities = this.$store.state.universities.data;
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
+
+          this.faculty = this.$store.state.faculty.data;
+
+        } else {
+          this.$router.push({ name: 'notFoundPage' });
+        }
+      });
+
+      this.$store.state.locals.getData(token).then(result => {
+        if (result === true) {
+          this.locals = this.$store.state.locals.data;
+          this.locals = this.locals.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -131,30 +148,33 @@ export default {
     unsetVal() {
       this.val = -1;
     },
-    removeUniversity(universityId) {
+    removeLocal(localId) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.universities.delete(token, universityId).then(result => {
+      this.$store.state.locals.delete(token, localId).then(result => {
         if (result === true) {
-          this.universities = this.universities.filter(u => u.id != universityId);
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
+          this.locals = this.locals.filter(u => u.id != localId);
+          this.locals = this.locals.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
     },
-    addUniversity() {
+    addLocal() {
       $('#modalCreate').modal('show');
     },
-    saveUniversity() {
+    saveLocal() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.universities.create(token, this.newUniversity).then(result => {
+
+      this.newLocal.facultyId = this.facultyId;
+
+      this.$store.state.locals.create(token, this.newLocal).then(result => {
 
         if (result === true) {
-          this.universities.push(this.$store.state.universities.data);
-          this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
+          this.locals.push(this.$store.state.locals.data);
+          this.locals = this.locals.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }

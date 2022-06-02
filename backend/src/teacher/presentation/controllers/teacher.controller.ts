@@ -40,7 +40,7 @@ export class TeacherController {
 
   @Get('details/:id')
   async findDetails(@Param() params, @Response() res) {
-    this._logger.log('Find One');
+    this._logger.log('Find One Details');
 
     const teacher = await this.findDetailsTeacher.execute({ id: params.id });
     return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDetails);

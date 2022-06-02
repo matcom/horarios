@@ -10,6 +10,12 @@
               <button class='btn sm-2'>
                 <i role='button' class='fas fa-edit' style='padding-right: 10px' @click.prevent='edit()'></i>
               </button>
+
+              <router-link :to="{name: 'localsPage', params: { facultyId: this.faculty.id }}" class='nav-link'>
+                <span>Locales</span>
+                <i class='fas fa-fw fa-house-damage'></i>
+              </router-link>
+
             </div>
           </div>
         </div>

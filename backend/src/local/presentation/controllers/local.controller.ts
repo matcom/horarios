@@ -31,8 +31,8 @@ export class LocalController {
   async findOne(@Param() params, @Response() res) {
     this._logger.log('Find One');
 
-    const university = await this.findOneUseCase.execute({ id: params.id });
-    return ProcessResponse.setResponse<Local>(res, university, LocalMappers.DomainToDto);
+    const local = await this.findOneUseCase.execute({ id: params.id });
+    return ProcessResponse.setResponse<Local>(res, local, LocalMappers.DomainToDto);
 
   }
 
@@ -41,7 +41,7 @@ export class LocalController {
     this._logger.log('Paginated');
 
     const pag = await this.paginatedLocalUseCase.execute(body);
-    return ProcessResponse.setResponse(res, pag, (a) => a);
+    return ProcessResponse.setResponse(res, pag, LocalMappers.PaginatedToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
