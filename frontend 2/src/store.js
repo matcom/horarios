@@ -27,6 +27,8 @@ import TeachersController from './controllers/Teacher/teachers';
 import TeacherController from './controllers/Teacher/teacher';
 import LocalsController from './controllers/Local/locals';
 import LocalController from './controllers/Local/local';
+import TypeClasses from './controllers/TypeClasses/typeClasses';
+import TypeClass from './controllers/TypeClasses/typeClass';
 
 Vue.use(Vuex);
 
@@ -59,6 +61,8 @@ const store = new Vuex.Store({
     teacher: TeacherController,
     local: LocalController,
     locals: LocalsController,
+    typeClasses: TypeClasses,
+    typeClass: TypeClass,
   }, mutations: {}, actions: {},
 });
 

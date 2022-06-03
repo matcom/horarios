@@ -29,7 +29,14 @@
         <li class='nav-item form-inline'>
           <router-link :to="{name: 'teachersPage'}" class='nav-link'>
             <i class='fas fa-fw fa-people-carry'></i>
-            <span>Teachers</span>
+            <span>Profesores</span>
+            <i class='fas fa-lock px-4'></i>
+          </router-link>
+        </li>
+        <li class='nav-item form-inline'>
+          <router-link :to="{name: 'typeClassesPage'}" class='nav-link'>
+            <i class='fas fa-fw fa-th-list'></i>
+            <span>Tipos de clase</span>
             <i class='fas fa-lock px-4'></i>
           </router-link>
         </li>

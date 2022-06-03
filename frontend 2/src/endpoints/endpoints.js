@@ -25,4 +25,5 @@ export default {
   faculties: baseUrl + 'faculty',
   facultiesGetAll: baseUrl + 'faculty/all',
   teachers: baseUrl + 'teacher',
+  typeClasses: baseUrl + 'typeclass',
 };
