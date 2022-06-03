@@ -3,6 +3,7 @@ import {
   CreateFacultyUseCase,
   FindAllFacultyUseCase,
   FindByIdFacultyUseCase,
+  FindDetailsFacultyUseCase,
   PaginatedFacultyUseCase,
   RemoveFacultyUseCase,
   UpdateFacultyUseCase,
@@ -26,7 +27,8 @@ export class FacultyController {
     private readonly updateFaculty: UpdateFacultyUseCase,
     private readonly removeFaculty: RemoveFacultyUseCase,
     private readonly paginatedFaculty: PaginatedFacultyUseCase,
-    private readonly findAllFaculty: FindAllFacultyUseCase) {
+    private readonly findAllFaculty: FindAllFacultyUseCase,
+    private readonly findDetailsFaculty: FindDetailsFacultyUseCase) {
 
     this._logger = new Logger('FacultyController');
   }
@@ -35,8 +37,17 @@ export class FacultyController {
   async findOne(@Param() params, @Response() res) {
     this._logger.log('Find One');
 
-    const university = await this.findOneUseCase.execute({ id: params.id });
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
+    const faculty = await this.findOneUseCase.execute({ id: params.id });
+    return ProcessResponse.setResponse<Faculty>(res, faculty, FacultyMappers.DomainToDto);
+
+  }
+
+  @Get('details/:id')
+  async findDetails(@Param() params, @Response() res) {
+    this._logger.log('Find details');
+
+    const faculty = await this.findDetailsFaculty.execute({ id: params.id });
+    return ProcessResponse.setResponse(res, faculty, FacultyMappers.DomainToDetails);
 
   }
 
@@ -48,7 +59,6 @@ export class FacultyController {
     return ProcessResponse.setResponse(res, pag, FacultyMappers.PaginatedToDto);
   }
 
-  F;
 
   @Post('all')
   async getAll(@Body() body: FacultyFindAllDto, @Response() res) {

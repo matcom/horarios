@@ -7,8 +7,6 @@ import Events from './components/Events';
 import Group from './components/Group';
 import Groups from './components/Groups';
 import Home from './components/Home';
-import Local from './components/Local';
-import Locals from './components/Locals';
 import Login from './views/Login';
 import Nav from './views/Nav';
 import NotFound from './views/NotFound';
@@ -32,6 +30,8 @@ import Faculties from '@/components/Faculty/Faculties';
 import Faculty from '@/components/Faculty/Faculty';
 import Teachers from '@/components/Teacher/Teachers';
 import Teacher from '@/components/Teacher/Teacher';
+import Local from '@/components/Local/Local';
+import Locals from '@/components/Local/Locals';
 
 
 Vue.use(Router);
@@ -99,7 +99,6 @@ const router = new Router({
           meta: {
             requiresAuth: true,
           },
-
         },
         {
           path: '/faculties/:universityId',
@@ -133,6 +132,25 @@ const router = new Router({
             requiresAuth: true,
           },
         },
+
+        {
+          path: '/locals/:facultyId',
+          name: 'localsPage',
+          component: Locals,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/locals/:localId',
+          name: 'localPage',
+          component: Local,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+
+
         {
           path: '/courses/:courseId',
           name: 'coursePage',

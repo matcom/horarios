@@ -1,4 +1,6 @@
-import {BaseDto} from '../../../shared/core/BaseDto';
-import {PropsBaseDto} from '../../../shared/core/PropsBaseDto';
+import { BaseDto } from '../../../shared/core/BaseDto';
+import { PropsBaseDto } from '../../../shared/core/PropsBaseDto';
 
-export type LocalCreateDto = PropsBaseDto & BaseDto
+export type LocalCreateDto = PropsBaseDto & BaseDto & {
+  facultyId: string;
+}

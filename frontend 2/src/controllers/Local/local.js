@@ -1,8 +1,7 @@
 import Petitions from '../petitions';
 import Endpoints from '../../endpoints/endpoints';
 
-const data_key = 'calendario-matcom-faculty';
-const baseEndpoint = Endpoints.faculties;
+const data_key = 'calendario-matcom-local';
 
 export default {
   data: {},
@@ -21,7 +20,7 @@ export default {
   getData(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-    return Petitions.get(baseEndpoint + '/' + id)
+    return Petitions.get(Endpoints.local + '/' + id)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {
@@ -32,31 +31,16 @@ export default {
         return false;
       });
   },
-  edit(token, faculty) {
+  edit(token, local) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.put(baseEndpoint, {
-      ...faculty,
+    return Petitions.put(Endpoints.local, {
+      localId: local.id,
+      ...local,
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
-      });
-  },
-  getDetails(token, id) {
-    Petitions.clearHeaders();
-    Petitions.set_JSONHeaders(null, null, token);
-
-    return Petitions.get(baseEndpoint + '/details/' + id)
-      .then(response => response.json(), response => console.log('Error getting the response.'))
-      .then(json => {
-
         if (json !== null && !json.hasOwnProperty('error')) {
           this.data = json;
           this.saveMinData();
