@@ -4,7 +4,7 @@ import { EnumActivitieType } from '../../domain/enums/enum.activitie.type';
 
 type PropsTypeClass = {
   type: EnumActivitieType
-  duration: Date
+  duration: number
 }
 
 export type TypeclassDto = PropsBaseDto & BaseDto & PropsTypeClass

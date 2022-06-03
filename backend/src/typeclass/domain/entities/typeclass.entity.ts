@@ -7,7 +7,7 @@ import { EnumActivitieType } from '../enums/enum.activitie.type';
 
 type TypeClassProps = DomainBaseProps & DomainTimestamp & {
   type: EnumActivitieType,
-  duration: Date
+  duration: number
 }
 
 type newTypeClassProps = Omit<TypeClassProps,
@@ -35,7 +35,7 @@ export class TypeClass extends DomainEntity<TypeClassProps> {
     return this.props.type;
   }
 
-  get duration(): Date {
+  get duration(): number {
     return this.props.duration;
   }
 

@@ -7,11 +7,11 @@ import { TypeclassUpdateDto } from '../../application/dtos/typeclass.update.dto'
 import { TypeclassCreateDto } from '../../application/dtos/typeclass.create.dto';
 import { TypeclassMappers } from '../../infra/mappers/typeclass.mappers';
 import {
-  FindByIdTypeClassUseCase,
   CreateTypeClassUseCase,
-  UpdateTypeClassUseCase,
+  FindByIdTypeClassUseCase,
   RemoveTypeClassUseCase,
   TypeClassPaginatedUseCase,
+  UpdateTypeClassUseCase,
 } from '../../application/useCases';
 
 @Controller('typeclass')
@@ -42,7 +42,7 @@ export class TypeClassController {
     this._logger.log('Paginated');
 
     const pag = await this.typeClassPaginatedUseCase.execute(body);
-    return ProcessResponse.setResponse(res, pag, (a) => a);
+    return ProcessResponse.setResponse(res, pag, TypeclassMappers.PaginatedToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

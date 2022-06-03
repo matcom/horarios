@@ -32,7 +32,8 @@ import Teachers from '@/components/Teacher/Teachers';
 import Teacher from '@/components/Teacher/Teacher';
 import Local from '@/components/Local/Local';
 import Locals from '@/components/Local/Locals';
-
+import TypeClasses from '@/components/TypeClass/TypeClasses';
+import TypeClass from '@/components/TypeClass/TypeClass';
 
 Vue.use(Router);
 
@@ -145,6 +146,22 @@ const router = new Router({
           path: '/locals/:localId',
           name: 'localPage',
           component: Local,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/typeclasses',
+          name: 'typeClassesPage',
+          component: TypeClasses,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/typeclasses/:typeClassId',
+          name: 'typeClassPage',
+          component: TypeClass,
           meta: {
             requiresAuth: true,
           },

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { EnumActivitieType } from '../../domain/enums/enum.activitie.type';
 
@@ -20,6 +20,6 @@ export class TypeclassPersistence extends PersistentEntity {
   @Column({ type: 'enum', enum: EnumActivitieType, default: EnumActivitieType.CP })
   type: EnumActivitieType;
 
-  @Column({ type: 'date' })
-  duration: Date;
+  @Column({ type: 'int' })
+  duration: number;
 }
