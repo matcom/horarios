@@ -20,7 +20,7 @@ export class MajorPersistence extends PersistentEntity {
   @Column({ type: 'int' })
   duration: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', name: 'faculty_id' })
   facultyId: string;
 
   @ManyToOne(

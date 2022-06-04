@@ -34,6 +34,8 @@ import Local from '@/components/Local/Local';
 import Locals from '@/components/Local/Locals';
 import TypeClasses from '@/components/TypeClass/TypeClasses';
 import TypeClass from '@/components/TypeClass/TypeClass';
+import Majors from '@/components/Major/Majors';
+import Major from '@/components/Major/Major';
 
 Vue.use(Router);
 
@@ -133,7 +135,6 @@ const router = new Router({
             requiresAuth: true,
           },
         },
-
         {
           path: '/locals/:facultyId',
           name: 'localsPage',
@@ -166,7 +167,22 @@ const router = new Router({
             requiresAuth: true,
           },
         },
-
+        {
+          path: '/majors/:facultyId',
+          name: 'majorsPage',
+          component: Majors,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/major/:majorId',
+          name: 'majorPage',
+          component: Major,
+          meta: {
+            requiresAuth: true,
+          },
+        },
 
         {
           path: '/courses/:courseId',
