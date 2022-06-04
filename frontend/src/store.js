@@ -29,6 +29,8 @@ import LocalsController from './controllers/Local/locals';
 import LocalController from './controllers/Local/local';
 import TypeClasses from './controllers/TypeClasses/typeClasses';
 import TypeClass from './controllers/TypeClasses/typeClass';
+import Majors from './controllers/Major/majors';
+import Major from './controllers/Major/major';
 
 Vue.use(Vuex);
 
@@ -63,6 +65,8 @@ const store = new Vuex.Store({
     locals: LocalsController,
     typeClasses: TypeClasses,
     typeClass: TypeClass,
+    majors: Majors,
+    major: Major,
   }, mutations: {}, actions: {},
 });
 

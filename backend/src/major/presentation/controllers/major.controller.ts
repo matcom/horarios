@@ -41,13 +41,12 @@ export class MajorController {
     this._logger.log('Paginated');
 
     const pag = await this.paginatedMajorUseCase.execute(body);
-    return ProcessResponse.setResponse(res, pag, (a) => a);
+    return ProcessResponse.setResponse(res, pag, MajorMappers.PaginatedToDto);
   }
 
   // @UseGuards(JwtAuthGuard)
   @Post('create')
   async create(@Body() body: MajorCreateDto, @Response() res) {
-
     this._logger.log('Create');
 
     const major = await this.createMajorUseCase.execute(body);
