@@ -9,6 +9,7 @@ import { FacultyModule } from './faculty/faculty.module';
 import { LocalModule } from './local/local.module';
 import { TypeclassModule } from './typeclass/typeclass.module';
 import { MajorModule } from './major/major.module';
+import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MajorModule } from './major/major.module';
     LocalModule,
     TypeclassModule,
     MajorModule,
+    CatTeacherModule,
   ],
   controllers: [],
   providers: [],
