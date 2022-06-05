@@ -4,12 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MajorPersistence } from './infra/entities/major.persistence';
 import { MajorRepository } from './infra/repositories/major.repository';
 import { MajorController } from './presentation/controllers/major.controller';
-import { MajorUseCase } from './application/useCases';
+import { FindByIdMajorUseCase, MajorUseCase } from './application/useCases';
 
 @Module({
   imports: [DataAccessModule, TypeOrmModule.forFeature([MajorPersistence])],
   providers: [...MajorUseCase, MajorRepository],
-  exports: [],
+  exports: [FindByIdMajorUseCase],
   controllers: [MajorController],
 })
 export class MajorModule {
