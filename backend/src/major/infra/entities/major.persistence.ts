@@ -1,6 +1,7 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
+import { StudentPersistence } from '../../../student/infra/entities/student.persistence';
 
 @Entity('major')
 @Index(['id'], { unique: true })
@@ -29,5 +30,10 @@ export class MajorPersistence extends PersistentEntity {
   )
   @JoinColumn({ name: 'faculty_id' })
   faculty: FacultyPersistence;
+
+  @OneToMany(
+    () => StudentPersistence,
+    student => student.major)
+  students: StudentPersistence[];
 
 }

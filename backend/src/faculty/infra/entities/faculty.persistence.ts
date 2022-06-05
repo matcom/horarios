@@ -4,6 +4,7 @@ import { UniversityPersistence } from '../../../university/infra/entities/univer
 import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
 import { MajorPersistence } from '../../../major/infra/entities/major.persistence';
 import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
+import { StudentPersistence } from '../../../student/infra/entities/student.persistence';
 
 @Entity('faculty')
 @Index(['id'], { unique: true })
@@ -46,4 +47,9 @@ export class FacultyPersistence extends PersistentEntity {
     local => local.faculty,
     { cascade: ['update', 'remove'] })
   locals: LocalPersistence[];
+
+  @OneToMany(
+    () => StudentPersistence,
+    student => student.faculty)
+  students: StudentPersistence[];
 }
