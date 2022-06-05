@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateFacultyUseCase,
+  FindAllFacultyUseCase,
   FindByIdFacultyUseCase,
+  FindDetailsFacultyUseCase,
   PaginatedFacultyUseCase,
   RemoveFacultyUseCase,
   UpdateFacultyUseCase,
@@ -12,6 +14,7 @@ import { FacultyPaginatedDto } from '../../application/dtos/faculty.paginated.dt
 import { FacultyUpdateDto } from '../../application/dtos/faculty.update.dto';
 import { FacultyCreateDto } from '../../application/dtos/faculty.create.dto';
 import { FacultyMappers } from '../../infra/mappers/faculty.mappers';
+import { FacultyFindAllDto } from '../../application/dtos/faculty.find-all.dto';
 
 @Controller('faculty')
 export class FacultyController {
@@ -23,15 +26,28 @@ export class FacultyController {
     private readonly createFaculty: CreateFacultyUseCase,
     private readonly updateFaculty: UpdateFacultyUseCase,
     private readonly removeFaculty: RemoveFacultyUseCase,
-    private readonly paginatedFaculty: PaginatedFacultyUseCase) {
+    private readonly paginatedFaculty: PaginatedFacultyUseCase,
+    private readonly findAllFaculty: FindAllFacultyUseCase,
+    private readonly findDetailsFaculty: FindDetailsFacultyUseCase) {
+
+    this._logger = new Logger('FacultyController');
   }
 
   @Get(':id')
   async findOne(@Param() params, @Response() res) {
     this._logger.log('Find One');
 
-    const university = await this.findOneUseCase.execute({ id: params.id });
-    return ProcessResponse.setResponse<Faculty>(res, university, FacultyMappers.DomainToDto);
+    const faculty = await this.findOneUseCase.execute({ id: params.id });
+    return ProcessResponse.setResponse<Faculty>(res, faculty, FacultyMappers.DomainToDto);
+
+  }
+
+  @Get('details/:id')
+  async findDetails(@Param() params, @Response() res) {
+    this._logger.log('Find details');
+
+    const faculty = await this.findDetailsFaculty.execute({ id: params.id });
+    return ProcessResponse.setResponse(res, faculty, FacultyMappers.DomainToDetails);
 
   }
 
@@ -40,7 +56,16 @@ export class FacultyController {
     this._logger.log('Paginated');
 
     const pag = await this.paginatedFaculty.execute(body);
-    return ProcessResponse.setResponse(res, pag, (a) => a);
+    return ProcessResponse.setResponse(res, pag, FacultyMappers.PaginatedToDto);
+  }
+
+
+  @Post('all')
+  async getAll(@Body() body: FacultyFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAllFaculty.execute(body);
+    return ProcessResponse.setResponse(res, ans, FacultyMappers.AllToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

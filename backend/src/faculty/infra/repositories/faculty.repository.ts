@@ -12,4 +12,14 @@ export class FacultyRepository extends BaseRepository<Faculty, FacultyPersistenc
   constructor(@InjectRepository(FacultyPersistence) _repository: Repository<FacultyPersistence>) {
     super(_repository, FacultyMappers.DomainToPersist, FacultyMappers.PersistToDomain, 'FacultyRepository');
   }
+
+  async findDetails(id: string): Promise<Faculty> {
+    const faculty = await this
+      ._entityRepository
+      .findOne(id, {
+        relations: ['university'],
+      });
+
+    return FacultyMappers.PersistToDomain(faculty);
+  }
 }

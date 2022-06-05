@@ -6,6 +6,10 @@ import { UserModule } from './user/user.module';
 import { EmailModule } from './email/email.module';
 import { AuthModule } from './auth/auth.module';
 import { FacultyModule } from './faculty/faculty.module';
+import { LocalModule } from './local/local.module';
+import { TypeclassModule } from './typeclass/typeclass.module';
+import { MajorModule } from './major/major.module';
+import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
 
 @Module({
   imports: [
@@ -16,6 +20,10 @@ import { FacultyModule } from './faculty/faculty.module';
     EmailModule,
     AuthModule,
     FacultyModule,
+    LocalModule,
+    TypeclassModule,
+    MajorModule,
+    CatTeacherModule,
   ],
   controllers: [],
   providers: [],

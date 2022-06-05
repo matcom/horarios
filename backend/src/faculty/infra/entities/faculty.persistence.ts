@@ -1,6 +1,10 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { UniversityPersistence } from '../../../university/infra/entities/university.persistence';
+import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
+import { MajorPersistence } from '../../../major/infra/entities/major.persistence';
+import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
+import { StudentPersistence } from '../../../student/infra/entities/student.persistence';
 
 @Entity('faculty')
 @Index(['id'], { unique: true })
@@ -27,4 +31,25 @@ export class FacultyPersistence extends PersistentEntity {
   )
   @JoinColumn({ name: 'university_id' })
   university: UniversityPersistence;
+
+  @ManyToMany(
+    () => TeacherPersistence,
+    teacher => teacher.faculties,
+    { cascade: ['remove', 'update'] },
+  )
+  teachers: TeacherPersistence[];
+
+  @OneToMany(() => MajorPersistence, major => major.faculty, { cascade: ['remove', 'update'] })
+  majors: MajorPersistence[];
+
+  @OneToMany(
+    () => LocalPersistence,
+    local => local.faculty,
+    { cascade: ['update', 'remove'] })
+  locals: LocalPersistence[];
+
+  @OneToMany(
+    () => StudentPersistence,
+    student => student.faculty)
+  students: StudentPersistence[];
 }
