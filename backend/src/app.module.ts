@@ -13,6 +13,7 @@ import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
 import { LessonModule } from './lesson/lesson.module';
 import { TeachYearUseCases } from './teachYear/application/useCases';
 import { TeachYearModule } from './teachYear/teachYear.module';
+import { TeachActivityModule } from './teachActivity/teachActivity.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TeachYearModule } from './teachYear/teachYear.module';
     CatTeacherModule,
     LessonModule,
     TeachYearModule,
+    TeachActivityModule,
   ],
   controllers: [],
   providers: [],
