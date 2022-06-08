@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinTable, ManyToMany, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, OneToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
@@ -36,12 +36,14 @@ export class LessonPersistence extends PersistentEntity {
     () => TeacherPersistence,
     teacher => teacher.lesson,
     {})
+  @JoinColumn({ name: 'teacher_id' })
   teacher: TeacherPersistence | any;
 
   @OneToOne(
     () => LocalPersistence,
     local => local.lesson,
     {})
+  @JoinColumn({ name: 'local_id' })
   local: LocalPersistence | any;
 
 
@@ -49,5 +51,6 @@ export class LessonPersistence extends PersistentEntity {
     () => MajorPersistence,
     major => major.lesson,
     {})
+  @JoinColumn({ name: 'major_id' })
   major: MajorPersistence | any;
 }
