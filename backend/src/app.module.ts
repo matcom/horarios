@@ -10,6 +10,9 @@ import { LocalModule } from './local/local.module';
 import { TypeclassModule } from './typeclass/typeclass.module';
 import { MajorModule } from './major/major.module';
 import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
+import { LessonModule } from './lesson/lesson.module';
+import { TeachYearUseCases } from './teachYear/application/useCases';
+import { TeachYearModule } from './teachYear/teachYear.module';
 
 @Module({
   imports: [
@@ -24,6 +27,8 @@ import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
     TypeclassModule,
     MajorModule,
     CatTeacherModule,
+    LessonModule,
+    TeachYearModule,
   ],
   controllers: [],
   providers: [],
