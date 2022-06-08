@@ -28,6 +28,7 @@ import { TeachYearModule } from './teachYear/teachYear.module';
     MajorModule,
     CatTeacherModule,
     LessonModule,
+    TeachYearModule,
   ],
   controllers: [],
   providers: [],
