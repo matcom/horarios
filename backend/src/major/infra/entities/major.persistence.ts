@@ -1,7 +1,8 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { StudentPersistence } from '../../../student/infra/entities/student.persistence';
+import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
 
 @Entity('major')
 @Index(['id'], { unique: true })
@@ -36,4 +37,10 @@ export class MajorPersistence extends PersistentEntity {
     student => student.major)
   students: StudentPersistence[];
 
+  @OneToOne(
+    () => LessonPersistence,
+    lesson => lesson.major,
+    { nullable: true },
+  )
+  lesson: LessonPersistence;
 }
