@@ -19,67 +19,47 @@
             <i class='fas fa-fw fa-home'></i>
             <span>Inicio</span></router-link>
         </li>
-        <li class='nav-item form-inline'>
-          <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-building'></i>
-            <span>Universidades</span>
-            <i class='fas fa-lock px-4'></i>
-          </router-link>
-        </li>
-        <li class='nav-item form-inline'>
-          <router-link :to="{name: 'teachersPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-people-carry'></i>
-            <span>Profesores</span>
-            <i class='fas fa-lock px-4'></i>
-          </router-link>
-        </li>
-        <li class='nav-item form-inline'>
-          <router-link :to="{name: 'typeClassesPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-th-list'></i>
-            <span>Tipos de clase</span>
-            <i class='fas fa-lock px-4'></i>
-          </router-link>
-        </li>
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'coursesPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-book'></i>-->
-        <!--            <span>Asignaturas</span></router-link>-->
-        <!--        </li>-->
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'eventsPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-calendar'></i>-->
-        <!--            <span>Eventos</span></router-link>-->
-        <!--        </li>-->
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'groupsPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-users'></i>-->
-        <!--            <span>Grupos</span></router-link>-->
-        <!--        </li>-->
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'localsPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-warehouse'></i>-->
-        <!--            <span>Locales</span></router-link>-->
-        <!--        </li>-->
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'resourcesPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-tv'></i>-->
-        <!--            <span>Recursos</span></router-link>-->
-        <!--        </li>-->
-        <!--        <li class='nav-item'>-->
-        <!--          <router-link :to="{name: 'tagsPage'}" class='nav-link'>-->
-        <!--            <i class='fas fa-fw fa-tag'></i>-->
-        <!--            <span>Tipos</span></router-link>-->
-        <!--        </li>-->
+
         <li class='nav-item'>
           <router-link :to="{name: 'usersPage'}" class='nav-link'>
             <i class='fas fa-fw fa-user'></i>
             <span>Usuarios</span></router-link>
         </li>
-        <!-- <li class="nav-item">
-            <a class="nav-link" href="blank.html">
-                <i class="fas fa-fw fa-calendar"></i>
-                <span>Mi Calendario</span></a>
-        </li> -->
+
+        <button class='btn btn-primary collapse-header' data-toggle='collapse' data-target='#collapse_horarios'
+                aria-expanded='false' aria-controls='collapse_horarios'>
+          Horario Utilidades
+        </button>
+
+        <div class='collapse' id='collapse_horarios'>
+
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Universidades</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'teachersPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-people-carry'></i>
+              <span>Profesores</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'typeClassesPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-th-list'></i>
+              <span>Tipos de clase</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+
+        </div>
+
         <!-- Divider -->
         <hr class='sidebar-divider'>
         <!-- Heading -->
