@@ -6,6 +6,8 @@ import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 
 type SemesterProps = DomainBaseProps & DomainTimestamp & {
   duration: number;
+  start: Date;
+  end: Date;
 };
 
 type newSemesterProps = Omit<SemesterProps,
@@ -15,6 +17,14 @@ export class Semester extends DomainEntity<SemesterProps> {
 
   get duration(): number {
     return this.props.duration;
+  }
+
+  get start(): Date {
+    return this.props.start;
+  }
+
+  get end(): Date {
+    return this.props.end;
   }
 
   get shortName(): string {
@@ -64,6 +74,8 @@ export class Semester extends DomainEntity<SemesterProps> {
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.duration = props.duration ?? this.props.duration;
     this.props.shortName = props.shortName ?? this.props.shortName;
+    this.props.start = props.start ?? this.props.start;
+    this.props.end = props.end ?? this.props.end;
 
     this.props.updatedAt = new Date();
   }

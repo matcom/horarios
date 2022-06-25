@@ -19,4 +19,10 @@ export class SemesterPersistence extends PersistentEntity {
 
   @Column({ type: 'float' })
   duration: number;
+
+  @Column({ type: 'datetime' })
+  start: Date;
+
+  @Column({ type: 'datetime' })
+  end: Date;
 }

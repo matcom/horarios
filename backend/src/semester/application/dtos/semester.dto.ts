@@ -6,4 +6,6 @@ export type SemesterDto = BaseDto & {
   description: string;
   priority: number;
   duration: number;
+  start: Date;
+  end: Date;
 }

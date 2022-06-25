@@ -38,6 +38,8 @@ export class SemesterMapper {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       duration: domain.duration,
+      start: domain.start,
+      end: domain.end,
     };
   }
 
