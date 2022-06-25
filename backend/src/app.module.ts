@@ -11,9 +11,11 @@ import { TypeclassModule } from './typeclass/typeclass.module';
 import { MajorModule } from './major/major.module';
 import { CatTeacherModule } from './categoryTeacher/catTeacher.module';
 import { LessonModule } from './lesson/lesson.module';
-import { TeachYearUseCases } from './teachYear/application/useCases';
 import { TeachYearModule } from './teachYear/teachYear.module';
 import { TeachActivityModule } from './teachActivity/teachActivity.module';
+import { DepartmentModule } from './department/department.module';
+import { SemesterModule } from './semester/semester.module';
+import { WeekModule } from './week/week.module';
 
 @Module({
   imports: [
@@ -31,6 +33,9 @@ import { TeachActivityModule } from './teachActivity/teachActivity.module';
     LessonModule,
     TeachYearModule,
     TeachActivityModule,
+    DepartmentModule,
+    SemesterModule,
+    WeekModule,
   ],
   controllers: [],
   providers: [],
