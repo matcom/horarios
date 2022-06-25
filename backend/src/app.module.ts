@@ -15,6 +15,7 @@ import { TeachYearModule } from './teachYear/teachYear.module';
 import { TeachActivityModule } from './teachActivity/teachActivity.module';
 import { DepartmentModule } from './department/department.module';
 import { SemesterModule } from './semester/semester.module';
+import { WeekModule } from './week/week.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SemesterModule } from './semester/semester.module';
     TeachActivityModule,
     DepartmentModule,
     SemesterModule,
+    WeekModule,
   ],
   controllers: [],
   providers: [],
