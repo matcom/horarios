@@ -12,7 +12,7 @@
             <div class='input-group m-2 ' v-for='it in courses' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basic-'>{{it.name}}</span>
+                <span class='ml-2' id='basic-'>{{ it.name }}</span>
               </div>
             </div>
           </div>
@@ -29,7 +29,7 @@
             <div class='input-group m-2 ' v-for='it in groups' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi7-addon3'>{{it.name}}</span>
+                <span class='ml-2' id='basi7-addon3'>{{ it.name }}</span>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
             <div class='input-group m-2 ' v-for='it in locals' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi3-addon3'>{{it.name}}</span>
+                <span class='ml-2' id='basi3-addon3'>{{ it.name }}</span>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <div class='input-group m-2 ' v-for='it in resources' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi1-addon3'>{{it.name}}</span>
+                <span class='ml-2' id='basi1-addon3'>{{ it.name }}</span>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
             <div class='input-group m-2 ' v-for='it in tags' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi5-addon3'>{{it.text}}</span>
+                <span class='ml-2' id='basi5-addon3'>{{ it.text }}</span>
               </div>
             </div>
           </div>
@@ -110,15 +110,29 @@
         </div>
       </div>
     </div>
-    <full-calendar :events='events' :config='config' @event-selected='eventSelected'></full-calendar>
+    <!--    <full-calendar :events='events' :config='config' @event-selected='eventSelected'></full-calendar>-->
+
+    <FullCalendar
+      :options='config'
+    >
+      <!--      <template v-slot:eventContent='arg'>-->
+      <!--        <b>{{ arg.timeText }}</b>-->
+      <!--        <i>{{ arg.event.title }}</i>-->
+      <!--      </template>-->
+    </FullCalendar>
   </div>
 </template>
 
 <script>
-import { FullCalendar } from 'vue-full-calendar';
-import 'fullcalendar/dist/locale/es';
-import { Datetime } from 'vue-datetime';
+// import { FullCalendar } from 'vue-full-calendar';
+// import 'fullcalendar/dist/locale/es';
 import { Settings } from 'luxon';
+import { Datetime } from 'vue-datetime';
+
+import FullCalendar from '@fullcalendar/vue';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 Settings.defaultLocale = 'es';
 
@@ -139,17 +153,31 @@ export default {
       config: {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         defaultView: 'agendaWeek',
+        plugins: [
+          dayGridPlugin,
+          timeGridPlugin,
+          interactionPlugin, // needed for dateClick
+        ],
         locale: 'es',
-        editable: false,
-        selectable: false,
+        editable: true, // change this for update
+        selectable: true,
         navLinks: true,
-        header: {
+        weekends: false, // poner fines de semana
+        headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'month,agendaWeek,agendaDay,listWeek',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
+        initialView: 'timeGridWeek',
         scrollTime: '08:00:00',
-        allDaySlot: false,
+        businessHours: {
+          startTime: '8:00',
+          endTime: '17:00',
+        },
+        allDaySlot: false, // poner un evento que dura todo el dia
+        select: this.handleDateSelect,
+        eventClick: this.handleEventClick,
+        eventSet: this.handleEvents,
       },
       datetimeStart: '',
       datetimeEnd: '',
@@ -158,11 +186,11 @@ export default {
   },
   methods: {
     loadAll() {
-      this.loadFrom('courses');
-      this.loadFrom('groups');
-      this.loadFrom('locals');
-      this.loadFrom('resources');
-      this.loadFrom('tags');
+      // this.loadFrom('courses');
+      // this.loadFrom('groups');
+      // this.loadFrom('locals');
+      // this.loadFrom('resources');
+      // this.loadFrom('tags');
     },
     loadFrom(arg) {
       this.$store.state.profile.loadMinData();
@@ -215,6 +243,40 @@ export default {
     eventSelected(event, jsEvent, view) {
       this.$router.push({ name: 'eventPage', params: { eventId: event.id } });
     },
+
+
+    handleWeekendsToggle() {
+      this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
+    },
+
+    handleDateSelect(selectInfo) {
+      let title = prompt('Please enter a new title for your event');
+      let calendarApi = selectInfo.view.calendar;
+
+      calendarApi.unselect(); // clear date selection
+
+      if (title) {
+        calendarApi.addEvent({
+          id: Math.random(),
+          title,
+          start: selectInfo.startStr,
+          end: selectInfo.endStr,
+          allDay: selectInfo.allDay,
+        });
+      }
+    },
+
+    handleEventClick(clickInfo) {
+      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+        clickInfo.event.remove();
+      }
+    },
+
+    handleEvents(events) {
+      this.currentEvents = events;
+    },
+
+
   },
   created() {
     this.makeQuery();
