@@ -115,10 +115,11 @@
     <FullCalendar
       :options='config'
     >
-      <!--      <template v-slot:eventContent='arg'>-->
-      <!--        <b>{{ arg.timeText }}</b>-->
-      <!--        <i>{{ arg.event.title }}</i>-->
-      <!--      </template>-->
+      <template v-slot:eventContent='arg'>
+        <b>{{ arg.timeText }}</b>
+        <hr>
+        <b>{{ arg.event.title }}</b>
+      </template>
     </FullCalendar>
   </div>
 </template>
@@ -133,6 +134,7 @@ import FullCalendar from '@fullcalendar/vue';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 Settings.defaultLocale = 'es';
 
@@ -157,23 +159,58 @@ export default {
           dayGridPlugin,
           timeGridPlugin,
           interactionPlugin, // needed for dateClick
+          resourceTimelinePlugin,
         ],
         locale: 'es',
         editable: true, // change this for update
         selectable: true,
         navLinks: true,
         weekends: false, // poner fines de semana
+        events: [
+          {
+            id: '1',
+            resourceId: 'a',
+            title: 'Conferencia de Logica',
+            // date: '2022-06-24',
+            start: '2022-06-24T08:00:00',
+            end: '2022-06-24T10:00:00',
+            // duration: '01:00:00'
+          },
+          {
+            id: '2',
+            resourceId: 'b',
+            title: 'Conferencia de DAA',
+            // date: '2022-06-24',
+            start: '2022-06-24T08:00:00',
+            end: '2022-06-24T10:00:00',
+            // duration: '01:00:00'
+          },
+        ],
+        resources: [
+          { id: 'a', title: 'Aula 6' },
+          { id: 'b', title: 'Aula 7' },
+        ],
+        // views: {
+        //   timeGridFourDay: {
+        //     type: 'timeGrid',
+        //     duration: { days: 5 },
+        //     buttonText: '4 day',
+        //   },
+        // },
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,resourceTimelineWeek',
         },
         initialView: 'timeGridWeek',
+        slotDuration: '00:30:00', // tiempo que cubre una celda
         scrollTime: '08:00:00',
         businessHours: {
           startTime: '8:00',
           endTime: '17:00',
         },
+        minTime: '8:00',
+        maxTime: '16:00',
         allDaySlot: false, // poner un evento que dura todo el dia
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
