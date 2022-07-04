@@ -62,6 +62,7 @@ export class ClassPersistence extends PersistentEntity {
     type => type.classes,
     { nullable: true },
   )
+  @JoinColumn({ name: 'type_class_id' })
   typeClass: TypeclassPersistence | any;
 
 }
