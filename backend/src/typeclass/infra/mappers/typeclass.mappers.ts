@@ -2,6 +2,7 @@ import { TypeclassPersistence } from '../entities/typeclass.persistence';
 import { TypeClass } from '../../domain/entities/typeclass.entity';
 import { TypeclassDto } from '../../application/dtos/typeclass.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { TypeClassDetailsDto } from '../../application/dtos/typeclass.details.dto';
 
 export class TypeclassMappers {
   public static PersistToDomain(persist: TypeclassPersistence): TypeClass {
@@ -51,5 +52,10 @@ export class TypeclassMappers {
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,
     };
+  }
+
+  public static DomainToDetails(domain: TypeClass): TypeClassDetailsDto {
+    let base = TypeclassMappers.DomainToDto(domain);
+    return base;
   }
 }
