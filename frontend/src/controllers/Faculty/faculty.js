@@ -5,7 +5,7 @@ const data_key = 'calendario-matcom-faculty';
 const baseEndpoint = Endpoints.faculties;
 
 export default {
-  data: {},
+  data: [],
   saveMinData() {
     localStorage.setItem(data_key, JSON.stringify(this.data));
   },
@@ -18,10 +18,11 @@ export default {
   removeMinData() {
     localStorage.removeItem(data_key);
   },
-  getData(token, id) {
+  create(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-    return Petitions.get(baseEndpoint + '/' + id)
+
+    return Petitions.post(`${baseEndpoint}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {
@@ -31,16 +32,61 @@ export default {
         }
         return false;
       });
+
   },
-  edit(token, faculty) {
+  delete(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.put(baseEndpoint, {
-      ...faculty,
+    return Petitions.delete(baseEndpoint, { id: id })
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      })
+      .catch(err => console.log(err));
+  },
+  getAll(token, filter = {}) {
+
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.post(Endpoints.facultiesGetAll, {
+      'filter': filter,
+    })
+      .then(response => response.json())
+      .then(json => {
+        json = json.items;
+
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      });
+
+  },
+  getData(token, filter = {}, pageNum = 1, pageLimit = 10) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+    return Petitions.post(baseEndpoint, {
+      pageParams: {
+        'pageNum': pageNum, 'pageLimit': pageLimit,
+      }, 'filter': filter,
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
+
+
+        json = json.items;
+
+        console.log(json);
+
         if (json !== null && !json.hasOwnProperty('error')) {
           this.data = json;
           this.saveMinData();

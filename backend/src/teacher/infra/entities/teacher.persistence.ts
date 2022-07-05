@@ -1,6 +1,9 @@
-import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
+import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
+import { DepartmentPersistence } from '../../../department/infra/entities/department.persistence';
+import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
 
 @Entity('teacher')
 @Index(['id'], { unique: true })
@@ -27,4 +30,26 @@ export class TeacherPersistence extends PersistentEntity {
   )
   @JoinTable()
   faculties: FacultyPersistence[] | any;
+
+  @OneToOne(() => LessonPersistence,
+    lesson => lesson.teacher,
+    { nullable: true })
+  lesson: LessonPersistence;
+
+  @Column({ type: 'text', name: 'department_id' })
+  departmentId?: string;
+
+  @ManyToOne(
+    () => DepartmentPersistence,
+    department => department.teachers,
+    { nullable: true })
+  @JoinColumn({ name: 'department_id' })
+  department: DepartmentPersistence;
+
+  @ManyToMany(
+    () => ClassPersistence,
+    c => c.teachers,
+    {},
+  )
+  classes: ClassPersistence[] | any;
 }

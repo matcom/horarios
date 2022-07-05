@@ -2,11 +2,14 @@ import { LocalPersistence } from '../entities/local.persistence';
 import { Local } from '../../domain/entities/local.entity';
 import { LocalDto } from '../../application/dtos/local.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { LocalDetailsDto } from '../../application/dtos/local.details.dto';
+import { FacultyMappers } from '../../../faculty/infra/mappers/faculty.mappers';
 
 export class LocalMappers {
   public static PersistToDomain(persist: LocalPersistence): Local {
     const domain = Local.Create({
       ...persist,
+      faculty: persist.faculty ? FacultyMappers.PersistToDomain(persist.faculty) : null,
     }, persist.id);
 
     // TODO: handle this
@@ -47,6 +50,15 @@ export class LocalMappers {
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,
+    };
+  }
+
+  public static DomainToDetails(domain: Local): LocalDetailsDto {
+    let base = LocalMappers.DomainToDto(domain);
+
+    return {
+      ...base,
+      faculty: domain.faculty ? FacultyMappers.DomainToDetails(domain.faculty) : null,
     };
   }
 }

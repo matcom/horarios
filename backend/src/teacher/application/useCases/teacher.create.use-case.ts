@@ -6,7 +6,6 @@ import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { TeacherCreateDto } from '../dtos/teacher.create.dto';
 import { Teacher } from 'src/teacher/domain/entities/teacher.entity';
 import { TeacherRepository } from '../../infra/repositories/teacher.repository';
-import { FindByIdFacultyUseCase } from '../../../faculty/application/useCases';
 
 export type CreateTeacherUseCaseResponse = Either<AppError.UnexpectedErrorResult<Teacher>
   | AppError.ValidationErrorResult<Teacher>,
@@ -19,7 +18,6 @@ export class CreateTeacherUseCase implements IUseCase<TeacherCreateDto, Promise<
 
   constructor(
     private readonly teacherRepository: TeacherRepository,
-    private readonly facultyFindById: FindByIdFacultyUseCase,
   ) {
     this._logger = new Logger('CreateTeacherUseCase');
   }
