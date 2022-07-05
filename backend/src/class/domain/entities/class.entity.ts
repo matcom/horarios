@@ -18,6 +18,8 @@ type ClassProps = DomainBaseProps & DomainTimestamp & {
   lesson?: Lesson;
   typeClassId?: { id: string };
   typeClass?: TypeClass;
+  start: Date;
+  end: Date;
 };
 
 
@@ -31,6 +33,14 @@ export class Class extends DomainEntity<ClassProps> {
 
   get teacherIds(): { id: string }[] {
     return this.props.teacherIds;
+  }
+
+  get start(): Date {
+    return this.props.start;
+  }
+
+  get end(): Date {
+    return this.props.end;
   }
 
   get teachers(): Teacher[] {
@@ -107,6 +117,8 @@ export class Class extends DomainEntity<ClassProps> {
     this.props.description = props.description ?? this.props.description;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
+    this.props.start = props.start ?? this.props.start;
+    this.props.end = props.end ?? this.props.end;
 
     this.props.updatedAt = new Date();
   }
