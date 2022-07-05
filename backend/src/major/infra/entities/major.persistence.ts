@@ -3,6 +3,7 @@ import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/ba
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { StudentPersistence } from '../../../student/infra/entities/student.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
+import { GroupPersistence } from '../../../group/infra/entities/group.persistence';
 
 @Entity('major')
 @Index(['id'], { unique: true })
@@ -43,4 +44,11 @@ export class MajorPersistence extends PersistentEntity {
     { nullable: true },
   )
   lesson: LessonPersistence;
+
+  @OneToMany(
+    () => GroupPersistence,
+    group => group.major,
+    {},
+  )
+  groups: GroupPersistence[] | any;
 }
