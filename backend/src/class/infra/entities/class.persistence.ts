@@ -34,6 +34,12 @@ export class ClassPersistence extends PersistentEntity {
   @Column({ type: 'text', name: 'type_class_id' })
   typeClassId: string;
 
+  @Column({ type: 'datetime' })
+  start: Date;
+
+  @Column({ type: 'datetime' })
+  end: Date;
+
   @ManyToMany(
     () => TeacherPersistence,
     teacher => teacher.classes,
