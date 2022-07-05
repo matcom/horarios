@@ -27,4 +27,5 @@ export default {
   teachers: baseUrl + 'teacher',
   typeClasses: baseUrl + 'typeclass',
   majors: baseUrl + 'major',
+  classes: baseUrl + 'class'
 };

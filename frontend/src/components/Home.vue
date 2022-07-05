@@ -116,9 +116,9 @@
       :options='config'
     >
       <template v-slot:eventContent='arg'>
-        <b>{{ arg.timeText }}</b>
-        <hr>
         <b>{{ arg.event.title }}</b>
+        <hr>
+        <b>{{ arg.timeText }}</b>
       </template>
     </FullCalendar>
   </div>
@@ -152,6 +152,7 @@ export default {
       tags: [],
       groups: [],
       events: [],
+      classes: [],
       config: {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         defaultView: 'agendaWeek',
@@ -166,30 +167,8 @@ export default {
         selectable: true,
         navLinks: true,
         weekends: false, // poner fines de semana
-        events: [
-          {
-            id: '1',
-            resourceId: 'a',
-            title: 'Conferencia de Logica',
-            // date: '2022-06-24',
-            start: '2022-06-24T08:00:00',
-            end: '2022-06-24T10:00:00',
-            // duration: '01:00:00'
-          },
-          {
-            id: '2',
-            resourceId: 'b',
-            title: 'Conferencia de DAA',
-            // date: '2022-06-24',
-            start: '2022-06-24T08:00:00',
-            end: '2022-06-24T10:00:00',
-            // duration: '01:00:00'
-          },
-        ],
-        resources: [
-          { id: 'a', title: 'Aula 6' },
-          { id: 'b', title: 'Aula 7' },
-        ],
+        events: [],
+        resources: [],
         // views: {
         //   timeGridFourDay: {
         //     type: 'timeGrid',
@@ -210,7 +189,7 @@ export default {
           endTime: '17:00',
         },
         minTime: '8:00',
-        maxTime: '16:00',
+        maxTime: '17:00',
         allDaySlot: false, // poner un evento que dura todo el dia
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
@@ -223,9 +202,10 @@ export default {
   },
   methods: {
     loadAll() {
+      this.loadFrom('classes');
+      this.loadFrom('locals');
       // this.loadFrom('courses');
       // this.loadFrom('groups');
-      // this.loadFrom('locals');
       // this.loadFrom('resources');
       // this.loadFrom('tags');
     },
