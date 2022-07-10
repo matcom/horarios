@@ -44,7 +44,7 @@ export class TeacherPersistence extends PersistentEntity {
     department => department.teachers,
     { nullable: true })
   @JoinColumn({ name: 'department_id' })
-  department: DepartmentPersistence;
+  department: DepartmentPersistence | any;
 
   @ManyToMany(
     () => ClassPersistence,
