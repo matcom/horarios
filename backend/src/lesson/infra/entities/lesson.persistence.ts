@@ -5,6 +5,7 @@ import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.pers
 import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
 import { MajorPersistence } from '../../../major/infra/entities/major.persistence';
 import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
+import { SemesterPersistence } from '../../../semester/infra/entities/semester.persistence';
 
 @Entity('lesson')
 @Index(['id'], { unique: true })
@@ -23,6 +24,9 @@ export class LessonPersistence extends PersistentEntity {
 
   @Column({ type: 'int' })
   duration: number;
+
+  @Column({ type: 'int' })
+  year: number;
 
   @Column({ type: 'text', name: 'teacher_id' })
   teacherId: string;
@@ -61,4 +65,11 @@ export class LessonPersistence extends PersistentEntity {
     {},
   )
   classes: ClassPersistence[];
+
+  @ManyToMany(
+    () => SemesterPersistence,
+    semester => semester.lessons,
+    {},
+  )
+  semesters: SemesterPersistence[] | any[];
 }
