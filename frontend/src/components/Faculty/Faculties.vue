@@ -30,10 +30,10 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(faculties, text, 'fullName').length === 0" type='button'
+              <button v-if="filterList(faculties, text, 'id').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="fac in filterList(faculties, text, 'fullName')" :key='fac.id'
+              <router-link v-for="fac in filterList(faculties, text, 'id')" :key='fac.id'
                            :to="{name: 'facultyPage', params: {facultyId: fac.id}}"
                            class='list-group-item list-group-item-action'>{{ fac.fullName }} ({{ fac.shortName }})
                 <div class='form-inline justify-content-end'>
@@ -117,16 +117,14 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      let universityId = this.$route.params.universityId;
-
-      this.$store.state.university.getData(token, universityId)
+      this.$store.state.university.getData(token, this.university.id)
         .then(result => {
           if (result === true) {
             this.university = this.$store.state.university.data;
           }
         });
 
-      this.$store.state.faculties.getData(token, { universityId })
+      this.$store.state.faculties.getData(token, { universityId: this.university.id })
         .then(result => {
           if (result === true) {
             this.faculties = this.$store.state.faculties.data;
@@ -178,6 +176,10 @@ export default {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+
+      for (let member in this.newFaculty)
+        delete this.newFaculty[member];
+
     },
     comparer(prop, val) {
       return function(a, b) {
@@ -192,6 +194,11 @@ export default {
     },
   },
   created() {
+    const universityId = this.$route.params.universityId;
+    if (!universityId)
+      this.$router.push({ name: 'notFoundPage' });
+
+    this.university.id = universityId;
     this.loadData();
   },
 };

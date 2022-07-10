@@ -82,5 +82,25 @@ export default {
         }
         return false;
       });
+  }, getAll(token, filter = {}) {
+
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.post(Endpoints.majorsGetAll, {
+      'filter': filter,
+    })
+      .then(response => response.json())
+      .then(json => {
+        json = json.items;
+
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      });
+
   },
 };

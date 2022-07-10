@@ -1,12 +1,12 @@
 <template>
-  <div id='universities'>
+  <div id='department'>
     <div class='row'>
       <div class='col-12'>
         <div class='card w-100 border-bottom-primary mb-1'>
           <div class='card-header py-2 bg-white'>
             <div class='row align-items-center'>
               <div class='col'>
-                <h5 class='m-0 font-weight-bold text-primary'>Carreras
+                <h5 class='m-0 font-weight-bold text-primary'> Departamentos de {{ faculty.shortName }}
                 </h5>
               </div>
               <div class='col'>
@@ -19,7 +19,7 @@
                   <button class='btn ml-2' @click.prevent='unsetVal()'>
                     <i class='fas fa-sort-alpha-up'></i>
                   </button>
-                  <button class='btn ml-2' @click.prevent='addMajor()'>
+                  <button class='btn ml-2' @click.prevent='addDepartment()'>
                     <i role='button' class='fas fa-plus'></i>
                   </button>
                 </form>
@@ -30,14 +30,14 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(majors, text, 'fullName').length === 0" type='button'
+              <button v-if="filterList(departments, text, 'id').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="m in filterList(majors, text, 'fullName')" :key='m.id'
-                           :to="{name: 'majorPage', params: {majorId: m.id}}"
-                           class='list-group-item list-group-item-action'>{{ m.fullName }} ({{ m.shortName }})
+              <router-link v-for="department in filterList(departments, text, 'id')" :key='department.id'
+                           :to="{name: 'departmentPage', params: {departmentId: department.id}}"
+                           class='list-group-item list-group-item-action'>{{ department.fullName }}
                 <div class='form-inline justify-content-end'>
-                  <i class='fas fa-trash' @click.prevent='removeMajor(m.id)'></i>
+                  <i class='fas fa-trash' @click.prevent='removeDepartment(department.id)'></i>
                 </div>
               </router-link>
             </div>
@@ -52,7 +52,7 @@
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Nueva Carrera</h5>
+            <h5 class='modal-title' id='exampleModalLabel'>Nuevo Departamento</h5>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
@@ -61,29 +61,26 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newMajor.fullName'>
+                <input type='text' class='form-control' id='input-fullName' v-model='newDepartment.fullName'>
               </div>
               <div class='form-group'>
                 <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newMajor.shortName'>
+                <input type='text' class='form-control' id='input-shortName' v-model='newDepartment.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority' v-model='newMajor.priority' />
-              </div>
-              <div class='form-group'>
-                <label for='input-duration' class='col-form-label'>Extension (annos):</label>
-                <input type='number' class='form-control' id='input-duration' v-model='newMajor.duration' />
+                <input type='number' class='form-control' id='input-priority' v-model='newDepartment.priority' />
               </div>
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newMajor.description'></textarea>
+                <textarea class='form-control' id='input-description' v-model='newDepartment.description'></textarea>
               </div>
+
             </form>
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveMajor()'>
+            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveDepartment()'>
               Guardar
             </button>
           </div>
@@ -96,20 +93,21 @@
 
 <script>
 export default {
-  name: 'Majors',
+  name: 'Departments',
   data() {
     return {
-      majors: [],
+      facultyId: '',
+      faculty: {},
+      departments: [],
       text: '',
       val: 1,
-      facultyId: '',
-      newMajor: {
+      newDepartment: {
         fullName: '',
         shortName: '',
         priority: '',
         description: '',
-        duration: '',
         facultyId: '',
+        teachers: [],
       },
     };
   },
@@ -118,16 +116,23 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.facultyId = this.$route.params.facultyId;
+      const facultyId = this.$route.params.facultyId;
 
-      this.$store.state.majors.getData(token, 1, 10, { facultyId }).then(result => {
-        if (result === true) {
-          this.majors = this.$store.state.majors.data;
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
-        } else {
-          this.$router.push({ name: 'notFoundPage' });
-        }
-      });
+      this.$store.state.departments.getData(token, { facultyId })
+        .then(result => {
+          if (result === true) {
+            this.departments = this.$store.state.departments.data;
+          }
+        });
+
+
+      this.$store.state.faculty.getDetails(token, this.facultyId)
+        .then(result => {
+          if (result === true) {
+            this.faculty = this.$store.state.faculty.data;
+          }
+        });
+
     },
     filterList(list, box, prop) {
       let tmp = list.slice().sort(this.comparer(prop, this.val));
@@ -141,33 +146,31 @@ export default {
     unsetVal() {
       this.val = -1;
     },
-    removeMajor(majorId) {
+    removeDepartment(departmentId) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.majors.delete(token, majorId).then(result => {
+      this.$store.state.departments.delete(token, departmentId).then(result => {
         if (result === true) {
-          this.majors = this.majors.filter(u => u.id != majorId);
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
+          this.departments = this.departments.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
     },
-    addMajor() {
+    addDepartment() {
       $('#modalCreate').modal('show');
     },
-    saveMajor() {
+    saveDepartment() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.newMajor.facultyId = this.facultyId;
+      this.newDepartment.facultyId = { id: this.facultyId };
 
-      this.$store.state.majors.create(token, this.newMajor).then(result => {
-
+      this.$store.state.departments.create(token, this.newDepartment).then(result => {
         if (result === true) {
-          this.majors.push(this.$store.state.majors.data);
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
+          this.departments.push(this.$store.state.departments.data);
+          this.departments = this.departments.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -186,6 +189,12 @@ export default {
     },
   },
   created() {
+    this.facultyId = this.$route.params.facultyId;
+
+    if (!this.facultyId) {
+      this.$router.push({ name: 'notFoundPage' });
+    }
+
     this.loadData();
   },
 };

@@ -4,9 +4,8 @@
       <div class='col-12'>
         <div class='card mb-4 w-100 border-bottom-primary'>
           <div class='card-header py-3 bg-white'>
-            <h5 class='m-0 font-weight-bold text-primary'>Profesor: {{ teacher.fullName }}</h5>
-            <h5 class='m-0 font-weight-bold text-primary'>Universidad: {{ this.universityName }}</h5>
-            <h5 class='m-0 font-weight-bold text-primary'>Facultad: {{ this.facultyName }}</h5>
+            <h5 class='m-0 font-weight-bold text-primary'>Profesor: {{ teacher.fullName }} ({{ this.department.shortName
+              }} / {{ this.department.faculty.shortName }}) </h5>
 
             <div class='form-inline justify-content-end'>
               <button class='btn sm-2'>
@@ -107,38 +106,38 @@
                     <input class='form-control' id='input-description' v-model='teacher.email'>
                   </div>
 
-                  <div class='form-group'>
-                    <label class='col-form-label'> Elegir univerisidad:</label>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                    >
-                      {{ btnSelectUniversityText }}
-                    </button>
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label class='col-form-label'> Elegir univerisidad:</label>-->
+                  <!--                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'-->
+                  <!--                            data-toggle='dropdown'-->
+                  <!--                            aria-haspopup='true' aria-expanded='false'-->
+                  <!--                            style='width: 220px; height: 40px;'-->
+                  <!--                    >-->
+                  <!--                      {{ btnSelectUniversityText }}-->
+                  <!--                    </button>-->
 
-                    <div class='dropdown-menu'>
-                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
-                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
-                    </div>
-                  </div>
+                  <!--                    <div class='dropdown-menu'>-->
+                  <!--                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'-->
+                  <!--                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
 
-                  <div class='form-group'>
-                    <label class='col-form-label'> Elegir facultad:</label>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.faculties.length === 0'
-                    >
-                      {{ btnSelectFacultyText }}
-                    </button>
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label class='col-form-label'> Elegir facultad:</label>-->
+                  <!--                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'-->
+                  <!--                            data-toggle='dropdown'-->
+                  <!--                            aria-haspopup='true' aria-expanded='false'-->
+                  <!--                            style='width: 220px; height: 40px;'-->
+                  <!--                            :disabled='this.faculties.length === 0'-->
+                  <!--                    >-->
+                  <!--                      {{ btnSelectFacultyText }}-->
+                  <!--                    </button>-->
 
-                    <div class='dropdown-menu'>
-                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'
-                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>
-                    </div>
-                  </div>
+                  <!--                    <div class='dropdown-menu'>-->
+                  <!--                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'-->
+                  <!--                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
 
                 </div>
               </div>
@@ -177,9 +176,11 @@ export default {
         priority: '',
         email: '',
         faculties: [],
+        departmentId: {},
       },
       faculties: [],
       universities: [],
+      department: {},
       facultyName: '',
       universityName: '',
       btnSelectFacultyText: 'Elegir facultad',
@@ -195,25 +196,31 @@ export default {
       this.$store.state.teacher.getDetails(token, this.teacher.id).then(result => {
         if (result === true) {
           this.teacher = this.$store.state.teacher.data;
+          // const faculty = this.teacher.faculties.length > 0
+          //   ? this.teacher.faculties[0]
+          //   : 'Elegir facultad';
+          //
+          // const university = this.teacher.faculties.length > 0
+          //   ? this.teacher.faculties[0].university
+          //   : 'Elegir universidad';
+          //
+          //
+          // this.btnSelectFacultyText = faculty.shortName;
+          // this.btnSelectUniversityText = university.shortName;
+          //
+          // this.facultyName = faculty.fullName;
+          // this.universityName = university.fullName;
+          //
+          // const universityId = this.teacher.faculties[0].university.id;
+          // this.getAllFaculties(universityId);
+          // this.getAllUniversities();
 
-          const faculty = this.teacher.faculties.length > 0
-            ? this.teacher.faculties[0]
-            : 'Elegir facultad';
-
-          const university = this.teacher.faculties.length > 0
-            ? this.teacher.faculties[0].university
-            : 'Elegir universidad';
-
-
-          this.btnSelectFacultyText = faculty.shortName;
-          this.btnSelectUniversityText = university.shortName;
-
-          this.facultyName = faculty.fullName;
-          this.universityName = university.fullName;
-
-          const universityId = this.teacher.faculties[0].university.id;
-          this.getAllFaculties(universityId);
-          this.getAllUniversities();
+          this.$store.state.department.getDetails(token, this.teacher.departmentId.id)
+            .then(result => {
+              if (result === true) {
+                this.department = this.$store.state.department.data;
+              }
+            });
 
         } else {
           this.$router.push({ name: 'notFoundPage' });

@@ -19,6 +19,8 @@
         </div>
       </div>
       <div class='col'>
+
+
         <div class='dropdown mb-0'>
           <button class='btn btn-light dropdown-toggle' type='button' id='grupos_drop_down' data-toggle='dropdown'
                   aria-haspopup='true' aria-expanded='true'>
@@ -29,11 +31,13 @@
             <div class='input-group m-2 ' v-for='it in groups' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi7-addon3'>{{ it.name }}</span>
+                <span class='ml-2' id='basi7-addon3'>{{ it.shortName }}</span>
               </div>
             </div>
           </div>
         </div>
+
+
       </div>
       <div class='col'>
         <div class='dropdown mb-0'>
@@ -202,14 +206,16 @@ export default {
   },
   methods: {
     loadAll() {
-      this.loadFrom('classes');
-      this.loadFrom('locals');
+      this.loadFrom('groups');
+      // this.loadFrom('classes');
+      // this.loadFrom('locals');
       // this.loadFrom('courses');
       // this.loadFrom('groups');
       // this.loadFrom('resources');
       // this.loadFrom('tags');
     },
     loadFrom(arg) {
+      console.log(arg);
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
       this.$store.state[arg].getData(token).then(result => {

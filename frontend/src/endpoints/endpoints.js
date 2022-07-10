@@ -4,7 +4,7 @@ export default {
   baseUrl: baseUrl,
   login: baseUrl + 'auth/login',
   courses: baseUrl + 'courses',
-  groups: baseUrl + 'groups',
+  groups: baseUrl + 'group',
   events: baseUrl + 'events',
   query: baseUrl + 'events/query',
   local: baseUrl + 'local',
@@ -27,5 +27,8 @@ export default {
   teachers: baseUrl + 'teacher',
   typeClasses: baseUrl + 'typeclass',
   majors: baseUrl + 'major',
-  classes: baseUrl + 'class'
+  majorsGetAll: baseUrl + 'major/all',
+  classes: baseUrl + 'class',
+  departments: baseUrl + 'department',
+  departmentGetAll: baseUrl + 'department/all',
 };

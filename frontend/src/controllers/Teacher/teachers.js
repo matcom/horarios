@@ -53,7 +53,7 @@ export default {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.post(Endpoints.universitiesGetAll, {
+    return Petitions.post(Endpoints, {
       'filter': filter,
     })
       .then(response => response.json())
@@ -67,7 +67,7 @@ export default {
         }
         return false;
       });
-  }, getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
+  }, getData(token, filter = {}, pageNum = 1, pageLimit = 10) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.teachers, {

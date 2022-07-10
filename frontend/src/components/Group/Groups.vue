@@ -1,13 +1,12 @@
 <template>
-  <div id='universities'>
+  <div id='groups'>
     <div class='row'>
       <div class='col-12'>
         <div class='card w-100 border-bottom-primary mb-1'>
           <div class='card-header py-2 bg-white'>
             <div class='row align-items-center'>
               <div class='col'>
-                <h5 class='m-0 font-weight-bold text-primary'>Carreras
-                </h5>
+                <h5 class='m-0 font-weight-bold text-primary'>Grupos ({{ major.fullName }})</h5>
               </div>
               <div class='col'>
                 <form class='form-inline justify-content-end'>
@@ -19,7 +18,7 @@
                   <button class='btn ml-2' @click.prevent='unsetVal()'>
                     <i class='fas fa-sort-alpha-up'></i>
                   </button>
-                  <button class='btn ml-2' @click.prevent='addMajor()'>
+                  <button class='btn ml-2' @click.prevent='addGroup()'>
                     <i role='button' class='fas fa-plus'></i>
                   </button>
                 </form>
@@ -30,14 +29,14 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(majors, text, 'fullName').length === 0" type='button'
+              <button v-if="filterList(groups, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="m in filterList(majors, text, 'fullName')" :key='m.id'
-                           :to="{name: 'majorPage', params: {majorId: m.id}}"
-                           class='list-group-item list-group-item-action'>{{ m.fullName }} ({{ m.shortName }})
+              <router-link v-for="group in filterList(groups, text, 'fullName')" :key='group.fullName'
+                           :to="{name: 'groupPage', params: {groupId: group.id}}"
+                           class='list-group-item list-group-item-action'>{{ group.fullName }} ({{ group.fullName }})
                 <div class='form-inline justify-content-end'>
-                  <i class='fas fa-trash' @click.prevent='removeMajor(m.id)'></i>
+                  <i class='fas fa-trash' @click.prevent='removeGroup(group.id)'></i>
                 </div>
               </router-link>
             </div>
@@ -52,38 +51,46 @@
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Nueva Carrera</h5>
+            <h5 class='modal-title' id='exampleModalLabel'>Nuevo Grupo</h5>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
             </button>
           </div>
           <div class='modal-body'>
             <form>
-              <div class='form-group'>
-                <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newMajor.fullName'>
+              <div class='row'>
+                <div class='col-md-6'>
+                  <div class='form-group'>
+                    <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
+                    <input type='text' class='form-control' id='input-fullName' v-model='newGroup.fullName'>
+                  </div>
+                  <div class='form-group'>
+                    <label for='input-shortName' class='col-form-label'>Nombre:</label>
+                    <input type='text' class='form-control' id='input-shortName' v-model='newGroup.shortName'>
+                  </div>
+                  <div class='form-group'>
+                    <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                    <input type='number' class='form-control' id='input-priority' v-model='newGroup.priority' />
+                  </div>
+                </div>
+                <div class='col-md-6'>
+                  <div class='form-group'>
+                    <label for='input-description' class='col-form-label'>Year:</label>
+                    <input class='form-control' id='input-description' v-model='newGroup.year'>
+                  </div>
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newMajor.shortName'>
-              </div>
-              <div class='form-group'>
-                <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority' v-model='newMajor.priority' />
-              </div>
-              <div class='form-group'>
-                <label for='input-duration' class='col-form-label'>Extension (annos):</label>
-                <input type='number' class='form-control' id='input-duration' v-model='newMajor.duration' />
-              </div>
+
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newMajor.description'></textarea>
+                <textarea class='form-control' id='input-description' v-model='newGroup.description'></textarea>
               </div>
+
             </form>
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveMajor()'>
+            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveGroup()'>
               Guardar
             </button>
           </div>
@@ -96,20 +103,20 @@
 
 <script>
 export default {
-  name: 'Majors',
+  name: 'Groups',
   data() {
     return {
-      majors: [],
+      groups: [],
       text: '',
       val: 1,
-      facultyId: '',
-      newMajor: {
+      major: {},
+      newGroup: {
         fullName: '',
         shortName: '',
         priority: '',
         description: '',
-        duration: '',
-        facultyId: '',
+        year: '',
+        majorId: {},
       },
     };
   },
@@ -118,16 +125,22 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.facultyId = this.$route.params.facultyId;
+      this.$store.state.groups.getData(token)
+        .then(result => {
+          if (result === true) {
+            this.groups = this.$store.state.groups.data;
+          }
+        });
 
-      this.$store.state.majors.getData(token, 1, 10, { facultyId }).then(result => {
-        if (result === true) {
-          this.majors = this.$store.state.majors.data;
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
-        } else {
-          this.$router.push({ name: 'notFoundPage' });
-        }
-      });
+      this.$store.state.major.getData(token, this.major.id)
+        .then(result => {
+          if (result === true) {
+            this.major = this.$store.state.major.data;
+            this.newGroup.majorId = { id: this.major.id };
+          }
+        });
+
+
     },
     filterList(list, box, prop) {
       let tmp = list.slice().sort(this.comparer(prop, this.val));
@@ -141,33 +154,29 @@ export default {
     unsetVal() {
       this.val = -1;
     },
-    removeMajor(majorId) {
+    removeGroup(groupId) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.majors.delete(token, majorId).then(result => {
+      this.$store.state.groups.delete(token, groupId).then(result => {
         if (result === true) {
-          this.majors = this.majors.filter(u => u.id != majorId);
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
+          this.groups = this.groups.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
     },
-    addMajor() {
+    addGroup() {
       $('#modalCreate').modal('show');
     },
-    saveMajor() {
+    saveGroup() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.newMajor.facultyId = this.facultyId;
-
-      this.$store.state.majors.create(token, this.newMajor).then(result => {
-
+      this.$store.state.groups.create(token, this.newGroup).then(result => {
         if (result === true) {
-          this.majors.push(this.$store.state.majors.data);
-          this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
+          this.groups.push(this.$store.state.groups.data);
+          this.groups = this.groups.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -186,6 +195,12 @@ export default {
     },
   },
   created() {
+
+    this.major.id = this.$route.params.majorId;
+    if (!this.major.id) {
+      this.$router.push({ name: 'notFoundPage' });
+    }
+
     this.loadData();
   },
 };
