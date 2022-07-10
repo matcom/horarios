@@ -27,6 +27,7 @@ services:
       - ./seed/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   adminer:
+    container_name: horarios_adminer
     image: adminer:latest
     restart: always
     ports:

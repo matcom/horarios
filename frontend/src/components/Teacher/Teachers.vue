@@ -1,12 +1,13 @@
 <template>
-  <div id='faculties'>
+  <div id='teachers'>
     <div class='row'>
       <div class='col-12'>
         <div class='card w-100 border-bottom-primary mb-1'>
           <div class='card-header py-2 bg-white'>
             <div class='row align-items-center'>
               <div class='col'>
-                <h5 class='m-0 font-weight-bold text-primary'> Profesores
+                <h5 class='m-0 font-weight-bold text-primary'> Profesores ({{ department.shortName }} /
+                  {{ department.faculty.shortName }})
                 </h5>
               </div>
               <div class='col'>
@@ -80,38 +81,38 @@
                     <input class='form-control' id='input-description' v-model='newTeacher.email'>
                   </div>
 
-                  <div class='form-group'>
-                    <label class='col-form-label'> Elegir univerisidad:</label>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                    >
-                      {{ btnSelectUniversityText }}
-                    </button>
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label class='col-form-label'> Elegir univerisidad:</label>-->
+                  <!--                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'-->
+                  <!--                            data-toggle='dropdown'-->
+                  <!--                            aria-haspopup='true' aria-expanded='false'-->
+                  <!--                            style='width: 220px; height: 40px;'-->
+                  <!--                    >-->
+                  <!--                      {{ btnSelectUniversityText }}-->
+                  <!--                    </button>-->
 
-                    <div class='dropdown-menu'>
-                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
-                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
-                    </div>
-                  </div>
+                  <!--                    <div class='dropdown-menu'>-->
+                  <!--                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'-->
+                  <!--                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
 
-                  <div class='form-group'>
-                    <label class='col-form-label'> Elegir facultad:</label>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.faculties.length === 0'
-                    >
-                      {{ btnSelectFacultyText }}
-                    </button>
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label class='col-form-label'> Elegir facultad:</label>-->
+                  <!--                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'-->
+                  <!--                            data-toggle='dropdown'-->
+                  <!--                            aria-haspopup='true' aria-expanded='false'-->
+                  <!--                            style='width: 220px; height: 40px;'-->
+                  <!--                            :disabled='this.faculties.length === 0'-->
+                  <!--                    >-->
+                  <!--                      {{ btnSelectFacultyText }}-->
+                  <!--                    </button>-->
 
-                    <div class='dropdown-menu'>
-                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'
-                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>
-                    </div>
-                  </div>
+                  <!--                    <div class='dropdown-menu'>-->
+                  <!--                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'-->
+                  <!--                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
 
                 </div>
               </div>
@@ -143,11 +144,12 @@ export default {
     return {
       btnSelectUniversityText: 'Elegir universidad',
       btnSelectFacultyText: 'Elegir facultad',
-      teachers: [],
       text: '',
       val: 1,
       universities: [],
       faculties: [], // indica las facultades de la universidad elegida
+      teachers: [],
+      department: {},
       newTeacher: {
         fullName: '',
         shortName: '',
@@ -155,6 +157,7 @@ export default {
         description: '',
         email: '',
         facultyIds: [],
+        departmentId: {},
       },
     };
   },
@@ -163,17 +166,26 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.teachers.getData(token)
+      const departmentId = this.$route.params.departmentId;
+
+      this.$store.state.teachers.getData(token, { departmentId })
         .then(result => {
           if (result === true) {
             this.teachers = this.$store.state.teachers.data;
           }
         });
 
-      this.$store.state.universities.getAll(token)
+      // this.$store.state.universities.getAll(token)
+      //   .then(result => {
+      //     if (result === true)
+      //       this.universities = this.$store.state.universities.data;
+      //   });
+
+      this.$store.state.department.getDetails(token, departmentId)
         .then(result => {
-          if (result === true)
-            this.universities = this.$store.state.universities.data;
+          if (result === true) {
+            this.department = this.$store.state.department.data;
+          }
         });
     },
     filterList(list, box, prop) {
@@ -207,10 +219,8 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      const fac = this.faculties.find(f => f.shortName === this.btnSelectFacultyText);
-
-      if (fac)
-        this.newTeacher.facultyIds.push({ id: fac.id });
+      this.newTeacher.facultyIds.push({ id: this.department.facultyId.id });
+      this.newTeacher.departmentId = { id: this.department.id };
 
       this.$store.state.teachers.create(token, this.newTeacher).then(result => {
         if (result === true) {

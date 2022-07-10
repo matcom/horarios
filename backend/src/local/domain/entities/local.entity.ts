@@ -3,9 +3,11 @@ import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
+import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
 
 type LocalProps = DomainBaseProps & DomainTimestamp & {
   facultyId: string;
+  faculty?: Faculty;
 };
 
 type newLocalProps = Omit<LocalProps,
@@ -15,6 +17,10 @@ export class Local extends DomainEntity<LocalProps> {
 
   get shortName(): string {
     return this.props.shortName;
+  }
+
+  get faculty(): Faculty {
+    return this.props.faculty;
   }
 
   get facultyId(): string {

@@ -120,7 +120,7 @@ export default {
 
       this.facultyId = this.$route.params.facultyId;
 
-      this.$store.state.majors.getData(token).then(result => {
+      this.$store.state.majors.getData(token, 1, 10, { facultyId }).then(result => {
         if (result === true) {
           this.majors = this.$store.state.majors.data;
           this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);

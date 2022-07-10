@@ -49,4 +49,20 @@ export default {
         return false;
       });
   },
+  getDetails(token, id) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.get(Endpoints.majors + '/details/' + id)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+
+        if (json !== null && !json.hasOwnProperty('error')) {
+          this.data = json;
+          this.saveMinData();
+          return true;
+        }
+        return false;
+      });
+  },
 };

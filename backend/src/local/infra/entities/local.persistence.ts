@@ -1,7 +1,8 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
+import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
 
 @Entity('local')
 @Index(['id'], { unique: true })
@@ -33,4 +34,11 @@ export class LocalPersistence extends PersistentEntity {
     lesson => lesson.local,
     { nullable: true })
   lesson: LessonPersistence;
+
+  @OneToMany(
+    () => ClassPersistence,
+    c => c.local,
+    {},
+  )
+  classes: ClassPersistence[];
 }

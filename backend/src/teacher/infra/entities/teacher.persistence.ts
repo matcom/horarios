@@ -3,6 +3,7 @@ import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/ba
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
 import { DepartmentPersistence } from '../../../department/infra/entities/department.persistence';
+import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
 
 @Entity('teacher')
 @Index(['id'], { unique: true })
@@ -43,6 +44,12 @@ export class TeacherPersistence extends PersistentEntity {
     department => department.teachers,
     { nullable: true })
   @JoinColumn({ name: 'department_id' })
-  department: DepartmentPersistence;
+  department: DepartmentPersistence | any;
 
+  @ManyToMany(
+    () => ClassPersistence,
+    c => c.teachers,
+    {},
+  )
+  classes: ClassPersistence[] | any;
 }
