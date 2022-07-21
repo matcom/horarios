@@ -147,7 +147,7 @@ export default {
 
       this.$store.state.majors.delete(token, majorId).then(result => {
         if (result === true) {
-          this.majors = this.majors.filter(u => u.id != majorId);
+          this.majors = this.majors.filter(u => u.id !== majorId);
           this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });

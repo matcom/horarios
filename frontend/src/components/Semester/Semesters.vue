@@ -158,7 +158,7 @@ export default {
 
       this.$store.state.semesters.delete(token, semesterId).then(result => {
         if (result === true) {
-          this.semesters = this.semesters.filter(u => u.id != semesterId);
+          this.semesters = this.semesters.filter(u => u.id !== semesterId);
           this.semesters = this.semesters.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });

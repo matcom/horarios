@@ -245,8 +245,6 @@ const router = new Router({
             requiresAuth: true,
           },
         },
-
-
         {
           path: '/lesson/choose',
           name: 'chooseLessonPage',
@@ -264,7 +262,7 @@ const router = new Router({
           },
         },
         {
-          path: '/lesson/:lessonId',
+          path: '/lesson/details/:lessonId',
           name: 'lessonPage',
           component: Lesson,
           meta: {

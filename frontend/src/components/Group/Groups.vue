@@ -160,6 +160,7 @@ export default {
 
       this.$store.state.groups.delete(token, groupId).then(result => {
         if (result === true) {
+          this.groups = this.groups.filter(x => x.id !== groupId);
           this.groups = this.groups.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });

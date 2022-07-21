@@ -127,91 +127,93 @@
     </FullCalendar>
 
     <!--    Modal Create-->
-<!--    <div class='modal fade' id='modalCreate' tabindex='-1' role='dialog' aria-labelledby='modalCreate'-->
-<!--         aria-hidden='true' ref='modalEdit'>-->
-<!--      <div class='modal-dialog' role='document'>-->
-<!--        <div class='modal-content'>-->
-<!--          <div class='modal-header'>-->
-<!--            <h5 class='modal-title' id='exampleModalLabel'>Nuevo Turno de Clase</h5>-->
-<!--            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>-->
-<!--              <span aria-hidden='true'>&times;</span>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--          <div class='modal-body'>-->
-<!--            <form>-->
-<!--              <div class='row'>-->
-<!--                <div class='col-md-6'>-->
-<!--                  <div class='form-group'>-->
-<!--                    <label for='input-fullName' class='col-form-label'>Nombre completo:</label>-->
-<!--                    <input type='text' class='form-control' id='input-fullName' v-model='newTeacher.fullName'>-->
-<!--                  </div>-->
-<!--                  <div class='form-group'>-->
-<!--                    <label for='input-shortName' class='col-form-label'>Nombre:</label>-->
-<!--                    <input type='text' class='form-control' id='input-shortName' v-model='newTeacher.shortName'>-->
-<!--                  </div>-->
-<!--                  <div class='form-group'>-->
-<!--                    <label for='input-priority' class='col-form-label'>Prioridad:</label>-->
-<!--                    <input type='number' class='form-control' id='input-priority' v-model='newTeacher.priority' />-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class='col-md-6'>-->
-<!--                  <div class='form-group'>-->
-<!--                    <label for='input-description' class='col-form-label'>Email:</label>-->
-<!--                    <input class='form-control' id='input-description' v-model='newTeacher.email'>-->
-<!--                  </div>-->
+    <div class='modal fade' id='modalCreate' tabindex='-1' role='dialog' aria-labelledby='modalCreate'
+         aria-hidden='true' ref='modalEdit'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='exampleModalLabel'>Nuevo Turno de Clase</h5>
+            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          <div class='modal-body'>
+            <form>
 
-<!--&lt;!&ndash;                  <div class='form-group'>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <label class='col-form-label'> Elegir univerisidad:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'&ndash;&gt;-->
-<!--&lt;!&ndash;                            data-toggle='dropdown'&ndash;&gt;-->
-<!--&lt;!&ndash;                            aria-haspopup='true' aria-expanded='false'&ndash;&gt;-->
-<!--&lt;!&ndash;                            style='width: 220px; height: 40px;'&ndash;&gt;-->
-<!--&lt;!&ndash;                    >&ndash;&gt;-->
-<!--&lt;!&ndash;                      {{ btnSelectUniversityText }}&ndash;&gt;-->
-<!--&lt;!&ndash;                    </button>&ndash;&gt;-->
+              <div class='form-group'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='newClass.description'></textarea>
+              </div>
+              <div class='row'>
 
-<!--&lt;!&ndash;                    <div class='dropdown-menu'>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <a v-for='u in this.universities' :key='u.id' class='dropdown-item'&ndash;&gt;-->
-<!--&lt;!&ndash;                         @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+                <div class='col-md-6'>
 
-<!--&lt;!&ndash;                  <div class='form-group'>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <label class='col-form-label'> Elegir facultad:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'&ndash;&gt;-->
-<!--&lt;!&ndash;                            data-toggle='dropdown'&ndash;&gt;-->
-<!--&lt;!&ndash;                            aria-haspopup='true' aria-expanded='false'&ndash;&gt;-->
-<!--&lt;!&ndash;                            style='width: 220px; height: 40px;'&ndash;&gt;-->
-<!--&lt;!&ndash;                            :disabled='this.faculties.length === 0'&ndash;&gt;-->
-<!--&lt;!&ndash;                    >&ndash;&gt;-->
-<!--&lt;!&ndash;                      {{ btnSelectFacultyText }}&ndash;&gt;-->
-<!--&lt;!&ndash;                    </button>&ndash;&gt;-->
+                  <div class='form-group'>
+                    <label class='col-form-label'> Elegir Profesor:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                    >
+                      {{
+                        !newClass.teacherId.id ? 'Elegir profesor' : teachers.find(x => x.id === newClass.teacherId.id).shortName
+                      }}
+                    </button>
 
-<!--&lt;!&ndash;                    <div class='dropdown-menu'>&ndash;&gt;-->
-<!--&lt;!&ndash;                      <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'&ndash;&gt;-->
-<!--&lt;!&ndash;                         @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+                    <div class='dropdown-menu'>
+                      <a v-for='t in this.teachers' :key='t.id' class='dropdown-item'
+                         @click.prevent='newClass.teacherId = {id: t.id}'>{{ t.fullName }}</a>
+                    </div>
+                  </div>
 
-<!--                </div>-->
-<!--              </div>-->
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label for='input-shortName' class='col-form-label'>Nombre:</label>-->
+                  <!--                    <input type='text' class='form-control' id='input-shortName' v-model='newTeacher.shortName'>-->
+                  <!--                  </div>-->
 
-<!--              <div class='form-group'>-->
-<!--                <label for='input-description' class='col-form-label'>Descripcion:</label>-->
-<!--                <textarea class='form-control' id='input-description' v-model='newTeacher.description'></textarea>-->
-<!--              </div>-->
+                  <!--                  <div class='form-group'>-->
+                  <!--                    <label for='input-priority' class='col-form-label'>Prioridad:</label>-->
+                  <!--                    <input type='number' class='form-control' id='input-priority' v-model='newTeacher.priority' />-->
+                  <!--                  </div>-->
 
-<!--            </form>-->
-<!--          </div>-->
-<!--          <div class='modal-footer'>-->
-<!--            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>-->
-<!--            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveTeacher()'>-->
-<!--              Guardar-->
-<!--            </button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+                </div>
+
+                <div class='col-md-6'>
+
+                  <div class='form-group'>
+                    <label class='col-form-label'> Elegir asignatura:</label>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                            :disabled='this.lessons.length === 0'
+                    >
+                      {{
+                        !newClass.lessonId.id ? 'Elegir asignatura' : lessons.find(x => x.id === newClass.lessonId.id).shortName
+                      }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a v-for='l in this.lessons' :key='l.id' class='dropdown-item'
+                         @click.prevent='newClass.lessonId = {id: l.id}'>{{ l.fullName }}</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </form>
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
+            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveTeacher()'>
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   </div>
@@ -245,15 +247,16 @@ export default {
       groups: [],
       teachers: [],
       lessons: [],
+      semesters: [],
       locals: [],
       events: [],
       classes: [],
       newClass: {
         description: '',
-        localId: '',
-        lessonId: '',
-        typeClassId: '',
-        teachers: [],
+        localId: {},
+        lessonId: {},
+        typeClassId: {},
+        teacherId: {},
         start: [],
         end: [],
       },
@@ -310,6 +313,7 @@ export default {
       this.loadFrom('teachers');
       this.loadFrom('lessons');
       this.loadFrom('locals');
+      // this.loadFrom('semestres');
       // this.loadFrom('classes');
       // this.loadFrom('courses');
       // this.loadFrom('groups');
@@ -375,7 +379,11 @@ export default {
     },
 
     handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event');
+      // let title = prompt('Please enter a new title for your event');
+      $('#modalCreate').modal('show');
+
+      let title = 'testing';
+
       let calendarApi = selectInfo.view.calendar;
 
       calendarApi.unselect(); // clear date selection

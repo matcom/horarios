@@ -25,6 +25,7 @@ export default {
   faculties: baseUrl + 'faculty',
   facultiesGetAll: baseUrl + 'faculty/all',
   teachers: baseUrl + 'teacher',
+  teachersGetAll: baseUrl + 'teacher/all',
   typeClasses: baseUrl + 'typeclass',
   majors: baseUrl + 'major',
   majorsGetAll: baseUrl + 'major/all',
@@ -33,4 +34,6 @@ export default {
   departmentGetAll: baseUrl + 'department/all',
   semesters: baseUrl + 'semester',
   semestersGetAll: baseUrl + 'semester/all',
+  lessons: baseUrl + 'lesson',
+  lessonsGetAll: baseUrl + 'lesson/all'
 };

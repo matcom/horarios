@@ -34,7 +34,7 @@
               </button>
               <router-link v-for="lesson in filterList(lessons, text, 'id')" :key='lesson.id'
                            :to="{name: 'lessonPage', params: {lessonId: lesson.id}}"
-                           class='list-lesson-item list-lesson-item-action'>
+                           class='list-group-item list-group-item-action'>
                 {{ lesson.fullName }}
                 <div class='form-inline justify-content-end'>
                   <i class='fas fa-trash' @click.prevent='removeLesson(lesson.id)'></i>
@@ -60,87 +60,91 @@
           <div class='modal-body'>
             <form>
               <div class='row'>
+
                 <div class='col-md-6'>
+
                   <div class='form-lesson'>
                     <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
                     <input type='text' class='form-control' id='input-fullName' v-model='newLesson.fullName'>
                   </div>
+
                   <div class='form-lesson'>
                     <label for='input-shortName' class='col-form-label'>Nombre:</label>
                     <input type='text' class='form-control' id='input-shortName' v-model='newLesson.shortName'>
                   </div>
-                  <div class='form-lesson'>
-                    <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                    <input type='number' class='form-control' id='input-priority' v-model='newLesson.priority' />
-                  </div>
+
                 </div>
+
                 <div class='col-md-6'>
                   <div class='form-lesson'>
                     <label for='input-description' class='col-form-label'>Year:</label>
                     <input class='form-control' id='input-description' v-model='newLesson.year'>
                   </div>
 
+
                   <div class='form-lesson'>
-                    <label for='input-description' class='col-form-label'>Descripcion:</label>
-                    <textarea class='form-control' id='input-description' v-model='newLesson.description'></textarea>
+                    <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                    <input type='number' class='form-control' id='input-priority' v-model='newLesson.priority' />
                   </div>
+
                 </div>
 
-                <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
-                  <button
-                    :style='[selectedTeacher.id ? {"color": "green"}: {} ]'
-                    class='btn btn-light dropdown-toggle'
-                    type='button' id='teacher_drop_down'
-                    data-toggle='dropdown'
-                    aria-haspopup='true' aria-expanded='true'>
-                    {{ !selectedTeacher.shortName ? 'Elegir Profesor' : selectedTeacher.shortName }}
-                  </button>
-                  <div class='dropdown-menu'>
-                    <a style='cursor:pointer;' v-for='u in this.teachers' :key='u.id' class='dropdown-item'
-                       @click='selectedTeacher = u'>{{ u.fullName }}</a>
+              </div>
+
+              <div class='form-lesson'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='newLesson.description'></textarea>
+              </div>
+
+              <div class='row'>
+
+                <div class='col col-md-6'>
+
+                  <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
+                    <button
+                      :style='[selectedTeacher.id ? {"color": "green"}: {} ]'
+                      class='btn btn-light dropdown-toggle'
+                      type='button' id='teacher_drop_down'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='true'>
+                      {{ !selectedTeacher.shortName ? 'Elegir Profesor' : selectedTeacher.shortName }}
+                    </button>
+                    <div class='dropdown-menu'>
+                      <a style='cursor:pointer;' v-for='u in this.teachers' :key='u.id' class='dropdown-item'
+                         @click='selectedTeacher = u'>{{ u.fullName }}</a>
+                    </div>
                   </div>
+
                 </div>
 
+                <div class='col col-md-6'>
 
-                <!--                <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>-->
-                <!--                  <button-->
-                <!--                    class='btn btn-light dropdown-toggle'-->
-                <!--                    type='button' id='teacher_drop_down'-->
-                <!--                    data-toggle='dropdown'-->
-                <!--                    aria-haspopup='true' aria-expanded='true'>-->
-                <!--                    {{ selectedShortNameLocal != '' ? selectedShortNameLocal : 'Elegir local' }}-->
-                <!--                  </button>-->
-                <!--                  <div class='dropdown-menu'>-->
-                <!--                    <a style='cursor:pointer;' v-for='u in this.locals' :key='u.id' class='dropdown-item'-->
-                <!--                       @click.prevent='selectedShortNameLocal = u.shortName'>{{ u.fullName }}</a>-->
-                <!--                  </div>-->
-                <!--                </div>-->
+                  <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
+                    <button :style='[selectedSemester.id ? {"color": "green"} : {}]'
+                            class='btn btn-light dropdown-toggle'
+                            type='button' id='teacher_drop_down'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='true'>
+                      {{ !selectedSemester.shortName ? 'Elegir Semestre' : selectedSemester.shortName }}
+                    </button>
 
+                    <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton'
+                         x-placement='bottom-start'
+                         style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
+                      <div class='input-group m-2 ' v-for='it in this.semesters' :key='it.id'>
+                        <div class='input-group-text bg-white'>
+                          <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
+                          <span class='ml-2' id='basic7-addon3'>{{ it.shortName }}</span>
+                        </div>
+                      </div>
+                    </div>
 
-                <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
-                  <button :style='[selectedSemester.id ? {"color": "green"} : {}]'
-                          class='btn btn-light dropdown-toggle'
-                          type='button' id='teacher_drop_down'
-                          data-toggle='dropdown'
-                          aria-haspopup='true' aria-expanded='true'>
-                    {{ !selectedSemester.shortName ? 'Elegir Semestre' : selectedSemester.shortName }}
-                  </button>
-                  <div class='dropdown-menu'>
-                    <a style='cursor:pointer;' v-for='u in this.semesters' :key='u.id' class='dropdown-item'
-                       @click='selectedSemester = u'>{{ u.fullName }}</a>
+                    <!--                    <div class='dropdown-menu'>-->
+                    <!--                      <a style='cursor:pointer;' v-for='u in this.semesters' :key='u.id' class='dropdown-item'-->
+                    <!--                         @click='selectedSemester = u'>{{ u.fullName }}</a>-->
+                    <!--                    </div>-->
+
                   </div>
-
-                  <!--                  Elegir multiple-->
-                  <!--                  <div class='dropdown-menu animated&#45;&#45;fade-in ' aria-labelledby='dropdownMenuButton'-->
-                  <!--                       x-placement='bottom-start'-->
-                  <!--                       style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>-->
-                  <!--                    <div class='input-group m-2 ' v-for='it in semesters' :key='it.id'>-->
-                  <!--                      <div class='input-group-text bg-white'>-->
-                  <!--                        <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.'>-->
-                  <!--                        <span class='ml-2' id='basi7-addon3'>{{ it.shortName }}</span>-->
-                  <!--                      </div>-->
-                  <!--                    </div>-->
-                  <!--                  </div>-->
 
                 </div>
 
@@ -182,7 +186,7 @@ export default {
         duration: '',
         majorId: {},
         teacherId: {},
-        semesterId: {},
+        semesterIds: [],
         localId: {},
       },
       selectedTeacher: {},
@@ -195,7 +199,7 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.lessons.getData(token)
+      this.$store.state.lessons.getAll(token)
         .then(result => {
           if (result === true) {
             this.lessons = this.$store.state.lessons.data;
@@ -217,7 +221,12 @@ export default {
           }
         });
 
-      // this.$store.state.se
+      this.$store.state.semesters.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.semesters = this.$store.state.semesters.data;
+          }
+        });
 
 
     },
@@ -239,11 +248,14 @@ export default {
 
       this.$store.state.lessons.delete(token, lessonId).then(result => {
         if (result === true) {
+          this.lessons = this.lessons.filter(x => x.id !== lessonId);
           this.lessons = this.lessons.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+
+
     },
     addLesson() {
       $('#modalCreate').modal('show');
@@ -253,6 +265,13 @@ export default {
       let token = this.$store.state.profile.data.token;
 
       this.newLesson.majorId = { id: this.major.id };
+      this.newLesson.teacherId = { id: this.selectedTeacher.id };
+      this.newLesson.semesterIds = [];
+
+      this.semesters.forEach(s => {
+        if (s.selected)
+          this.newLesson.semesterIds.push({ id: s.id });
+      });
 
       this.$store.state.lessons.create(token, this.newLesson).then(result => {
         if (result === true) {

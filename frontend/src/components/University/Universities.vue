@@ -137,7 +137,7 @@ export default {
 
       this.$store.state.universities.delete(token, universityId).then(result => {
         if (result === true) {
-          this.universities = this.universities.filter(u => u.id != universityId);
+          this.universities = this.universities.filter(u => u.id !== universityId);
           this.universities = this.universities.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
