@@ -29,11 +29,11 @@ export class LocalPersistence extends PersistentEntity {
   @JoinColumn({ name: 'faculty_id' })
   faculty: FacultyPersistence;
 
-  @OneToOne(
+  @OneToMany(
     () => LessonPersistence,
     lesson => lesson.local,
     { nullable: true })
-  lesson: LessonPersistence;
+  lesson: LessonPersistence[];
 
   @OneToMany(
     () => ClassPersistence,
