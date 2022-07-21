@@ -31,10 +31,10 @@ export class TeacherPersistence extends PersistentEntity {
   @JoinTable()
   faculties: FacultyPersistence[] | any;
 
-  @OneToOne(() => LessonPersistence,
+  @ManyToOne(() => LessonPersistence,
     lesson => lesson.teacher,
     { nullable: true })
-  lesson: LessonPersistence;
+  lesson: LessonPersistence[];
 
   @Column({ type: 'text', name: 'department_id' })
   departmentId?: string;
