@@ -23,12 +23,10 @@ export default {
     return Petitions.get(Endpoints.classes + '/' + id)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
   edit(token, _class) {
@@ -41,12 +39,27 @@ export default {
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+      });
+  },
+  editMultiple(token, serieId, originalClass, toUpdateClass) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.put(Endpoints.multipleEditionClass, {
+      serieId,
+      originalClass,
+      toUpdateClass,
+    })
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
   getDetails(token, id) {
@@ -57,12 +70,10 @@ export default {
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
 
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
 };

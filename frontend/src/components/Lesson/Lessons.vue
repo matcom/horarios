@@ -139,11 +139,6 @@
                       </div>
                     </div>
 
-                    <!--                    <div class='dropdown-menu'>-->
-                    <!--                      <a style='cursor:pointer;' v-for='u in this.semesters' :key='u.id' class='dropdown-item'-->
-                    <!--                         @click='selectedSemester = u'>{{ u.fullName }}</a>-->
-                    <!--                    </div>-->
-
                   </div>
 
                 </div>

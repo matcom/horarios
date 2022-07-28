@@ -30,10 +30,12 @@ export default {
   majors: baseUrl + 'major',
   majorsGetAll: baseUrl + 'major/all',
   classes: baseUrl + 'class',
+  multipleEditionClass: baseUrl + 'class/multiple',
+  classesGetAll: baseUrl + 'class/all',
   departments: baseUrl + 'department',
   departmentGetAll: baseUrl + 'department/all',
   semesters: baseUrl + 'semester',
   semestersGetAll: baseUrl + 'semester/all',
   lessons: baseUrl + 'lesson',
-  lessonsGetAll: baseUrl + 'lesson/all'
+  lessonsGetAll: baseUrl + 'lesson/all',
 };
