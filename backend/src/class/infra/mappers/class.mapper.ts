@@ -7,6 +7,9 @@ import { TeacherMappers } from '../../../teacher/infra/mappers/teacher.mappers';
 import { LocalMappers } from '../../../local/infra/mappers/local.mappers';
 import { LessonMappers } from '../../../lesson/infra/mappers/lesson.mapper';
 import { TypeclassMappers } from '../../../typeclass/infra/mappers/typeclass.mappers';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
+import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
+import { FacultyDto } from '../../../faculty/application/dtos/faculty.dto';
 
 export class ClassMappers {
   public static PersistToDomain(persist: ClassPersistence): Class {
@@ -42,6 +45,9 @@ export class ClassMappers {
       local: domain.localId,
       lesson: domain.lessonId,
       typeClass: domain.typeClassId,
+      start: domain.start,
+      end: domain.end,
+      serieId: domain.serieId,
     };
   }
 
@@ -56,15 +62,26 @@ export class ClassMappers {
       updatedAt: domain.updatedAt,
       end: domain.end,
       start: domain.start,
+      serieId: domain.serieId,
     };
   }
 
   public static PaginatedToDto(pag: PaginatedFindResult<Class>): PaginatedFindResult<ClassDto> {
+
+    console.log(pag.items.map(x => x.serieId));
+
     return {
       items: pag.items.length > 0 ? pag.items.map(ClassMappers.DomainToDto) : [],
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,
+    };
+  }
+
+
+  public static AllToDto(all: FindAllResult<Class>): FindAllResult<ClassDto> {
+    return {
+      items: all.items.map(ClassMappers.DomainToDto),
     };
   }
 

@@ -7,6 +7,8 @@ import { TypeClass } from '../../../typeclass/domain/entities/typeclass.entity';
 import { DomainEntity } from '../../../shared/domain/entity.abstract';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
+import * as moment from 'moment';
+import { v4 } from 'uuid';
 
 // TODO: agregar grupo.
 type ClassProps = DomainBaseProps & DomainTimestamp & {
@@ -20,6 +22,7 @@ type ClassProps = DomainBaseProps & DomainTimestamp & {
   typeClass?: TypeClass;
   start: Date;
   end: Date;
+  serieId: string;
 };
 
 
@@ -41,6 +44,10 @@ export class Class extends DomainEntity<ClassProps> {
 
   get end(): Date {
     return this.props.end;
+  }
+
+  get serieId() {
+    return this.props.serieId;
   }
 
   get teachers(): Teacher[] {
@@ -94,6 +101,7 @@ export class Class extends DomainEntity<ClassProps> {
   public static New(props: newClassProps): Result<Class> {
     const ans: Result<Class> = this.Create({
       ...props,
+      serieId: v4(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -104,7 +112,12 @@ export class Class extends DomainEntity<ClassProps> {
   }
 
   public static Create(props: ClassProps, id: string = null): Result<Class> {
-    // set guards here
+    const temp1 = moment.utc(props.start).local().toDate();
+    const temp2 = moment.utc(props.end).local().toDate();
+
+    console.log(temp1);
+    console.log(temp2);
+
     return Result.Ok(new Class(props, new UniqueEntityID(id)));
   }
 
