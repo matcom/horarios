@@ -23,16 +23,17 @@ export class CheckClassUseCase implements IUseCase<Class, Promise<CheckClassUseC
 
   async execute(request: Class): Promise<CheckClassUseCaseResponse> {
     this._logger.log('Executing...');
-    
+
     let qB = (await this
       .classRepository
       .getQueryBuilder('class'))
-      .leftJoinAndSelect('class.teachers', 'teachers');
+      .leftJoinAndSelect('class.teachers', 'teachers')
+      .leftJoinAndSelect('class.local', 'local');
 
     for (let i = 0; i < request.teacherIds.length; ++i) {
       const id = request.teacherIds[i].id;
 
-      const amount = await qB
+      const teacherRestrictions = await qB
         .where('teachers.id = :id', { id })
         .andWhere(new Brackets(br => {
           br
@@ -49,11 +50,35 @@ export class CheckClassUseCase implements IUseCase<Class, Promise<CheckClassUseC
         }))
         .getCount();
 
-      if (amount > 0)
+      if (teacherRestrictions > 0)
         return left(Result.Fail(new
         AppError
-          .ValidationError('Estado invalido para esta clase. No se puede crear. Posibles razones: profesor ya asignado a otra clase en ese horario, local de la clase ocupado en ese horario.')));
+          .ValidationError('Estado invalido para esta clase. No se puede crear. Posibles razones: profesor ya asignado a otra clase en ese horario o en parte de ese horario.')));
     }
+
+    const localRestrictions = await qB
+      .where('teachers.id = :id', { id: request.localId.id })
+      .andWhere(new Brackets(br => {
+        br
+          .where(new Brackets(b => {
+            b
+              .where('class.start <= :startDate1', { startDate1: request.start })
+              .andWhere(':startDate2 <= class.end', { startDate2: request.start });
+          }))
+          .orWhere(new Brackets(b => {
+            b
+              .where('class.start <= :endDate1', { endDate1: request.end })
+              .andWhere(':endDate2 <= class.end', { endDate2: request.end });
+          }));
+      }))
+      .getCount();
+
+    if (localRestrictions > 0)
+      return left(Result.Fail(new
+      AppError
+        .ValidationError('Estado invalido para esta clase. No se puede crear. Posibles razones: local ya asignado a otra clase en ese horario, o en parte de ese horario.')));
+
+
     return right(Result.Ok());
   }
 }

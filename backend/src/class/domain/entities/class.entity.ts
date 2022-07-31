@@ -115,9 +115,6 @@ export class Class extends DomainEntity<ClassProps> {
     const temp1 = moment.utc(props.start).local().toDate();
     const temp2 = moment.utc(props.end).local().toDate();
 
-    console.log(temp1);
-    console.log(temp2);
-
     return Result.Ok(new Class(props, new UniqueEntityID(id)));
   }
 

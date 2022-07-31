@@ -68,8 +68,6 @@ export class ClassMappers {
 
   public static PaginatedToDto(pag: PaginatedFindResult<Class>): PaginatedFindResult<ClassDto> {
 
-    console.log(pag.items.map(x => x.serieId));
-
     return {
       items: pag.items.length > 0 ? pag.items.map(ClassMappers.DomainToDto) : [],
       limit: pag.limit,
