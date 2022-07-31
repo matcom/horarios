@@ -98,6 +98,14 @@ export class Class extends DomainEntity<ClassProps> {
     return this.props.updatedAt;
   }
 
+  set start(value) {
+    this.props.start = value;
+  }
+
+  set end(value) {
+    this.props.end = value;
+  }
+
   public static New(props: newClassProps): Result<Class> {
     const ans: Result<Class> = this.Create({
       ...props,

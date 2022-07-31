@@ -6,6 +6,7 @@ import {
   FindDetailsClassUseCase,
   PaginatedClassUseCase,
   RemoveClassUseCase,
+  RemoveInSerieClassUseCase,
   UpdateClassUseCase,
   UpdateMultipleClassInSameSerieUseCase,
 } from '../../application/useCases';
@@ -31,7 +32,8 @@ export class ClassController {
     private readonly paginatedClass: PaginatedClassUseCase,
     private readonly findDetailsClass: FindDetailsClassUseCase,
     private readonly findAllClass: FindAllClassUseCase,
-    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase) {
+    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
+    private readonly removeInSerie: RemoveInSerieClassUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -74,7 +76,7 @@ export class ClassController {
   async create(@Body() body: ClassCreateDto, @Response() res) {
 
     this._logger.log('Create');
-    
+
     const c = await this.createClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
@@ -104,5 +106,13 @@ export class ClassController {
 
     const c = await this.removeClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
+  }
+
+  @Delete('in_serie')
+  async deleteInSerie(@Body() body: { id: string }, @Response() res) {
+    this._logger.log('Delete In Serie');
+
+    const c = await this.removeInSerie.execute(body);
+    return ProcessResponse.setResponse<number | any>(res, c, a => a);
   }
 }

@@ -1,4 +1,4 @@
-import { Either, right } from '../../../shared/core/Either';
+import { Either, left, right } from '../../../shared/core/Either';
 import { AppError } from '../../../shared/core/errors/AppError';
 import { Result } from '../../../shared/core/Result';
 import { Injectable, Logger } from '@nestjs/common';
@@ -8,6 +8,7 @@ import { UpdateClassUseCase } from './class.update.use-case';
 import { FindAllClassUseCase } from './class.find-all.use-case';
 import * as moment from 'moment';
 import { ClassRepository } from '../../infra/repositories/class.repository';
+import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 
 export type UpdateMultipleClassUseCaseResponse =
   Either<AppError.UnexpectedErrorResult<number | any>
@@ -23,6 +24,7 @@ export class UpdateMultipleClassInSameSerieUseCase implements IUseCase<ClassUpda
   constructor(
     private readonly update: UpdateClassUseCase,
     private readonly findAll: FindAllClassUseCase,
+    private readonly checkRestrictions: CheckClassUseCase,
     private readonly classRepository: ClassRepository) {
     this._logger = new Logger('UpdateMultipleClassUseCase');
   }
@@ -50,6 +52,19 @@ export class UpdateMultipleClassInSameSerieUseCase implements IUseCase<ClassUpda
     classIds.forEach(c => {
       parseArray += `'${c}',`;
     });
+
+    let realClasses = classes.value.unwrap().items;
+    for (let i = 0; i < realClasses.length; ++i) {
+      let c = realClasses[i];
+
+      c.start.setSeconds(c.start.getSeconds() + diffInStartHours);
+      c.end.setSeconds(c.end.getSeconds() + diffInEndHours);
+
+      const ans = await this.checkRestrictions.execute(c);
+
+      if (ans.isLeft())
+        return left(Result.Fail(new AppError.ValidationError(ans.value.unwrapError().message)));
+    }
 
     const rawQuery1 = `UPDATE "class"
                        SET start = start + INTERVAL ` + `'${diffInStartHours} second'` + ` WHERE "id" IN (${parseArray.slice(0, -1)})`;
