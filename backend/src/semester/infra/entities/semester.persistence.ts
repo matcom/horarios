@@ -1,6 +1,5 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { Column, Entity, Index, ManyToMany, OneToMany } from 'typeorm';
-import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
 
 @Entity('semester')

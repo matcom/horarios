@@ -6,6 +6,7 @@ import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { ClassCreateDto } from '../dtos/class.create.dto';
 import { ClassRepository } from '../../infra/repositories/class.repository';
 import { Class } from '../../domain/entities/class.entity';
+import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 
 export type CreateClassUseCaseResponse = Either<AppError.UnexpectedErrorResult<Class>
   | AppError.ValidationErrorResult<Class>,
@@ -18,6 +19,7 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
 
   constructor(
     private readonly classRepository: ClassRepository,
+    private readonly checkClass: CheckClassUseCase,
   ) {
     this._logger = new Logger('CreateClassUseCase');
   }
@@ -31,6 +33,11 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
       return left(classOrError);
 
     const c: Class = classOrError.unwrap();
+
+    const check = await this.checkClass.execute(c);
+
+    if (check.isLeft())
+      return check;
 
     try {
       await this.classRepository.save(c);

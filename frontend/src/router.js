@@ -47,6 +47,8 @@ import ChooseLesson from '@/components/Lesson/ChooseLesson';
 import Lessons from '@/components/Lesson/Lessons';
 import Lesson from '@/components/Lesson/Lesson';
 import ChooseTeacher from '@/components/Teacher/ChooseTeacher';
+import Semester from '@/components/Semester/Semester';
+import Semesters from '@/components/Semester/Semesters';
 
 Vue.use(Router);
 
@@ -139,6 +141,23 @@ const router = new Router({
           },
         },
         {
+          path: '/semesters/',
+          name: 'semestersPage',
+          component: Semesters,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/semester/details/:semesterId',
+          name: 'semesterPage',
+          component: Semester,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+
+        {
           path: '/teacher/choose',
           name: 'chooseTeacherPage',
           component: ChooseTeacher,
@@ -226,8 +245,6 @@ const router = new Router({
             requiresAuth: true,
           },
         },
-
-
         {
           path: '/lesson/choose',
           name: 'chooseLessonPage',
@@ -245,7 +262,7 @@ const router = new Router({
           },
         },
         {
-          path: '/lesson/:lessonId',
+          path: '/lesson/details/:lessonId',
           name: 'lessonPage',
           component: Lesson,
           meta: {

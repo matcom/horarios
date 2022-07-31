@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
-  CreateLessonUseCase,
+  CreateLessonUseCase, FindAllLessonUseCase,
   FindByIdLessonUseCase, FindDetailsLessonUseCase, PaginatedLessonUseCase, RemoveLessonUseCase,
   UpdateLessonUseCase,
 } from '../../../lesson/application/useCases';
@@ -10,6 +10,10 @@ import { LessonPaginatedDto } from '../../../lesson/application/dtos/lesson.pagi
 import { LessonCreateDto } from '../../../lesson/application/dtos/lesson.create.dto';
 import { LessonUpdateDto } from '../../../lesson/application/dtos/lesson.update.dto';
 import { LessonMappers } from '../../infra/mappers/lesson.mapper';
+import { UniversityFindAllDto } from '../../../university/application/dtos/university.find-all.dto';
+import { TeacherMappers } from '../../../teacher/infra/mappers/teacher.mappers';
+import { FindAllTeacherUseCase } from '../../../teacher/application/useCases';
+import { TeacherFindAllDto } from '../../../teacher/application/dtos/teacher.find-all.dto';
 
 @Controller('lesson')
 export class LessonController {
@@ -22,7 +26,8 @@ export class LessonController {
     private readonly updateLesson: UpdateLessonUseCase,
     private readonly removeLesson: RemoveLessonUseCase,
     private readonly paginatedLesson: PaginatedLessonUseCase,
-    private readonly findDetailsLesson: FindDetailsLessonUseCase) {
+    private readonly findDetailsLesson: FindDetailsLessonUseCase,
+    private readonly findAllLessons: FindAllLessonUseCase) {
 
     this._logger = new Logger('LessonController');
   }
@@ -33,6 +38,14 @@ export class LessonController {
 
     const lesson = await this.findOneUseCase.execute({ id: params.id });
     return ProcessResponse.setResponse<Lesson>(res, lesson, LessonMappers.DomainToDto);
+  }
+
+  @Post('all')
+  async getAll(@Body() body: TeacherFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAllLessons.execute(body);
+    return ProcessResponse.setResponse(res, ans, LessonMappers.PaginatedToDto);
   }
 
   @Get('details/:id')

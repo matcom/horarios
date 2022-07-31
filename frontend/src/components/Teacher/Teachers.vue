@@ -206,6 +206,7 @@ export default {
 
       this.$store.state.teachers.delete(token, teacherId).then(result => {
         if (result === true) {
+          this.teachers = this.teachers.filter(x => x.id !== teacherId);
           this.teachers = this.teachers.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });

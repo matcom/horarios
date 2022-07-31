@@ -152,11 +152,13 @@ export default {
 
       this.$store.state.departments.delete(token, departmentId).then(result => {
         if (result === true) {
+          this.departments = this.departments.filter(x => x.id !== departmentId);
           this.departments = this.departments.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+
     },
     addDepartment() {
       $('#modalCreate').modal('show');

@@ -22,9 +22,6 @@ export class ClassPersistence extends PersistentEntity {
   @Column({ type: 'int' })
   priority: number;
 
-  @Column({ type: 'text' })
-  email: string;
-
   @Column({ type: 'text', name: 'local_id' })
   localId: string;
 
@@ -34,11 +31,14 @@ export class ClassPersistence extends PersistentEntity {
   @Column({ type: 'text', name: 'type_class_id' })
   typeClassId: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   start: Date;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   end: Date;
+
+  @Column({ type: 'text' })
+  serieId: string;
 
   @ManyToMany(
     () => TeacherPersistence,

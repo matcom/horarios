@@ -179,7 +179,7 @@ export default {
 
       this.$store.state.typeClasses.delete(token, typeClassId).then(result => {
         if (result === true) {
-          this.typeClasses = this.typeClasses.filter(u => u.id != typeClassId);
+          this.typeClasses = this.typeClasses.filter(u => u.id !== typeClassId);
           this.typeClasses = this.typeClasses.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
