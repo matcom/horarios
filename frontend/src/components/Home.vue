@@ -126,7 +126,7 @@
 
     <!--    Modal Create-->
     <div class='modal fade' id='modalCreate' tabindex='-1' role='dialog' aria-labelledby='modalCreate'
-         aria-hidden='true' ref='modalEdit'>
+         aria-hidden='true' ref='modalCreate'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
@@ -282,6 +282,137 @@
       </div>
     </div>
 
+    <div class='modal fade' id='modalDetails' tabindex='-1' role='dialog' aria-labelledby='modalDetails'
+         aria-hidden='true' ref='modalDetails'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='modalDetailsTitle'>Detalles del Turno</h5>
+            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          <div class='modal-body'>
+            <form>
+
+              <div class='row'>
+                <div class='col-sm-6'> Titulo:</div>
+
+                <div class='col-sm-6'>
+                  <p>
+                    {{ this.detailsClickedEvent.lesson.fullName }}
+                  </p>
+                </div>
+
+              </div>
+
+              <div class='row'>
+                <div class='col-sm-6'> Descripcion:</div>
+
+                <div class='col-sm-6'>
+
+                  <p>
+                    {{ this.detailsClickedEvent.lesson.description }}
+                  </p>
+                </div>
+
+              </div>
+
+              <div class='row'>
+
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Profesores:</label>
+                </div>
+
+                <div class='col-sm-6'>
+
+                  <div class='form-group'>
+
+                    <ul v-if='detailsClickedEvent.teachers.length > 0'>
+                      <li v-for='it in this.detailsClickedEvent.teachers' :key='it.id'> {{ it.fullName }}</li>
+                    </ul>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Asignatura:</label>
+                </div>
+
+                <div class='col-sm-6'>
+
+                  <div class='form-group'>
+
+                    <p> {{ this.detailsClickedEvent.lesson.fullName }} </p>
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Local: </label>
+                </div>
+
+                <div class='col-sm-6'>
+
+                  <div class='form-group'>
+
+                    {{ this.detailsClickedEvent.local.fullName }}
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Tipo de Clase:</label>
+                </div>
+
+                <div class='col-sm-6'>
+                  <div class='form-group'>
+
+                    <p> {{ this.detailsClickedEvent.typeClass.fullName }} </p>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Horario:</label>
+                </div>
+
+                <div class='col-md-6'>
+                  <p> {{ formatDate(this.detailsClickedEvent.start) }}</p>
+                  <p> {{ formatDate(this.detailsClickedEvent.end) }} </p>
+                </div>
+
+              </div>
+
+            </form>
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
+            <button type='button' class='btn btn-primary' data-dismiss='modal'
+                    @click='deleteAllEventsInSerie(detailsClickedEvent.serieId, detailsClickedEvent.info)'>
+              Eliminar todos los eventos de la serie
+            </button>
+            <button type='button' class='btn btn-primary' data-dismiss='modal'
+                    @click='deleteEvent(detailsClickedEvent.id, detailsClickedEvent.info)'>
+              Eliminar solo este evento
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -319,15 +450,36 @@ export default {
       events: [],
       classes: [],
       typeClasses: [],
-      newClass: {
+      detailsClickedEvent: {
+        id: '',
         description: '',
         viewInCard: '',
         localId: {},
         lessonId: {},
         typeClassId: {},
         teacherIds: [],
-        start: [],
-        end: [],
+        teachers: [],
+        lesson: {},
+        typeClass: {},
+        local: {},
+        start: '',
+        end: '',
+        fullName: '',
+        shortName: '',
+        priority: '',
+        serieId: '',
+        info: {},
+      },
+      newClass: {
+        serieId: '',
+        description: '',
+        viewInCard: '',
+        localId: {},
+        lessonId: {},
+        typeClassId: {},
+        teacherIds: [],
+        start: '',
+        end: '',
         fullName: '',
         shortName: '',
         priority: '',
@@ -490,8 +642,8 @@ export default {
       const updateAllEvents = confirm('Desea modificar el horario de todos los eventos de la serie ?');
 
       const originalEvent = this.classes.find(x => x.id === info.event.id);
-      const newStartEvent = this.formatDate(info.event.startStr);
-      const newEndEvent = this.formatDate(info.event.endStr);
+      const newStartEvent = info.event.startStr;
+      const newEndEvent = info.event.endStr;
 
       if (updateAllEvents) {
         let toUpdate = Object.assign({}, originalEvent);
@@ -502,30 +654,36 @@ export default {
         this.$store.state.profile.loadMinData();
         let token = this.$store.state.profile.data.token;
 
+        console.log(originalEvent);
+        console.log(toUpdate);
+
         this.$store.state.class.editMultiple(token, originalEvent.serieId, originalEvent, toUpdate)
           .then(result => {
             if (result === true) {
+
+              const diffInStartHours =
+                moment(toUpdate.start)
+                  .diff(moment(originalEvent.start), 'second');
+
+              const diffInEndHours =
+                moment(toUpdate.end)
+                  .diff(moment(originalEvent.end), 'second');
+
+              this.classes
+                .filter(x => x.serieId === originalEvent.serieId)
+                .forEach(c => {
+                  c.start = moment(c.start).add(diffInStartHours, 'second').toDate();
+                  c.end = moment(c.end).add(diffInEndHours, 'second').toDate();
+                });
+
+              this.updateEventsInCalendar();
+
+
+            } else {
+              info.revert();
+              alert(this.$store.state.class.data.error);
             }
           });
-
-
-        const diffInStartHours =
-          moment(toUpdate.start)
-            .diff(moment(originalEvent.start), 'second');
-
-        const diffInEndHours =
-          moment(toUpdate.end)
-            .diff(moment(originalEvent.end), 'second');
-
-        this.classes
-          .filter(x => x.serieId === originalEvent.serieId)
-          .forEach(c => {
-            c.start = moment(c.start).add(diffInStartHours, 'second').toDate();
-            c.end = moment(c.end).add(diffInEndHours, 'second').toDate();
-          });
-
-        this.updateEventsInCalendar();
-
       }
     },
 
@@ -537,9 +695,9 @@ export default {
       console.log(info);
     },
 
-    eventSelected(event, jsEvent, view) {
-      this.$router.push({ name: 'eventPage', params: { eventId: event.id } });
-    },
+    // eventSelected(event, jsEvent, view) {
+    //   this.$router.push({ name: 'eventPage', params: { eventId: event.id } });
+    // },
 
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
@@ -553,8 +711,8 @@ export default {
       const title = this.newClass.viewInCard;
       let selectInfo = this.actualSelectInfo;
 
-      const startDate = this.formatDate(selectInfo.startStr);
-      const endDate = this.formatDate(selectInfo.endStr);
+      const startDate = selectInfo.startStr;
+      const endDate = selectInfo.endStr;
 
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
@@ -627,17 +785,78 @@ export default {
     },
 
     /**
-     * Remove active event from calendar.
+     * Details of event from calendar.
      */
-    handleEventClick(clickInfo) {
-      // event delete on calendar
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove();
-      }
+    handleEventClick(info) {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.class.getDetails(token, info.event.id)
+        .then(result => {
+          if (result === true) {
+            this.detailsClickedEvent = this.$store.state.class.data;
+            this.detailsClickedEvent.info = info;
+
+            $('#modalDetails').modal('show');
+
+          } else {
+            alert('Refesque la pagina. El evento no fue encontrado');
+          }
+        });
+
+      // if (confirm(`Are you sure you want to delete the event '${info.event.title}'`)) {
+      //   info.event.remove();
+      // }
+    },
+
+    deleteAllEventsInSerie(serieId, info) {
+
+      let calendarApi = info.view.calendar;
+
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.classes.deleteInSerie(token, serieId)
+        .then(result => {
+          if (result === true) {
+
+            let toRemove = this.classes.filter(x => x.serieId === serieId);
+            this.classes = this.classes.filter(x => x.serieId !== serieId);
+
+            toRemove.forEach(e => {
+
+              let event = calendarApi.getEventById(e.id);
+              event.remove();
+
+            });
+
+          } else {
+            alert(this.$store.state.classes.data.error);
+          }
+        });
+
+    },
+
+    deleteEvent(id, info) {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.classes.delete(token, id)
+        .then(result => {
+          if (result === true) {
+
+            this.classes = this.classes.filter(x => x.id !== id);
+            info.event.remove();
+
+          } else {
+            alert(this.$store.state.classes.data.error);
+          }
+        });
+
     },
 
     formatDate(date) {
-      return date;
+      return moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
     },
 
     /**

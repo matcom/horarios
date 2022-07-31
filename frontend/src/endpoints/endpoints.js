@@ -32,6 +32,7 @@ export default {
   classes: baseUrl + 'class',
   multipleEditionClass: baseUrl + 'class/multiple',
   classesGetAll: baseUrl + 'class/all',
+  classRemoveInSerie: baseUrl + 'class/in_serie',
   departments: baseUrl + 'department',
   departmentGetAll: baseUrl + 'department/all',
   semesters: baseUrl + 'semester',

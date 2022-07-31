@@ -26,6 +26,21 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
       });
 
+  }, deleteInSerie(token, id) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.delete(Endpoints.classRemoveInSerie, { id: id })
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
+      })
+      .catch(err => console.log(err));
   }, delete(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
@@ -58,7 +73,7 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
 
       });
-  }, getData(token, filter = {}, pageNum = 1, pageLimit = 10) {
+  }, getData(token, filter = {}, pageNum = 1, pageLimit = 100) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.classes, {
