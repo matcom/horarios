@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateLocalUseCase,
+  FindAllLocalUseCase,
   FindByIdLocalUseCase,
   PaginatedLocalUseCase,
   RemoveLocalUseCase,
@@ -12,6 +13,7 @@ import { LocalPaginatedDto } from '../../application/dtos/local.paginated.dto';
 import { LocalUpdateDto } from '../../application/dtos/local.update.dto';
 import { LocalCreateDto } from '../../application/dtos/local.create.dto';
 import { LocalMappers } from '../../infra/mappers/local.mappers';
+import { LocalFindAllDto } from '../../application/dtos/local.find-all.dto';
 
 @Controller('local')
 export class LocalController {
@@ -23,7 +25,8 @@ export class LocalController {
     private readonly createLocalUseCase: CreateLocalUseCase,
     private readonly updateLocalUseCase: UpdateLocalUseCase,
     private readonly removeLocalUseCase: RemoveLocalUseCase,
-    private readonly paginatedLocalUseCase: PaginatedLocalUseCase) {
+    private readonly paginatedLocalUseCase: PaginatedLocalUseCase,
+    private readonly findAll: FindAllLocalUseCase) {
     this._logger = new Logger('LocalController');
   }
 
@@ -52,6 +55,14 @@ export class LocalController {
 
     const local = await this.createLocalUseCase.execute(body);
     return ProcessResponse.setResponse<Local>(res, local, LocalMappers.DomainToDto);
+  }
+
+  @Post('all')
+  async getAll(@Body() body: LocalFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAll.execute(body);
+    return ProcessResponse.setResponse(res, ans, LocalMappers.AllToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

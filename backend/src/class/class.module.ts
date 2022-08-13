@@ -6,12 +6,14 @@ import { ClassUseCases } from './application/useCases';
 import { ClassRepository } from './infra/repositories/class.repository';
 import { ClassController } from './presentation/controllers/class.controller';
 import { FacultyModule } from '../faculty/faculty.module';
+import { GroupModule } from '../group/group.module';
 
 @Module({
   imports: [
     DataAccessModule,
     TypeOrmModule.forFeature([ClassPersistence]),
     FacultyModule,
+    GroupModule,
   ],
   providers: [...ClassUseCases, ClassRepository],
   exports: [],

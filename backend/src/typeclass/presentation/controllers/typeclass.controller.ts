@@ -8,11 +8,13 @@ import { TypeclassCreateDto } from '../../application/dtos/typeclass.create.dto'
 import { TypeclassMappers } from '../../infra/mappers/typeclass.mappers';
 import {
   CreateTypeClassUseCase,
+  FindAllTypeClassUseCase,
   FindByIdTypeClassUseCase,
   RemoveTypeClassUseCase,
   TypeClassPaginatedUseCase,
   UpdateTypeClassUseCase,
 } from '../../application/useCases';
+import { TypeClassFindAllDto } from '../../application/dtos/typeclass.find-all.dto';
 
 @Controller('typeclass')
 export class TypeClassController {
@@ -24,7 +26,8 @@ export class TypeClassController {
     private readonly createTypeClassUseCase: CreateTypeClassUseCase,
     private readonly updateTypeClassUseCase: UpdateTypeClassUseCase,
     private readonly removeTypeClassUseCase: RemoveTypeClassUseCase,
-    private readonly typeClassPaginatedUseCase: TypeClassPaginatedUseCase) {
+    private readonly typeClassPaginatedUseCase: TypeClassPaginatedUseCase,
+    private readonly findAll: FindAllTypeClassUseCase) {
     this._logger = new Logger('TypeClassController');
   }
 
@@ -43,6 +46,14 @@ export class TypeClassController {
 
     const pag = await this.typeClassPaginatedUseCase.execute(body);
     return ProcessResponse.setResponse(res, pag, TypeclassMappers.PaginatedToDto);
+  }
+
+  @Post('all')
+  async getAll(@Body() body: TypeClassFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAll.execute(body);
+    return ProcessResponse.setResponse(res, ans, TypeclassMappers.AllToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

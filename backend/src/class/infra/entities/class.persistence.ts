@@ -1,11 +1,10 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
-import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
-import { DepartmentPersistence } from '../../../department/infra/entities/department.persistence';
 import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
 import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
 import { TypeclassPersistence } from '../../../typeclass/infra/entities/typeclass.persistence';
+import { GroupPersistence } from '../../../group/infra/entities/group.persistence';
 
 @Entity('class')
 @Index(['id'], { unique: true })
@@ -31,6 +30,9 @@ export class ClassPersistence extends PersistentEntity {
   @Column({ type: 'text', name: 'type_class_id' })
   typeClassId: string;
 
+  @Column({ type: 'text', name: 'group_id' })
+  groupId: string;
+
   @Column({ type: 'timestamp' })
   start: Date;
 
@@ -39,6 +41,9 @@ export class ClassPersistence extends PersistentEntity {
 
   @Column({ type: 'text' })
   serieId: string;
+
+  @Column({ type: 'text', default: '#FF0000' })
+  color: string;
 
   @ManyToMany(
     () => TeacherPersistence,
@@ -70,5 +75,13 @@ export class ClassPersistence extends PersistentEntity {
   )
   @JoinColumn({ name: 'type_class_id' })
   typeClass: TypeclassPersistence | any;
+
+  @ManyToOne(
+    () => GroupPersistence,
+    group => group.classes,
+    { nullable: true },
+  )
+  @JoinColumn({ name: 'group_id' })
+  group: GroupPersistence | any;
 
 }

@@ -8,8 +8,7 @@ import { LocalMappers } from '../../../local/infra/mappers/local.mappers';
 import { LessonMappers } from '../../../lesson/infra/mappers/lesson.mapper';
 import { TypeclassMappers } from '../../../typeclass/infra/mappers/typeclass.mappers';
 import { FindAllResult } from '../../../shared/core/FindAllResult';
-import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
-import { FacultyDto } from '../../../faculty/application/dtos/faculty.dto';
+import { GroupMappers } from '../../../group/infra/mappers/group.mapper';
 
 export class ClassMappers {
   public static PersistToDomain(persist: ClassPersistence): Class {
@@ -23,6 +22,8 @@ export class ClassMappers {
       lessonId: { id: persist.lessonId },
       typeClass: persist.typeClass ? TypeclassMappers.PersistToDomain(persist.typeClass) : null,
       typeClassId: { id: persist.typeClassId },
+      group: persist.group ? GroupMappers.PersistToDomain(persist.group) : null,
+      groupId: { id: persist.groupId },
     }, persist.id);
 
     if (domain.isFailure)
@@ -45,9 +46,11 @@ export class ClassMappers {
       local: domain.localId,
       lesson: domain.lessonId,
       typeClass: domain.typeClassId,
+      group: domain.groupId,
       start: domain.start,
       end: domain.end,
       serieId: domain.serieId,
+      color: domain.color,
     };
   }
 
@@ -63,6 +66,7 @@ export class ClassMappers {
       end: domain.end,
       start: domain.start,
       serieId: domain.serieId,
+      color: domain.color,
     };
   }
 
@@ -92,6 +96,7 @@ export class ClassMappers {
       lesson: domain.lesson ? LessonMappers.DomainToDetails(domain.lesson) : null,
       typeClass: domain.typeClass ? TypeclassMappers.DomainToDetails(domain.typeClass) : null,
       local: domain.local ? LocalMappers.DomainToDetails(domain.local) : null,
+      group: domain.group ? GroupMappers.DomainToDetails(domain.group) : null,
     };
   }
 }
