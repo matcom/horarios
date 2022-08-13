@@ -20,12 +20,10 @@ export default {
     return Petitions.post(`${Endpoints.teachers}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
 
   }, delete(token, id) {
@@ -35,15 +33,13 @@ export default {
     return Petitions.delete(Endpoints.teachers, { id: id })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       })
       .catch(err => console.log(err));
-  }, getAll(token, filter = {}) {
+  }, getAll: function(token, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -54,12 +50,11 @@ export default {
       .then(json => {
         json = json.items;
 
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
       });
   }, getData(token, filter = {}, pageNum = 1, pageLimit = 10) {
     Petitions.clearHeaders();
@@ -73,13 +68,10 @@ export default {
       .then(json => {
 
         json = json.items;
+        this.data = json;
+        this.saveMinData();
 
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
 };

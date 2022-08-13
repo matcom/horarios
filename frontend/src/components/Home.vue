@@ -1,6 +1,8 @@
 <template>
   <div id='home'>
     <div class='row'>
+
+      <!-- Asignaturas -->
       <div class='col'>
         <div class='dropdown mb-0'>
           <button class='btn btn-light dropdown-toggle' type='button' id='asignaturas_drop_down' data-toggle='dropdown'
@@ -18,8 +20,9 @@
           </div>
         </div>
       </div>
-      <div class='col'>
 
+      <!-- Grupos-->
+      <div class='col'>
 
         <div class='dropdown mb-0'>
           <button class='btn btn-light dropdown-toggle' type='button' id='grupos_drop_down' data-toggle='dropdown'
@@ -37,8 +40,9 @@
           </div>
         </div>
 
-
       </div>
+
+      <!-- Locales-->
       <div class='col'>
         <div class='dropdown mb-0'>
           <button class='btn btn-light dropdown-toggle' type='button' id='locales_drop_down' data-toggle='dropdown'
@@ -56,23 +60,31 @@
           </div>
         </div>
       </div>
-      <div class='col'>
-        <div class='dropdown mb-0'>
-          <button class='btn btn-light dropdown-toggle' type='button' id='resources_drop_down' data-toggle='dropdown'
-                  aria-haspopup='true' aria-expanded='true'>
-            Recursos
-          </button>
-          <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'
-               style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
-            <div class='input-group m-2 ' v-for='it in resources' :key='it.id'>
-              <div class='input-group-text bg-white'>
-                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>
-                <span class='ml-2' id='basi1-addon3'>{{ it.name }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <!-- Recursos-->
+
+      <!--      <div class='col'>-->
+
+
+      <!--        <div class='dropdown mb-0'>-->
+      <!--          <button class='btn btn-light dropdown-toggle' type='button' id='resources_drop_down' data-toggle='dropdown'-->
+      <!--                  aria-haspopup='true' aria-expanded='true'>-->
+      <!--            Recursos-->
+      <!--          </button>-->
+      <!--          <div class='dropdown-menu animated&#45;&#45;fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'-->
+      <!--               style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>-->
+      <!--            <div class='input-group m-2 ' v-for='it in resources' :key='it.id'>-->
+      <!--              <div class='input-group-text bg-white'>-->
+      <!--                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.isMarked'>-->
+      <!--                <span class='ml-2' id='basi1-addon3'>{{ it.name }}</span>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+
+      <!--      </div>-->
+
+      <!-- Tipos-->
       <div class='col'>
         <div class='dropdown mb-0'>
           <button class='btn btn-light dropdown-toggle' type='button' id='tipos_drop_down' data-toggle='dropdown'
@@ -90,12 +102,15 @@
           </div>
         </div>
       </div>
+
       <div class='col'>
         <button class='btn btn-block btn-outline-dark' @click='makeQuery'>
           Filtrar
         </button>
       </div>
     </div>
+
+    <!--Fechas-->
     <div class='row'>
       <div class='card-body mt-0' @click.stop style='width: 200px'>
         <div class='row ml-5'>
@@ -103,18 +118,18 @@
             <h1 class='h5 text-dark mt-1'>Desde:</h1>
           </div>
           <div class='col-5'>
-            <datetime type='datetime' :phrases='phrases' v-model='datetimeStart'></datetime>
+            <datetime style='cursor: pointer' type='datetime' :phrases='phrases' v-model='datetimeStart'></datetime>
           </div>
           <div class='col-1'>
             <h1 class='h5 text-dark mt-1 '>Hasta:</h1>
           </div>
           <div class='col-5'>
-            <datetime type='datetime' :phrases='phrases' v-model='datetimeEnd'></datetime>
+            <datetime style='cursor: pointer' type='datetime' :phrases='phrases' v-model='datetimeEnd'></datetime>
           </div>
         </div>
       </div>
     </div>
-    <!--    <full-calendar :events='events' :config='config' @event-selected='eventSelected'></full-calendar>-->
+
 
     <FullCalendar
       :options='config'
@@ -124,7 +139,7 @@
       </template>
     </FullCalendar>
 
-    <!--    Modal Create-->
+    <!-- Modal Create-->
     <div class='modal fade' id='modalCreate' tabindex='-1' role='dialog' aria-labelledby='modalCreate'
          aria-hidden='true' ref='modalCreate'>
       <div class='modal-dialog' role='document'>
@@ -270,6 +285,34 @@
                 </div>
               </div>
 
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Elegir grupo:</label>
+                </div>
+
+                <div class='col-sm-6'>
+                  <div class='form-group'>
+                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
+                            data-toggle='dropdown'
+                            aria-haspopup='true' aria-expanded='false'
+                            style='width: 220px; height: 40px;'
+                            :disabled='this.groups.length === 0'
+                    >
+                      {{
+                        !(newClass.groupId && newClass.groupId.id)
+                          ? 'Elija de la lista'
+                          : groups.find(x => x.id === newClass.groupId.id).shortName
+                      }}
+                    </button>
+
+                    <div class='dropdown-menu'>
+                      <a style='cursor: pointer' v-for='l in this.groups' :key='l.id' class='dropdown-item'
+                         @click.prevent='newClass.groupId = {id: l.id}'>{{ l.fullName }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </form>
           </div>
           <div class='modal-footer'>
@@ -282,6 +325,7 @@
       </div>
     </div>
 
+    <!-- Modal Details-->
     <div class='modal fade' id='modalDetails' tabindex='-1' role='dialog' aria-labelledby='modalDetails'
          aria-hidden='true' ref='modalDetails'>
       <div class='modal-dialog' role='document'>
@@ -396,6 +440,17 @@
 
               </div>
 
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Grupo:</label>
+                </div>
+
+                <div class='col-md-6'>
+                  <p> {{ this.detailsClickedEvent.group.fullName }}</p>
+                </div>
+
+              </div>
+
             </form>
           </div>
           <div class='modal-footer'>
@@ -461,6 +516,7 @@ export default {
         teachers: [],
         lesson: {},
         typeClass: {},
+        group: {},
         local: {},
         start: '',
         end: '',
@@ -469,6 +525,7 @@ export default {
         priority: '',
         serieId: '',
         info: {},
+        color: '',
       },
       newClass: {
         serieId: '',
@@ -483,6 +540,8 @@ export default {
         fullName: '',
         shortName: '',
         priority: '',
+        color: '',
+        groupId: {},
       },
       actualSelectInfo: {},
       config: {
@@ -543,7 +602,7 @@ export default {
       this.loadFrom('lessons');
       this.loadFrom('locals');
       this.loadFrom('semesters');
-      this.loadFrom('classes');
+      // this.loadFrom('classes');
     },
 
     fixHoursInClasses() {
@@ -561,9 +620,10 @@ export default {
       this.classes.forEach(c => {
         this.config.events.push({
           id: c.id,
-          title: c.fullName,
+          title: c.shortName,
           start: c.start,
           end: c.end,
+          color: c.color,
         });
       });
     },
@@ -572,7 +632,7 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state[arg].getData(token)
+      this.$store.state[arg].getAll(token)
         .then(result => {
           if (result === true) {
             this[arg] = this.$store.state[arg].data;
@@ -598,7 +658,7 @@ export default {
       let token = this.$store.state.profile.data.token;
 
       let toSendTags = [];
-      let toSendCourses = [];
+      let toSendLessons = [];
       let toSendGroups = [];
       let toSendLocals = [];
       let toSendResources = [];
@@ -606,7 +666,7 @@ export default {
       let toSendStartDate = null;
       let toSendEndDate = null;
 
-      this.courses.forEach(this.getMarkedData(toSendCourses));
+      this.courses.forEach(this.getMarkedData(toSendLessons));
       this.tags.forEach(this.getMarkedData(toSendTags));
       this.groups.forEach(this.getMarkedData(toSendGroups));
       this.locals.forEach(this.getMarkedData(toSendLocals));
@@ -615,19 +675,21 @@ export default {
       if (this.datetimeStart !== '') {
         toSendStartDate = this.datetimeStart;
       }
+
       if (this.datetimeEnd !== '') {
         toSendEndDate = this.datetimeEnd;
       }
-      this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
+
+      this.$store.state.query.makeQuery(token, toSendLessons, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
         .then(result => {
           if (result === true) {
-            this.events = this.$store.state.query.data;
-            this.events.forEach(event => {
-              event.color = '#428bca';
-              event.textColor = '#ffffff';
-            });
+            this.classes = this.$store.state.query.data;
+
+            this.fixHoursInClasses();
+            this.updateEventsInCalendar();
           }
-          this.loadAll();
+
+          // this.loadAll();
         });
     },
 
@@ -881,6 +943,7 @@ export default {
   },
   created() {
     this.makeQuery();
+    this.loadAll();
   },
 };
 </script>

@@ -23,12 +23,11 @@ export default {
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
       });
   }, getData(token, id) {
     Petitions.clearHeaders();
@@ -37,12 +36,10 @@ export default {
     return Petitions.get(baseEndpoint + '/' + id)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
   }, getDetails(token, id) {
     Petitions.clearHeaders();
@@ -51,15 +48,10 @@ export default {
     return Petitions.get(baseEndpoint + '/details/' + id)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
+        this.data = json;
+        this.saveMinData();
 
-        console.log(json);
-
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
 };
