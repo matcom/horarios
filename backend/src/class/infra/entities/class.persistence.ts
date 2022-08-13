@@ -5,6 +5,7 @@ import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.pers
 import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
 import { TypeclassPersistence } from '../../../typeclass/infra/entities/typeclass.persistence';
 import { GroupPersistence } from '../../../group/infra/entities/group.persistence';
+import { WeekPersistence } from '../../../week/infra/entities/week.persistence';
 
 @Entity('class')
 @Index(['id'], { unique: true })
@@ -44,6 +45,17 @@ export class ClassPersistence extends PersistentEntity {
 
   @Column({ type: 'text', default: '#FF0000' })
   color: string;
+
+  @Column({ type: 'text', name: 'week_id', nullable: true })
+  weekId: string;
+
+  @ManyToOne(
+    () => WeekPersistence,
+    w => w.classes,
+    { onDelete: 'SET NULL', nullable: true },
+  )
+  @JoinColumn({ name: 'week_id' })
+  week: WeekPersistence | any;
 
   @ManyToMany(
     () => TeacherPersistence,

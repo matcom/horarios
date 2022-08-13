@@ -5,9 +5,13 @@ import { SemesterPersistence } from './infra/entities/semester.persistence';
 import { SemesterRepository } from './infra/repositories/semester.repository';
 import { SemesterController } from './presentation/controllers/semester.controller';
 import { SemesterUseCases } from './application/useCases';
+import { WeekModule } from '../week/week.module';
 
 @Module({
-  imports: [DataAccessModule, TypeOrmModule.forFeature([SemesterPersistence])],
+  imports: [
+    DataAccessModule,
+    TypeOrmModule.forFeature([SemesterPersistence]),
+    WeekModule],
   providers: [...SemesterUseCases, SemesterRepository],
   exports: [],
   controllers: [SemesterController],

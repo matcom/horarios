@@ -9,6 +9,7 @@ import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { v4 } from 'uuid';
 import { Group } from '../../../group/domain/entities/group.entity';
+import { Week } from '../../../week/domain/entities/week.entity';
 
 // TODO: agregar grupo.
 type ClassProps = DomainBaseProps & DomainTimestamp & {
@@ -22,6 +23,8 @@ type ClassProps = DomainBaseProps & DomainTimestamp & {
   typeClass?: TypeClass;
   groupId?: { id: string };
   group?: Group;
+  weekId?: { id: string };
+  week?: Week;
   start: Date;
   end: Date;
   serieId: string;
@@ -67,6 +70,14 @@ export class Class extends DomainEntity<ClassProps> {
 
   get teachers(): Teacher[] {
     return this.props.teachers;
+  }
+
+  get weekId(): { id: string } {
+    return this.props.weekId;
+  }
+
+  get week(): Week {
+    return this.props.week;
   }
 
   get localId(): { id: string } {
@@ -150,6 +161,7 @@ export class Class extends DomainEntity<ClassProps> {
     this.props.start = props.start ?? this.props.start;
     this.props.end = props.end ?? this.props.end;
     this.props.groupId = props.groupId ?? this.props.groupId;
+    this.props.weekId = props.weekId ?? this.props.weekId;
 
     this.props.updatedAt = new Date();
   }

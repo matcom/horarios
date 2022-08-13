@@ -8,6 +8,8 @@ import { ClassRepository } from '../../infra/repositories/class.repository';
 import { Class } from '../../domain/entities/class.entity';
 import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 import { FindByIdGroupUseCase } from '../../../group/application/useCases';
+import { FindAllWeekUseCase } from '../../../week/application/useCases';
+import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 
 export type CreateClassUseCaseResponse = Either<AppError.UnexpectedErrorResult<Class>
   | AppError.ValidationErrorResult<Class>,
@@ -22,6 +24,7 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
     private readonly classRepository: ClassRepository,
     private readonly checkClass: CheckClassUseCase,
     private readonly groupFindOne: FindByIdGroupUseCase,
+    private readonly weekFindAll: FindAllWeekUseCase,
   ) {
     this._logger = new Logger('CreateClassUseCase');
   }
@@ -34,7 +37,19 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
     if (group.isRight())
       request.color = group.value.unwrap().color;
 
-    const classOrError: Result<Class> = Class.New({ ...request });
+
+    const week = await this.weekFindAll.execute({
+      filter: {
+        firstDate: LessThanOrEqual(request.start),
+        endDate: MoreThanOrEqual(request.end),
+      },
+    });
+
+    let weekId = undefined;
+    if (week.isRight() && week.value.unwrap().items.length > 0)
+      weekId = { id: week.value.unwrap().items[0]._id.toString() };
+
+    const classOrError: Result<Class> = Class.New({ ...request, weekId });
 
     if (classOrError.isFailure)
       return left(classOrError);

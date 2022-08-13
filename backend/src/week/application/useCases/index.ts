@@ -4,6 +4,7 @@ import { FindByIdWeekUseCase } from './week.find-by-id.use-case';
 import { UpdateWeekUseCase } from './week.update.use-case';
 import { PaginatedWeekUseCase } from './week.paginated.use-case';
 import { FindAllWeekUseCase } from './week.get-all.use-case';
+import { CreateWeekBySemesterUseCase } from './week.create-by-semester.use-case';
 
 export * from './week.find-by-id.use-case';
 export * from './week.remove.use-case';
@@ -11,6 +12,7 @@ export * from './week.update.use-case';
 export * from './week.create.use-case';
 export * from './week.paginated.use-case';
 export * from './week.get-all.use-case';
+export * from './week.create-by-semester.use-case';
 
 export const WeekUseCases = [
   CreateWeekUseCase,
@@ -19,4 +21,5 @@ export const WeekUseCases = [
   UpdateWeekUseCase,
   PaginatedWeekUseCase,
   FindAllWeekUseCase,
+  CreateWeekBySemesterUseCase,
 ];

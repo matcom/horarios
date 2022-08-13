@@ -7,6 +7,7 @@ import { ClassRepository } from './infra/repositories/class.repository';
 import { ClassController } from './presentation/controllers/class.controller';
 import { FacultyModule } from '../faculty/faculty.module';
 import { GroupModule } from '../group/group.module';
+import { WeekModule } from '../week/week.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { GroupModule } from '../group/group.module';
     TypeOrmModule.forFeature([ClassPersistence]),
     FacultyModule,
     GroupModule,
+    WeekModule
   ],
   providers: [...ClassUseCases, ClassRepository],
   exports: [],

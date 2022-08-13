@@ -9,6 +9,7 @@ import { LessonMappers } from '../../../lesson/infra/mappers/lesson.mapper';
 import { TypeclassMappers } from '../../../typeclass/infra/mappers/typeclass.mappers';
 import { FindAllResult } from '../../../shared/core/FindAllResult';
 import { GroupMappers } from '../../../group/infra/mappers/group.mapper';
+import { WeekMapper } from '../../../week/infra/mappers/week.mapper';
 
 export class ClassMappers {
   public static PersistToDomain(persist: ClassPersistence): Class {
@@ -24,6 +25,8 @@ export class ClassMappers {
       typeClassId: { id: persist.typeClassId },
       group: persist.group ? GroupMappers.PersistToDomain(persist.group) : null,
       groupId: { id: persist.groupId },
+      weekId: { id: persist.weekId },
+      week: persist.week ? WeekMapper.PersistToDomain(persist.week) : null,
     }, persist.id);
 
     if (domain.isFailure)
@@ -46,6 +49,7 @@ export class ClassMappers {
       local: domain.localId,
       lesson: domain.lessonId,
       typeClass: domain.typeClassId,
+      week: domain.weekId,
       group: domain.groupId,
       start: domain.start,
       end: domain.end,
@@ -92,11 +96,12 @@ export class ClassMappers {
 
     return {
       ...base,
-      teachers: domain.teachers ? domain.teachers.map(t => TeacherMappers.DomainToDto(t)) : [],
+      teachers: domain.teachers ? domain.teachers.map(t => TeacherMappers.DomainToDetails(t)) : [],
       lesson: domain.lesson ? LessonMappers.DomainToDetails(domain.lesson) : null,
       typeClass: domain.typeClass ? TypeclassMappers.DomainToDetails(domain.typeClass) : null,
       local: domain.local ? LocalMappers.DomainToDetails(domain.local) : null,
       group: domain.group ? GroupMappers.DomainToDetails(domain.group) : null,
+      week: domain.week ? WeekMapper.DomainToDto(domain.week) : null,
     };
   }
 }
