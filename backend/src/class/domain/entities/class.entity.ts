@@ -11,7 +11,6 @@ import { v4 } from 'uuid';
 import { Group } from '../../../group/domain/entities/group.entity';
 import { Week } from '../../../week/domain/entities/week.entity';
 
-// TODO: agregar grupo.
 type ClassProps = DomainBaseProps & DomainTimestamp & {
   teacherIds?: { id: string }[];
   teachers?: Teacher[];
@@ -135,7 +134,7 @@ export class Class extends DomainEntity<ClassProps> {
   public static New(props: newClassProps): Result<Class> {
     const ans: Result<Class> = this.Create({
       ...props,
-      serieId: v4(),
+      serieId: props.serieId ?? v4(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

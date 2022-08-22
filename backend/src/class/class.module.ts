@@ -8,6 +8,9 @@ import { ClassController } from './presentation/controllers/class.controller';
 import { FacultyModule } from '../faculty/faculty.module';
 import { GroupModule } from '../group/group.module';
 import { WeekModule } from '../week/week.module';
+import { SemesterModule } from '../semester/semester.module';
+import { TypeOrmUnitOfWorkFactory } from '../shared/modules/data-access/typeorm/unitwork.factory';
+import { ClassRepositoryFact } from './infra/repositories/class.repository.fact';
 
 @Module({
   imports: [
@@ -15,9 +18,25 @@ import { WeekModule } from '../week/week.module';
     TypeOrmModule.forFeature([ClassPersistence]),
     FacultyModule,
     GroupModule,
-    WeekModule
+    WeekModule,
+    SemesterModule,
   ],
-  providers: [...ClassUseCases, ClassRepository],
+  providers: [
+    ...ClassUseCases,
+    ClassRepository,
+    {
+      provide: 'IUnitOfWorkFactory',
+      useClass: TypeOrmUnitOfWorkFactory,
+    },
+    {
+      provide: 'IClassRepository',
+      useClass: ClassRepository,
+    },
+    {
+      provide: 'IRepositoryClassFactory',
+      useClass: ClassRepositoryFact,
+    },
+  ],
   exports: [],
   controllers: [ClassController],
 })

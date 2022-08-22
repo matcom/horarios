@@ -24,8 +24,6 @@ export class CheckClassUseCase implements IUseCase<Class, Promise<CheckClassUseC
   async execute(request: Class): Promise<CheckClassUseCaseResponse> {
     this._logger.log('Executing...');
 
-    console.log(request);
-
     let qB = (await this
       .classRepository
       .getQueryBuilder('class'))

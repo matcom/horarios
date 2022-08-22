@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateClassUseCase,
+  CreteMultipleClassInSameSerieUseCase,
   FindAllClassUseCase,
   FindByIdClassUseCase,
   FindDetailsClassUseCase,
@@ -20,6 +21,7 @@ import { ClassMappers } from '../../infra/mappers/class.mapper';
 import { FacultyFindAllDto } from '../../../faculty/application/dtos/faculty.find-all.dto';
 import { ClassUpdateMultipleInSameSerieDto } from '../../application/dtos/class-update-multiple-in-same-serie.dto';
 import { ClassQueryDto } from '../../application/dtos/class.query.dto';
+import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-serie.dto';
 
 @Controller('class')
 export class ClassController {
@@ -36,7 +38,8 @@ export class ClassController {
     private readonly findAllClass: FindAllClassUseCase,
     private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
     private readonly removeInSerie: RemoveInSerieClassUseCase,
-    private readonly queryClass: QueryClassUseCase) {
+    private readonly queryClass: QueryClassUseCase,
+    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -92,6 +95,14 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @Post('create/multiple')
+  async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
+    this._logger.log('Create in serie');
+
+    const c = await this.createInSerie.execute(body);
+    return ProcessResponse.setResponse<Class>(res, c, a => a);
+  }
+
   @Post('query')
   async makeQuery(@Body() body: ClassQueryDto, @Response() res) {
     this._logger.log('Make query');
@@ -112,7 +123,7 @@ export class ClassController {
 
   @Put('multiple')
   async updateMultiple(@Body() body: ClassUpdateMultipleInSameSerieDto, @Response() res) {
-    this._logger.log('Update');
+    this._logger.log('Update in serie');
 
     const c = await this.updateMultipleClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, a => a);

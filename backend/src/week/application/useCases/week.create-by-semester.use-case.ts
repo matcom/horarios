@@ -29,7 +29,7 @@ export class CreateWeekBySemesterUseCase implements IUseCase<WeekCreateBySemeste
     for (let i = 1; ; ++i) {
       const lastDate = this.getEndOfWeek(initialDate, new Date(request.semesterEnd));
 
-      if (lastDate >= new Date(request.semesterEnd)) break;
+      if (initialDate >= new Date(request.semesterEnd)) break;
 
       const weekDomainOrError: Result<Week> = Week.New({
         startDate: initialDate,

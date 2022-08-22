@@ -29,14 +29,13 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
     this._logger = new Logger('CreateClassUseCase');
   }
 
-  async execute(request: ClassCreateDto): Promise<CreateClassUseCaseResponse> {
+  async execute(request: ClassCreateDto, persist: boolean = true): Promise<CreateClassUseCaseResponse> {
     this._logger.log('Executing...');
 
     const group = await this.groupFindOne.execute({ id: request.groupId.id });
 
     if (group.isRight())
       request.color = group.value.unwrap().color;
-
 
     const week = await this.weekFindAll.execute({
       filter: {
@@ -62,7 +61,8 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
       return check;
 
     try {
-      await this.classRepository.save(c);
+      if (persist)
+        await this.classRepository.save(c);
 
       return right(Result.Ok(c));
     } catch (error) {

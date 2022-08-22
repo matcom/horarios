@@ -29,6 +29,7 @@ export abstract class BaseRepository<E extends IEntity,
 
   async save(entity: E): Promise<void> {
     this._logger.debug(`Save entity with id: {${entity._id}}`);
+
     await this._entityRepository
       .create(this._domainToPersistentFunc(entity) as DeepPartial<P>)
       .save({ transaction: false });
