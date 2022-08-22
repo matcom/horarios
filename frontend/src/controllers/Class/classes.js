@@ -13,19 +13,20 @@ export default {
     }
   }, removeMinData() {
     localStorage.removeItem(data_key);
-  }, create(token, body) {
+  }, createInSerie(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-    return Petitions.post(`${Endpoints.classes}/create`, body)
-      .then(response => response.json(), response => console.log('Error getting the response.'))
+    return Petitions.post(Endpoints.multipleCreateClass, body)
+      .then(response => response.json())
       .then(json => {
+        json = json.items;
 
         this.data = json;
         this.saveMinData();
 
         return json !== null && !json.hasOwnProperty('error');
-      });
 
+      });
   }, deleteInSerie(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);

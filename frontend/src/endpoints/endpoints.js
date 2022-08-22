@@ -44,6 +44,8 @@ export default {
   classesGetAll: baseUrl + 'class/all',
   classRemoveInSerie: baseUrl + 'class/in_serie',
   query: baseUrl + 'class/query',
+  multipleCreateClass: baseUrl + 'class/create/multiple',
+  createClass: baseUrl + 'class/create',
 
   departments: baseUrl + 'department',
   departmentGetAll: baseUrl + 'department/all',

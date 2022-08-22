@@ -313,6 +313,21 @@
                 </div>
               </div>
 
+              <div class='row'>
+                <div class='col col-md-6'>
+                  <input type='checkbox' v-model='newClass.inSerie' /> Crear en serie ?
+                </div>
+
+                <div class='col col-md-6'>
+
+                  <div class='form-group'>
+                    <input type='number' :disabled='!newClass.inSerie' class='form-control'
+                           v-model='newClass.frequency' />
+                  </div>
+
+                </div>
+              </div>
+
             </form>
           </div>
           <div class='modal-footer'>
@@ -428,6 +443,22 @@
                 </div>
               </div>
 
+
+              <div class='row'>
+                <div class='col-md-6'>
+                  <label class='col-form-label'> Evento en serie:</label>
+                </div>
+
+                <div class='col-sm-6'>
+                  <div class='form-group'>
+
+                    <p v-if='detailsClickedEvent.frequency'> Cada {{ this.detailsClickedEvent.frequency }} dias durante
+                      todo el semestre </p>
+
+                  </div>
+                </div>
+              </div>
+
               <div class='row'>
                 <div class='col-md-6'>
                   <label class='col-form-label'> Horario:</label>
@@ -526,6 +557,7 @@ export default {
         serieId: '',
         info: {},
         color: '',
+        frequency: 0,
       },
       newClass: {
         serieId: '',
@@ -542,6 +574,8 @@ export default {
         priority: '',
         color: '',
         groupId: {},
+        inSerie: false,
+        frequency: 0,
       },
       actualSelectInfo: {},
       config: {
@@ -765,7 +799,22 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
     },
 
-    addEvent(id, title, start, end, allDay) {
+    addEvent(id, title, start, end, allDay, data, selectInfo) {
+
+      this.classes.push(data);
+      this.classes = this.classes.slice().sort((a, b) => b.shortName - a.shortName);
+
+      let calendarApi = selectInfo.view.calendar;
+      calendarApi.unselect(); // clear date selection
+      if (title) {
+        calendarApi.addEvent({
+          id,
+          title,
+          start,
+          end,
+          allDay,
+        });
+      }
 
     },
 
@@ -790,28 +839,53 @@ export default {
           this.newClass.teacherIds.push({ id: s.id });
       });
 
-      this.$store.state.classes.create(token, this.newClass).then(result => {
-        if (result === true) {
-          this.classes.push(this.$store.state.classes.data);
-          this.classes = this.classes.slice().sort((a, b) => b.shortName - a.shortName);
+      if (!this.newClass.inSerie) {
 
-          let calendarApi = selectInfo.view.calendar;
-          calendarApi.unselect(); // clear date selection
-          if (title) {
-            calendarApi.addEvent({
-              id: Math.random(),
-              title,
-              start: selectInfo.startStr,
-              end: selectInfo.endStr,
-              allDay: selectInfo.allDay,
-            });
-          }
+        this.$store.state.class.create(token, this.newClass)
+          .then(result => {
+            if (result === true) {
+              this.addEvent(
+                this.$store.state.class.data.id,
+                title,
+                startDate,
+                endDate,
+                selectInfo.allDay,
+                this.$store.state.class.data,
+                selectInfo);
+            } else {
+              alert(this.$store.state.class.data.error);
+            }
+          });
 
-        } else {
-          alert(this.$store.state.classes.data.error);
-        }
-      });
+      } else {
 
+        this.$store.state.classes.createInSerie(token, this.newClass)
+          .then(result => {
+            if (result === true) {
+
+              let data = this.$store.state.classes.data;
+
+              data.forEach(d => {
+
+                this.newClass.id = d.id;
+                this.newClass.start = d.start;
+                this.newClass.end = d.end;
+
+                this.addEvent(
+                  d.id,
+                  title,
+                  d.start,
+                  d.end,
+                  selectInfo.allDay,
+                  this.newClass,
+                  selectInfo);
+              });
+            } else {
+              alert(this.$store.state.classes.data.error);
+            }
+          });
+
+      }
       this.restore();
 
     },
@@ -834,6 +908,8 @@ export default {
         fullName: '',
         shortName: '',
         priority: '',
+        frequency: 0,
+        inSerie: false,
       };
     },
 
