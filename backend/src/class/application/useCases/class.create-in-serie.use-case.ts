@@ -13,12 +13,14 @@ import { v4 } from 'uuid';
 import { IUnitOfWork, IUnitOfWorkFactory } from '../../../shared/core/interfaces/IUnitOfWork';
 import { IRepository, IRepositoryFactory } from '../../../shared/core/interfaces/IRepository';
 import { Class } from '../../domain/entities/class.entity';
+import { MultipleResponseDto } from '../dtos/create-multiple.response.dto';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 
 export type CreateMultipleClassUseCaseResponse =
-  Either<AppError.UnexpectedErrorResult<number | any>
-    | AppError.ValidationErrorResult<number | any>
-    | AppError.ObjectNotExistResult<number | any>,
-    Result<number | any>>;
+  Either<AppError.UnexpectedErrorResult<FindAllResult<MultipleResponseDto>>
+    | AppError.ValidationErrorResult<FindAllResult<MultipleResponseDto>>
+    | AppError.ObjectNotExistResult<FindAllResult<MultipleResponseDto>>,
+    Result<FindAllResult<MultipleResponseDto>>>;
 
 @Injectable()
 export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreateInSerieDto, Promise<CreateMultipleClassUseCaseResponse>> {
@@ -61,6 +63,7 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
 
     request.start = new Date(request.start);
     request.end = new Date(request.end);
+    request.frequency = parseInt(request.frequency as string);
 
     try {
       const unitOfWork: IUnitOfWork = this._unitOfWorkFact.build();
@@ -76,7 +79,7 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
 
   private async work(request: ClassCreateInSerieDto, repo: IRepository<Class>, serieId: string, endSemester: Date): Promise<CreateMultipleClassUseCaseResponse> {
 
-    let counter: number = 0;
+    let answer: MultipleResponseDto[] = [];
     while (true) {
 
       if (!(request.start.getDay() == 6 || request.start.getDay() == 0)) {
@@ -91,16 +94,24 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
           return left(Result.Fail(new AppError.UnexpectedError(new Error(ans.value.unwrapError().message))));
 
         await repo.save(ans.value.unwrap());
-        counter++;
+
+        let unwrapped = ans.value.unwrap();
+        answer.push({
+          id: unwrapped._id.toString(),
+          start: new Date(unwrapped.start),
+          end: new Date(unwrapped.end),
+        });
       }
 
-      request.start.setDate(request.start.getDate() + request.frequency);
-      request.end.setDate(request.end.getDate() + request.frequency);
+      request.start.setDate(request.start.getDate() + (request.frequency as number));
+      request.end.setDate(request.end.getDate() + (request.frequency as number));
 
       if (request.end.getTime() > endSemester.getTime())
         break;
     }
 
-    return right(Result.Ok(counter));
+    return right(Result.Ok({
+      items: answer,
+    }));
   }
 }

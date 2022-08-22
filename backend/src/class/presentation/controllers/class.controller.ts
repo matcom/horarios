@@ -100,7 +100,7 @@ export class ClassController {
     this._logger.log('Create in serie');
 
     const c = await this.createInSerie.execute(body);
-    return ProcessResponse.setResponse<Class>(res, c, a => a);
+    return ProcessResponse.setResponse(res, c);
   }
 
   @Post('query')
