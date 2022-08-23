@@ -34,7 +34,7 @@
             <div class='input-group m-2 ' v-for='it in groups' :key='it.id'>
               <div class='input-group-text bg-white'>
                 <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                <span class='ml-2' id='basi7-addon3'>{{ it.shortName }}</span>
+                <span class='ml-2' :style='{color: it.color}' id='basi7-addon3'>{{ it.shortName }}</span>
               </div>
             </div>
           </div>
