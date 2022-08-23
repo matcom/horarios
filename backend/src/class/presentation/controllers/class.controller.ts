@@ -1,11 +1,16 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateClassUseCase,
+  CreteMultipleClassInSameSerieUseCase,
+  FindAllClassUseCase,
   FindByIdClassUseCase,
   FindDetailsClassUseCase,
   PaginatedClassUseCase,
+  QueryClassUseCase,
   RemoveClassUseCase,
+  RemoveInSerieClassUseCase,
   UpdateClassUseCase,
+  UpdateMultipleClassInSameSerieUseCase,
 } from '../../application/useCases';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import { Class } from '../../domain/entities/class.entity';
@@ -13,6 +18,10 @@ import { ClassPaginatedDto } from '../../application/dtos/class.paginated.dto';
 import { ClassUpdateDto } from '../../application/dtos/class.update.dto';
 import { ClassCreateDto } from '../../application/dtos/class.create.dto';
 import { ClassMappers } from '../../infra/mappers/class.mapper';
+import { FacultyFindAllDto } from '../../../faculty/application/dtos/faculty.find-all.dto';
+import { ClassUpdateMultipleInSameSerieDto } from '../../application/dtos/class-update-multiple-in-same-serie.dto';
+import { ClassQueryDto } from '../../application/dtos/class.query.dto';
+import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-serie.dto';
 
 @Controller('class')
 export class ClassController {
@@ -25,7 +34,12 @@ export class ClassController {
     private readonly updateClass: UpdateClassUseCase,
     private readonly removeClass: RemoveClassUseCase,
     private readonly paginatedClass: PaginatedClassUseCase,
-    private readonly findDetailsClass: FindDetailsClassUseCase) {
+    private readonly findDetailsClass: FindDetailsClassUseCase,
+    private readonly findAllClass: FindAllClassUseCase,
+    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
+    private readonly removeInSerie: RemoveInSerieClassUseCase,
+    private readonly queryClass: QueryClassUseCase,
+    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -44,6 +58,22 @@ export class ClassController {
 
     const c = await this.findDetailsClass.execute({ id: params.id });
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDetails);
+  }
+
+  @Post('all')
+  async getAll(@Body() body: FacultyFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAllClass.execute(body);
+    return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
+  }
+
+  @Post('query')
+  async getQuery(@Body() body: ClassQueryDto, @Response() res) {
+    this._logger.log('Get with query');
+
+    const ans = await this.queryClass.execute(body);
+    return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
 
 
@@ -65,6 +95,22 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @Post('create/multiple')
+  async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
+    this._logger.log('Create in serie');
+
+    const c = await this.createInSerie.execute(body);
+    return ProcessResponse.setResponse(res, c);
+  }
+
+  @Post('query')
+  async makeQuery(@Body() body: ClassQueryDto, @Response() res) {
+    this._logger.log('Make query');
+
+    const c = await this.queryClass.execute(body);
+    return ProcessResponse.setResponse(res, c, ClassMappers.AllToDto);
+  }
+
   // @UseGuards(JwtAuthGuard)
   @Put()
   async update(@Body() body: ClassUpdateDto, @Response() res) {
@@ -74,6 +120,15 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+
+  @Put('multiple')
+  async updateMultiple(@Body() body: ClassUpdateMultipleInSameSerieDto, @Response() res) {
+    this._logger.log('Update in serie');
+
+    const c = await this.updateMultipleClass.execute(body);
+    return ProcessResponse.setResponse<Class>(res, c, a => a);
+  }
+
   // @UseGuards(JwtAuthGuard)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
@@ -81,5 +136,13 @@ export class ClassController {
 
     const c = await this.removeClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
+  }
+
+  @Delete('in_serie')
+  async deleteInSerie(@Body() body: { id: string }, @Response() res) {
+    this._logger.log('Delete In Serie');
+
+    const c = await this.removeInSerie.execute(body);
+    return ProcessResponse.setResponse<number | any>(res, c, a => a);
   }
 }

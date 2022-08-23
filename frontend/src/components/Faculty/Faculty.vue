@@ -133,7 +133,7 @@ export default {
     loadData() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
-      this.$store.state.faculty.getData(token, this.faculty.id).then(result => {
+      this.$store.state.faculty.getDetails(token, this.faculty.id).then(result => {
         if (result === true) {
           this.faculty = this.$store.state.faculty.data;
         } else {

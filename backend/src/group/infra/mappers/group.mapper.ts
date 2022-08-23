@@ -3,8 +3,8 @@ import { Group } from '../../domain/entities/group.entity';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { GroupDto } from '../../application/dtos/group.dto';
 import { GroupDetailsDto } from '../../application/dtos/group.details.dto';
-import { FacultyMappers } from '../../../faculty/infra/mappers/faculty.mappers';
 import { MajorMappers } from '../../../major/infra/mappers/major.mappers';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 
 export class GroupMappers {
   public static PersistToDomain(persist: GroupPersistence): Group {
@@ -33,6 +33,7 @@ export class GroupMappers {
       updatedAt: domain.updatedAt,
       major: domain.majorId,
       year: domain.year,
+      color: domain.color,
     };
   }
 
@@ -45,8 +46,15 @@ export class GroupMappers {
       priority: domain.priority,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-      majorId: domain.majorId.id,
+      majorId: domain.majorId,
       year: domain.year,
+      color: domain.color,
+    };
+  }
+
+  public static AllToDto(all: FindAllResult<Group>): FindAllResult<GroupDto> {
+    return {
+      items: all.items.map(GroupMappers.DomainToDto),
     };
   }
 
@@ -64,7 +72,7 @@ export class GroupMappers {
 
     return {
       ...base,
-      major: domain.major ? MajorMappers.DomainToDto(domain.major) : null,
+      major: domain.major ? MajorMappers.DomainToDetails(domain.major) : null,
     };
   }
 }

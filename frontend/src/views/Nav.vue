@@ -41,14 +41,47 @@
             </router-link>
           </li>
 
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseFacultyPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Facultades</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'teachersPage'}" class='nav-link'>
+            <router-link :to="{name: 'chooseMajorPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Carreras</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseLocalPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Locales</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseTeacherPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
               <span>Profesores</span>
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
+
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseLessonPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Asignaturas</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'typeClassesPage'}" class='nav-link'>
               <i class='fas fa-fw fa-th-list'></i>
@@ -56,8 +89,27 @@
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
-
-
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseGroupPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-people-carry'></i>
+              <span>Grupos</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-people-carry'></i>
+              <span>Departamentos</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+          <li class='nav-item form-inline'>
+            <router-link :to="{name: 'semestersPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-people-carry'></i>
+              <span>Semestres</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
         </div>
 
         <!-- Divider -->

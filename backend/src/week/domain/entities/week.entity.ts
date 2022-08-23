@@ -3,12 +3,15 @@ import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { DomainBaseProps } from '../../../shared/domain/domain.base-props';
 import { DomainTimestamp } from '../../../shared/domain/domain.timestamp';
+import { Semester } from '../../../semester/domain/entities/semester.entity';
 
 type WeekProps = DomainBaseProps & DomainTimestamp & {
   duration: number;
-  firstDay?: string;
-  endDay?: string;
-  number?: number;
+  startDate?: Date;
+  endDate?: Date;
+  semesterId?: { id: string };
+  semester?: Semester;
+  number: number;
 };
 
 type newWeekProps = Omit<WeekProps,
@@ -20,16 +23,24 @@ export class Week extends DomainEntity<WeekProps> {
     return this.props.duration;
   }
 
-  get firstDay(): string {
-    return this.props.firstDay;
-  }
-
-  get endDay(): string {
-    return this.props.endDay;
-  }
-
   get number(): number {
     return this.props.number;
+  }
+
+  get semesterId(): { id: string } {
+    return this.props.semesterId;
+  }
+
+  get semester(): Semester {
+    return this.props.semester;
+  }
+
+  get firstDate(): Date {
+    return this.props.startDate;
+  }
+
+  get endDate(): Date {
+    return this.props.endDate;
   }
 
   get shortName(): string {
@@ -79,8 +90,8 @@ export class Week extends DomainEntity<WeekProps> {
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.duration = props.duration ?? this.props.duration;
     this.props.shortName = props.shortName ?? this.props.shortName;
-    this.props.firstDay = props.firstDay ?? this.props.firstDay;
-    this.props.endDay = props.endDay ?? this.props.endDay;
+    this.props.startDate = props.firstDate ?? this.props.startDate;
+    this.props.endDate = props.endDate ?? this.props.endDate;
     this.props.number = props.number ?? this.props.number;
 
     this.props.updatedAt = new Date();

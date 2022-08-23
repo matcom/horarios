@@ -4,8 +4,6 @@ import CourseController from './controllers/course';
 import CoursesController from './controllers/courses';
 import EventController from './controllers/event';
 import EventsController from './controllers/events';
-import GroupController from './controllers/group';
-import GroupsController from './controllers/groups';
 import ProfileController from './controllers/profile';
 import QueryController from './controllers/query';
 import ResourceController from './controllers/resource';
@@ -31,6 +29,16 @@ import TypeClasses from './controllers/TypeClasses/typeClasses';
 import TypeClass from './controllers/TypeClasses/typeClass';
 import Majors from './controllers/Major/majors';
 import Major from './controllers/Major/major';
+import GroupController from './controllers/Group/group';
+import GroupsController from './controllers/Group/groups';
+import DepartmentController from './controllers/Department/department';
+import DepartmentsController from './controllers/Department/departments';
+import LessonController from './controllers/Lessons/lesson';
+import LessonsController from './controllers/Lessons/lessons';
+import SemesterController from './controllers/Semester/semester';
+import SemestersControllers from './controllers/Semester/semesters';
+import ClassController from './controllers/Class/class';
+import ClassesController from './controllers/Class/classes';
 
 Vue.use(Vuex);
 
@@ -67,6 +75,14 @@ const store = new Vuex.Store({
     typeClass: TypeClass,
     majors: Majors,
     major: Major,
+    department: DepartmentController,
+    departments: DepartmentsController,
+    lesson: LessonController,
+    lessons: LessonsController,
+    semester: SemesterController,
+    semesters: SemestersControllers,
+    class: ClassController,
+    classes: ClassesController,
   }, mutations: {}, actions: {},
 });
 

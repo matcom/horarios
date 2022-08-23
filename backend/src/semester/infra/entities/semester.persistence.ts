@@ -1,6 +1,7 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
-import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
+import { Column, Entity, Index, ManyToMany, OneToMany } from 'typeorm';
+import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
+import { WeekPersistence } from '../../../week/infra/entities/week.persistence';
 
 @Entity('semester')
 @Index(['id'], { unique: true })
@@ -20,9 +21,22 @@ export class SemesterPersistence extends PersistentEntity {
   @Column({ type: 'float' })
   duration: number;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   start: Date;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   end: Date;
+
+  @ManyToMany(
+    () => LessonPersistence,
+    lesson => lesson.semesters,
+    {},
+  )
+  lessons: LessonPersistence[];
+
+  @OneToMany(
+    () => WeekPersistence,
+    w => w.semester,
+    {})
+  weeks: WeekPersistence[] | any;
 }

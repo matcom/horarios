@@ -9,8 +9,9 @@ import { AppError } from '../../../shared/core/errors/AppError';
 
 type GroupProps = DomainBaseProps & DomainTimestamp & {
   majorId?: { id: string };
-  major?: Major;
+  major?: Major | any;
   year: number;
+  color: string;
 };
 
 type newGroupProps = Omit<GroupProps,
@@ -28,6 +29,10 @@ export class Group extends DomainEntity<GroupProps> {
 
   get description(): string {
     return this.props.description;
+  }
+
+  get color(): string {
+    return this.props.color;
   }
 
   get priority(): number {

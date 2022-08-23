@@ -4,8 +4,6 @@ import Course from './components/Course';
 import Courses from './components/Courses';
 import Event from './components/Event';
 import Events from './components/Events';
-import Group from './components/Group';
-import Groups from './components/Groups';
 import Home from './components/Home';
 import Login from './views/Login';
 import Nav from './views/Nav';
@@ -36,6 +34,21 @@ import TypeClasses from '@/components/TypeClass/TypeClasses';
 import TypeClass from '@/components/TypeClass/TypeClass';
 import Majors from '@/components/Major/Majors';
 import Major from '@/components/Major/Major';
+import Group from '@/components/Group/Group';
+import Groups from '@/components/Group/Groups';
+import ChooseGroup from '@/components/Group/ChooseGroup';
+import Department from '@/components/Department/Department';
+import Departments from '@/components/Department/Departments';
+import ChooseDepartment from '@/components/Department/ChooseDepartment';
+import ChooseFaculty from '@/components/Faculty/ChooseFaculty';
+import ChooseLocals from '@/components/Local/ChooseLocals';
+import ChooseMajor from '@/components/Major/ChooseMajor';
+import ChooseLesson from '@/components/Lesson/ChooseLesson';
+import Lessons from '@/components/Lesson/Lessons';
+import Lesson from '@/components/Lesson/Lesson';
+import ChooseTeacher from '@/components/Teacher/ChooseTeacher';
+import Semester from '@/components/Semester/Semester';
+import Semesters from '@/components/Semester/Semesters';
 
 Vue.use(Router);
 
@@ -112,7 +125,7 @@ const router = new Router({
           },
         },
         {
-          path: '/faculties/:facultyId',
+          path: '/faculties/details/:facultyId',
           name: 'facultyPage',
           component: Faculty,
           meta: {
@@ -120,7 +133,40 @@ const router = new Router({
           },
         },
         {
-          path: '/teachers',
+          path: '/faculty/choose',
+          name: 'chooseFacultyPage',
+          component: ChooseFaculty,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/semesters/',
+          name: 'semestersPage',
+          component: Semesters,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/semester/details/:semesterId',
+          name: 'semesterPage',
+          component: Semester,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+
+        {
+          path: '/teacher/choose',
+          name: 'chooseTeacherPage',
+          component: ChooseTeacher,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/teachers/:departmentId',
           name: 'teachersPage',
           component: Teachers,
           meta: {
@@ -128,9 +174,17 @@ const router = new Router({
           },
         },
         {
-          path: '/teachers/:teacherId',
+          path: '/teachers/details/:teacherId',
           name: 'teacherPage',
           component: Teacher,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/local/choose',
+          name: 'chooseLocalPage',
+          component: ChooseLocals,
           meta: {
             requiresAuth: true,
           },
@@ -168,6 +222,14 @@ const router = new Router({
           },
         },
         {
+          path: '/major/choose',
+          name: 'chooseMajorPage',
+          component: ChooseMajor,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
           path: '/majors/:facultyId',
           name: 'majorsPage',
           component: Majors,
@@ -179,6 +241,30 @@ const router = new Router({
           path: '/major/:majorId',
           name: 'majorPage',
           component: Major,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/lesson/choose',
+          name: 'chooseLessonPage',
+          component: ChooseLesson,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/lesson/:majorId',
+          name: 'lessonsPage',
+          component: Lessons,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/lesson/details/:lessonId',
+          name: 'lessonPage',
+          component: Lesson,
           meta: {
             requiresAuth: true,
           },
@@ -216,40 +302,56 @@ const router = new Router({
             requiresAuth: true,
           },
         },
+
         {
-          path: '/groups/:groupId',
+          path: '/group/choose',
+          name: 'chooseGroupPage',
+          component: ChooseGroup,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/groups/details/:groupId',
           name: 'groupPage',
           component: Group,
           meta: {
             requiresAuth: true,
           },
         },
-
         {
-          path: '/groups',
+          path: '/groups/:majorId',
           name: 'groupsPage',
           component: Groups,
           meta: {
             requiresAuth: true,
           },
         },
+        {
+          path: '/department/choose',
+          name: 'chooseDepartmentPage',
+          component: ChooseDepartment,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/department/details/:departmentId',
+          name: 'departmentPage',
+          component: Department,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/department/:facultyId',
+          name: 'departmentsPage',
+          component: Departments,
+          meta: {
+            requiresAuth: true,
+          },
+        },
 
-        {
-          path: '/locals/:localId',
-          name: 'localPage',
-          component: Local,
-          meta: {
-            requiresAuth: true,
-          },
-        },
-        {
-          path: '/locals',
-          name: 'localsPage',
-          component: Locals,
-          meta: {
-            requiresAuth: true,
-          },
-        },
         {
           path: '/profile',
           name: 'profilePage',

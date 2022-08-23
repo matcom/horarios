@@ -74,12 +74,7 @@ export default {
     })
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-
-
         json = json.items;
-
-        console.log(json);
-
         if (json !== null && !json.hasOwnProperty('error')) {
           this.data = json;
           this.saveMinData();

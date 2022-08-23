@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateGroupUseCase,
+  FindAllGroupUseCase,
   FindByIdGroupUseCase,
   FindDetailsGroupUseCase,
   PaginatedGroupUseCase,
@@ -13,6 +14,7 @@ import { GroupPaginatedDto } from '../../application/dtos/group.paginated.dto';
 import { GroupUpdateDto } from '../../application/dtos/group.update.dto';
 import { GroupCreateDto } from '../../application/dtos/group.create.dto';
 import { GroupMappers } from '../../infra/mappers/group.mapper';
+import { GroupFindAllDto } from '../../application/dtos/group.find-all.dto';
 
 @Controller('group')
 export class GroupController {
@@ -25,7 +27,8 @@ export class GroupController {
     private readonly updateGroup: UpdateGroupUseCase,
     private readonly removeGroup: RemoveGroupUseCase,
     private readonly paginatedGroup: PaginatedGroupUseCase,
-    private readonly findDetailsGroup: FindDetailsGroupUseCase) {
+    private readonly findDetailsGroup: FindDetailsGroupUseCase,
+    private readonly findAllGroups: FindAllGroupUseCase) {
 
     this._logger = new Logger('GroupController');
   }
@@ -53,6 +56,14 @@ export class GroupController {
 
     const pag = await this.paginatedGroup.execute(body);
     return ProcessResponse.setResponse(res, pag, GroupMappers.PaginatedToDto);
+  }
+
+  @Post('all')
+  async getAll(@Body() body: GroupFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAllGroups.execute(body);
+    return ProcessResponse.setResponse(res, ans, GroupMappers.AllToDto);
   }
 
   // @UseGuards(JwtAuthGuard)

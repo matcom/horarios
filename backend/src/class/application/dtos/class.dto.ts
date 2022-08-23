@@ -4,4 +4,6 @@ import { BaseDto } from '../../../shared/core/BaseDto';
 export type ClassDto = PropsBaseDto & BaseDto & {
   start: Date;
   end: Date;
+  serieId: string;
+  color: string;
 }

@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateTeacherUseCase,
+  FindAllTeacherUseCase,
   FindByIdTeacherUseCase,
   FindDetailsTeacherUseCase,
   PaginatedTeacherUseCase,
@@ -13,6 +14,7 @@ import { TeacherPaginatedDto } from '../../application/dtos/teacher.paginated.dt
 import { TeacherUpdateDto } from '../../application/dtos/teacher.update.dto';
 import { TeacherCreateDto } from '../../application/dtos/teacher.create.dto';
 import { TeacherMappers } from '../../infra/mappers/teacher.mappers';
+import { TeacherFindAllDto } from '../../application/dtos/teacher.find-all.dto';
 
 @Controller('teacher')
 export class TeacherController {
@@ -25,7 +27,8 @@ export class TeacherController {
     private readonly updateTeacher: UpdateTeacherUseCase,
     private readonly removeTeacher: RemoveTeacherUseCase,
     private readonly paginatedTeacher: PaginatedTeacherUseCase,
-    private readonly findDetailsTeacher: FindDetailsTeacherUseCase) {
+    private readonly findDetailsTeacher: FindDetailsTeacherUseCase,
+    private readonly findAllTeachers: FindAllTeacherUseCase) {
 
     this._logger = new Logger('TeacherController');
   }
@@ -36,6 +39,15 @@ export class TeacherController {
 
     const teacher = await this.findOneUseCase.execute({ id: params.id });
     return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
+  }
+
+
+  @Post('all')
+  async getAll(@Body() body: TeacherFindAllDto, @Response() res) {
+    this._logger.log('Get All');
+
+    const ans = await this.findAllTeachers.execute(body);
+    return ProcessResponse.setResponse(res, ans, TeacherMappers.AllToDto);
   }
 
   @Get('details/:id')

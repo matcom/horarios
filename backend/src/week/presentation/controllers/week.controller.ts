@@ -3,6 +3,7 @@ import {
   CreateWeekUseCase,
   FindAllWeekUseCase,
   FindByIdWeekUseCase,
+  FindDetailsWeekUseCase,
   RemoveWeekUseCase,
   UpdateWeekUseCase,
 } from '../../application/useCases';
@@ -26,7 +27,8 @@ export class WeekController {
     private readonly updateWeek: UpdateWeekUseCase,
     private readonly removeWeek: RemoveWeekUseCase,
     private readonly paginatedWeek: PaginatedWeekUseCase,
-    private readonly findAllWeek: FindAllWeekUseCase) {
+    private readonly findAllWeek: FindAllWeekUseCase,
+    private readonly findDetailsWeek: FindDetailsWeekUseCase) {
     this._logger = new Logger('WeekController');
   }
 
@@ -36,6 +38,15 @@ export class WeekController {
 
     const week = await this.findOneUseCase.execute({ id: params.id });
     return ProcessResponse.setResponse<Week>(res, week, WeekMapper.DomainToDto);
+
+  }
+
+  @Get('details/:id')
+  async findDetails(@Param() params, @Response() res) {
+    this._logger.log('Find details');
+
+    const week = await this.findDetailsWeek.execute({ id: params.id });
+    return ProcessResponse.setResponse(res, week, WeekMapper.DomainToDetails);
 
   }
 

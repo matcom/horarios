@@ -120,7 +120,7 @@ export default {
 
       this.facultyId = this.$route.params.facultyId;
 
-      this.$store.state.majors.getData(token).then(result => {
+      this.$store.state.majors.getData(token, 1, 10, { facultyId: this.facultyId }).then(result => {
         if (result === true) {
           this.majors = this.$store.state.majors.data;
           this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
@@ -147,7 +147,7 @@ export default {
 
       this.$store.state.majors.delete(token, majorId).then(result => {
         if (result === true) {
-          this.majors = this.majors.filter(u => u.id != majorId);
+          this.majors = this.majors.filter(u => u.id !== majorId);
           this.majors = this.majors.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });

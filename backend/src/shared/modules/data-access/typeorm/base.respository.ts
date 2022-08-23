@@ -1,7 +1,7 @@
 import { IRepository } from 'src/shared/core/interfaces/IRepository';
 import { OrmName } from '../types/orm-name.enum';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, Repository, SelectQueryBuilder } from 'typeorm';
 import { Logger, Type } from '@nestjs/common';
 import { PersistentEntity } from './base.entity';
 import { IEntity } from 'src/shared/core/interfaces/IEntity';
@@ -29,6 +29,7 @@ export abstract class BaseRepository<E extends IEntity,
 
   async save(entity: E): Promise<void> {
     this._logger.debug(`Save entity with id: {${entity._id}}`);
+
     await this._entityRepository
       .create(this._domainToPersistentFunc(entity) as DeepPartial<P>)
       .save({ transaction: false });
@@ -66,7 +67,11 @@ export abstract class BaseRepository<E extends IEntity,
     return this._persistToDomainFunc(ans);
   }
 
-  async findAll(filter: {}): Promise<FindAllResult<E>> {
+  async getQueryBuilder(name): Promise<SelectQueryBuilder<P>> {
+    return this._entityRepository.createQueryBuilder(name);
+  }
+
+  async findAll(filter: {} | any): Promise<FindAllResult<E>> {
     this._logger.log('Find All');
 
     const count = await this.count(filter);
@@ -95,6 +100,10 @@ export abstract class BaseRepository<E extends IEntity,
   async count(filter: {}): Promise<number> {
     this._logger.log('Count');
     return await this._entityRepository.count(filter);
+  }
+
+  async executeRawQuery(query: string, params: any[]): Promise<any> {
+    await this._entityRepository.query(query, params);
   }
 
   async getPaginated(paginatorParams: PageParams, filter: {}): Promise<PaginatedFindResult<E>> {

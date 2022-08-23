@@ -154,7 +154,7 @@ export default {
 
       this.$store.state.locals.delete(token, localId).then(result => {
         if (result === true) {
-          this.locals = this.locals.filter(u => u.id != localId);
+          this.locals = this.locals.filter(u => u.id !== localId);
           this.locals = this.locals.slice().sort((a, b) => b.shortName - a.shortName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
