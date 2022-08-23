@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
-  CreateTeacherUseCase, FindAllTeacherUseCase,
+  CreateTeacherUseCase,
+  FindAllTeacherUseCase,
   FindByIdTeacherUseCase,
   FindDetailsTeacherUseCase,
   PaginatedTeacherUseCase,
@@ -46,7 +47,7 @@ export class TeacherController {
     this._logger.log('Get All');
 
     const ans = await this.findAllTeachers.execute(body);
-    return ProcessResponse.setResponse(res, ans, TeacherMappers.PaginatedToDto);
+    return ProcessResponse.setResponse(res, ans, TeacherMappers.AllToDto);
   }
 
   @Get('details/:id')

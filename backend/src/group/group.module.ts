@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DataAccessModule } from '../shared/modules/data-access/data-access.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GroupPersistence } from './infra/entities/group.persistence';
-import { GroupUseCases } from './application/useCases';
+import { FindByIdGroupUseCase, GroupUseCases } from './application/useCases';
 import { GroupRepository } from './infra/repositories/group.repository';
 import { FacultyModule } from '../faculty/faculty.module';
 import { GroupController } from './presentation/controller/group.controller';
@@ -14,7 +14,7 @@ import { GroupController } from './presentation/controller/group.controller';
     FacultyModule,
   ],
   providers: [...GroupUseCases, GroupRepository],
-  exports: [],
+  exports: [FindByIdGroupUseCase],
   controllers: [GroupController],
 })
 export class GroupModule {

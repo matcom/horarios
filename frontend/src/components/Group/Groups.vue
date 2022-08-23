@@ -59,6 +59,7 @@
           <div class='modal-body'>
             <form>
               <div class='row'>
+
                 <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
@@ -73,12 +74,21 @@
                     <input type='number' class='form-control' id='input-priority' v-model='newGroup.priority' />
                   </div>
                 </div>
+
+
                 <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-description' class='col-form-label'>Year:</label>
                     <input class='form-control' id='input-description' v-model='newGroup.year'>
                   </div>
+
+                  <div class='form-group'>
+                    <label for='input-color' class='col-form-label'>Color:</label>
+                    <input type='color' class='form-control' id='input-color' v-model='newGroup.color'>
+                  </div>
+
                 </div>
+
               </div>
 
               <div class='form-group'>
@@ -117,6 +127,7 @@ export default {
         description: '',
         year: '',
         majorId: {},
+        color: '',
       },
     };
   },

@@ -16,6 +16,19 @@ export default {
   },
   removeMinData() {
     localStorage.removeItem(data_key);
+  }, create(token, body) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+    return Petitions.post(Endpoints.createClass, body)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+      });
+
   },
   getData(token, id) {
     Petitions.clearHeaders();

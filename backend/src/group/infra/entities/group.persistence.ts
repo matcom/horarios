@@ -1,7 +1,7 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { MajorPersistence } from '../../../major/infra/entities/major.persistence';
+import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
 
 @Entity('group')
 @Index(['id'], { unique: true })
@@ -24,6 +24,9 @@ export class GroupPersistence extends PersistentEntity {
   @Column({ type: 'text', name: 'major_id' })
   majorId: string;
 
+  @Column({ type: 'text', default: '#0000FF' })
+  color: string;
+
   @ManyToOne(
     () => MajorPersistence,
     major => major.groups,
@@ -31,4 +34,11 @@ export class GroupPersistence extends PersistentEntity {
   )
   @JoinColumn({ name: 'major_id' })
   major: MajorPersistence | any;
+
+  @OneToMany(
+    () => ClassPersistence,
+    c => c.group,
+    {},
+  )
+  classes: ClassPersistence[];
 }

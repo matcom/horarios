@@ -29,13 +29,13 @@
                   id='input-select-university'
                   data-toggle='dropdown'
                   aria-haspopup='true' aria-expanded='false'
-                  style='width: 220px; height: 40px;'
+                  style='width: 220px; height: 40px; cursor: pointer'
           >
             {{ btnSelectUniversityText }}
           </button>
 
           <div class='dropdown-menu'>
-            <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
+            <a v-for='u in this.universities' :key='u.id' class='dropdown-item' style='cursor: pointer'
                @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
           </div>
         </div>
@@ -46,14 +46,14 @@
           <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
                   data-toggle='dropdown'
                   aria-haspopup='true' aria-expanded='false'
-                  style='width: 220px; height: 40px;'
+                  style='width: 220px; height: 40px; cursor: pointer'
                   :disabled='this.faculties.length === 0'
           >
             {{ btnSelectFacultyText }}
           </button>
 
           <div class='dropdown-menu'>
-            <a v-for='u in this.faculties' :key='u.id' class='dropdown-item'
+            <a v-for='u in this.faculties' :key='u.id' class='dropdown-item' style='cursor:pointer;'
                @click.prevent='chooseFaculty(u.fullName)'>{{ u.fullName }}</a>
           </div>
         </div>
@@ -65,14 +65,14 @@
           <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
                   data-toggle='dropdown'
                   aria-haspopup='true' aria-expanded='false'
-                  style='width: 220px; height: 40px;'
+                  style='width: 220px; height: 40px; cursor: pointer'
                   :disabled='this.majors.length === 0'
           >
             {{ btnSelectedMajorText }}
           </button>
 
           <div class='dropdown-menu'>
-            <a v-for='m in this.majors' :key='m.id' class='dropdown-item'
+            <a v-for='m in this.majors' :key='m.id' class='dropdown-item' style='cursor:pointer;'
                @click.prevent='chooseMajor(m.fullName)'>{{ m.fullName }}</a>
           </div>
         </div>

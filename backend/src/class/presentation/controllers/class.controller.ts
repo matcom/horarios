@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
 import {
   CreateClassUseCase,
+  CreteMultipleClassInSameSerieUseCase,
   FindAllClassUseCase,
   FindByIdClassUseCase,
   FindDetailsClassUseCase,
   PaginatedClassUseCase,
+  QueryClassUseCase,
   RemoveClassUseCase,
   RemoveInSerieClassUseCase,
   UpdateClassUseCase,
@@ -18,6 +20,8 @@ import { ClassCreateDto } from '../../application/dtos/class.create.dto';
 import { ClassMappers } from '../../infra/mappers/class.mapper';
 import { FacultyFindAllDto } from '../../../faculty/application/dtos/faculty.find-all.dto';
 import { ClassUpdateMultipleInSameSerieDto } from '../../application/dtos/class-update-multiple-in-same-serie.dto';
+import { ClassQueryDto } from '../../application/dtos/class.query.dto';
+import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-serie.dto';
 
 @Controller('class')
 export class ClassController {
@@ -33,7 +37,9 @@ export class ClassController {
     private readonly findDetailsClass: FindDetailsClassUseCase,
     private readonly findAllClass: FindAllClassUseCase,
     private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
-    private readonly removeInSerie: RemoveInSerieClassUseCase) {
+    private readonly removeInSerie: RemoveInSerieClassUseCase,
+    private readonly queryClass: QueryClassUseCase,
+    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -46,6 +52,14 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @Get('details/:id')
+  async findDetails(@Param() params, @Response() res) {
+    this._logger.log('Find One Details');
+
+    const c = await this.findDetailsClass.execute({ id: params.id });
+    return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDetails);
+  }
+
   @Post('all')
   async getAll(@Body() body: FacultyFindAllDto, @Response() res) {
     this._logger.log('Get All');
@@ -54,12 +68,12 @@ export class ClassController {
     return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
 
-  @Get('details/:id')
-  async findDetails(@Param() params, @Response() res) {
-    this._logger.log('Find One Details');
+  @Post('query')
+  async getQuery(@Body() body: ClassQueryDto, @Response() res) {
+    this._logger.log('Get with query');
 
-    const c = await this.findDetailsClass.execute({ id: params.id });
-    return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDetails);
+    const ans = await this.queryClass.execute(body);
+    return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
 
 
@@ -81,6 +95,22 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @Post('create/multiple')
+  async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
+    this._logger.log('Create in serie');
+
+    const c = await this.createInSerie.execute(body);
+    return ProcessResponse.setResponse(res, c);
+  }
+
+  @Post('query')
+  async makeQuery(@Body() body: ClassQueryDto, @Response() res) {
+    this._logger.log('Make query');
+
+    const c = await this.queryClass.execute(body);
+    return ProcessResponse.setResponse(res, c, ClassMappers.AllToDto);
+  }
+
   // @UseGuards(JwtAuthGuard)
   @Put()
   async update(@Body() body: ClassUpdateDto, @Response() res) {
@@ -93,7 +123,7 @@ export class ClassController {
 
   @Put('multiple')
   async updateMultiple(@Body() body: ClassUpdateMultipleInSameSerieDto, @Response() res) {
-    this._logger.log('Update');
+    this._logger.log('Update in serie');
 
     const c = await this.updateMultipleClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, a => a);

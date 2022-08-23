@@ -17,7 +17,7 @@ export class ClassRepository extends BaseRepository<Class, ClassPersistence> imp
     const c = await this
       ._entityRepository
       .findOne(id, {
-        relations: ['lesson', 'teachers', 'local', 'typeClass'],
+        relations: ['lesson', 'teachers', 'local', 'typeClass', 'group'],
       });
 
     return ClassMappers.PersistToDomain(c);

@@ -64,7 +64,9 @@ export class Semester extends DomainEntity<SemesterProps> {
   }
 
   public static Create(props: SemesterProps, id: string = null): Result<Semester> {
-    // set guards here
+    props.start.setHours(0, 0, 0, 0);
+    props.end.setHours(0, 0, 0, 0);
+
     return Result.Ok(new Semester(props, new UniqueEntityID(id)));
   }
 
@@ -76,6 +78,9 @@ export class Semester extends DomainEntity<SemesterProps> {
     this.props.shortName = props.shortName ?? this.props.shortName;
     this.props.start = props.start ?? this.props.start;
     this.props.end = props.end ?? this.props.end;
+
+    this.props.start.setHours(0, 0, 0, 0);
+    this.props.end.setHours(0, 0, 0, 0);
 
     this.props.updatedAt = new Date();
   }

@@ -54,12 +54,11 @@ export default {
       .then(json => {
         json = json.items;
 
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
       });
   }, getData(token, pageNum = 1, pageLimit = 10, filter = {}) {
     Petitions.clearHeaders();

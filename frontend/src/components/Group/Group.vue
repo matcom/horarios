@@ -67,6 +67,16 @@
           </div>
         </div>
 
+
+        <div class='col-sm-6'>
+          <div class='card text-center'>
+            <div class='card-body'>
+              <h5 class='card-title text-black-50'><strong> Color</strong></h5>
+              <p class='card-text'>{{ group.color }}</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -109,6 +119,11 @@
                 </div>
 
                 <div class='form-group'>
+                  <label for='input-color' class='col-form-label'>Color:</label>
+                  <input type='color' class='form-control' id='input-color' v-model='newGroup.color'>
+                </div>
+
+                <div class='form-group'>
                   <label for='input-description' class='col-form-label'>Descripcion:</label>
                   <textarea class='form-control' id='input-description' v-model='group.description'></textarea>
                 </div>
@@ -142,6 +157,7 @@ export default {
         priority: '',
         major: {},
         year: '',
+        color: '',
       },
     };
   },
