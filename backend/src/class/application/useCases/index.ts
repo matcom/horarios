@@ -10,6 +10,7 @@ import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 import { RemoveInSerieClassUseCase } from './class.remove-in-serie.use-case';
 import { QueryClassUseCase } from './class.query.use-case';
 import { CreteMultipleClassInSameSerieUseCase } from './class.create-in-serie.use-case';
+import { FindAllWithDetailsClassUseCase } from './class.find-all-details.use-case';
 
 export * from './class.create.use-case';
 export * from './class.find-by-id.use-case';
@@ -23,6 +24,7 @@ export * from './class.check-class-restrictions.use-case';
 export * from './class.remove-in-serie.use-case';
 export * from './class.query.use-case';
 export * from './class.create-in-serie.use-case';
+export * from './class.find-all-details.use-case';
 
 export const ClassUseCases = [
   CreateClassUseCase,
@@ -36,5 +38,6 @@ export const ClassUseCases = [
   CheckClassUseCase,
   RemoveInSerieClassUseCase,
   QueryClassUseCase,
-  CreteMultipleClassInSameSerieUseCase
+  CreteMultipleClassInSameSerieUseCase,
+  FindAllWithDetailsClassUseCase,
 ];
