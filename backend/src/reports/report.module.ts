@@ -4,12 +4,14 @@ import { ClassModule } from '../class/class.module';
 import { GroupModule } from '../group/group.module';
 import { LocalModule } from '../local/local.module';
 import { ReportsController } from './presentation/controllers/reports.controller';
+import { LessonModule } from '../lesson/lesson.module';
 
 @Module({
   imports: [
     ClassModule,
     GroupModule,
     LocalModule,
+    LessonModule
   ],
   providers: [GenerateExcelReport],
   exports: [GenerateExcelReport],
