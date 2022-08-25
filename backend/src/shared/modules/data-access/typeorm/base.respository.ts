@@ -71,7 +71,7 @@ export abstract class BaseRepository<E extends IEntity,
     return this._entityRepository.createQueryBuilder(name);
   }
 
-  async findAll(filter: {} | any): Promise<FindAllResult<E>> {
+  async findAll(filter: {} | any, sort = {}): Promise<FindAllResult<E>> {
     this._logger.log('Find All');
 
     const count = await this.count(filter);
@@ -80,6 +80,7 @@ export abstract class BaseRepository<E extends IEntity,
 
     const ans = await this._entityRepository.find({
       where: filter,
+      order: sort,
     });
 
     return {

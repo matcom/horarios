@@ -108,6 +108,12 @@
           Filtrar
         </button>
       </div>
+
+      <div class='col'>
+        <button class='btn btn-block btn-outline-dark' @click='download'>
+          Descargar
+        </button>
+      </div>
     </div>
 
     <!--Fechas-->
@@ -1015,6 +1021,31 @@ export default {
       console.log(events);
 
       this.currentEvents = events;
+    },
+
+    download() {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.reports.generateExcelReport(token)
+        .then(result => {
+          if (result === true) {
+            const response = this.$store.state.reports.data.data;
+
+            const url = window
+              .URL
+              .createObjectURL(
+                new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'report');
+            document.body.appendChild(link);
+
+            link.click();
+            link.remove();
+          }
+        });
     },
   },
   created() {

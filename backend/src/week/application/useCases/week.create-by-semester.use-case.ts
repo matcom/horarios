@@ -32,7 +32,7 @@ export class CreateWeekBySemesterUseCase implements IUseCase<WeekCreateBySemeste
       if (initialDate >= new Date(request.semesterEnd)) break;
 
       const weekDomainOrError: Result<Week> = Week.New({
-        startDate: initialDate,
+        firstDate: initialDate,
         endDate: lastDate,
         description: `Generado automatico. Semana: ${i}`,
         duration: 5,

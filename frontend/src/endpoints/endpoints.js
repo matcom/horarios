@@ -55,4 +55,6 @@ export default {
 
   lessons: baseUrl + 'lesson',
   lessonsGetAll: baseUrl + 'lesson/all',
+
+  excelReport: baseUrl + 'reports/excel',
 };

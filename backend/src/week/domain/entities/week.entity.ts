@@ -7,7 +7,7 @@ import { Semester } from '../../../semester/domain/entities/semester.entity';
 
 type WeekProps = DomainBaseProps & DomainTimestamp & {
   duration: number;
-  startDate?: Date;
+  firstDate?: Date;
   endDate?: Date;
   semesterId?: { id: string };
   semester?: Semester;
@@ -36,7 +36,7 @@ export class Week extends DomainEntity<WeekProps> {
   }
 
   get firstDate(): Date {
-    return this.props.startDate;
+    return this.props.firstDate;
   }
 
   get endDate(): Date {
@@ -90,7 +90,7 @@ export class Week extends DomainEntity<WeekProps> {
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.duration = props.duration ?? this.props.duration;
     this.props.shortName = props.shortName ?? this.props.shortName;
-    this.props.startDate = props.firstDate ?? this.props.startDate;
+    this.props.firstDate = props.firstDate ?? this.props.firstDate;
     this.props.endDate = props.endDate ?? this.props.endDate;
     this.props.number = props.number ?? this.props.number;
 
