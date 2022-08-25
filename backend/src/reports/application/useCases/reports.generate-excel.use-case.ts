@@ -129,7 +129,8 @@ export class GenerateExcelReport {
       await this.makeLegend(ws, year);
 
     }
-    doc.write('report.xlsx');
+
+    return doc;
   }
 
   private async makeLegend(ws: xl.Worksheet, year: number) {

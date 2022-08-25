@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, Response } from '@nestjs/common';
 import { GenerateExcelReport } from '../../application/useCases/reports.generate-excel.use-case';
 
 @Controller('reports')
@@ -12,9 +12,12 @@ export class ReportsController {
   }
 
   @Get('excel')
-  async generateExcel() {
+  async generateExcel(@Response() res) {
     this._logger.log('Generate Excel');
 
-    return this.generateExcelReport.Handle();
+    let doc = await this.generateExcelReport.Handle();
+
+    // return doc;
+    doc.write('report.xlsx', res);
   }
 }
