@@ -22,4 +22,16 @@ export class ClassRepository extends BaseRepository<Class, ClassPersistence> imp
 
     return ClassMappers.PersistToDomain(c);
   }
+
+  async findAllWithDetails(filter = {}, sort = {}): Promise<Class[]> {
+    const c = await this
+      ._entityRepository
+      .find({
+        where: filter,
+        order: sort,
+        relations: ['lesson', 'local', 'typeClass', 'week'],
+      });
+
+    return c.map(ClassMappers.PersistToDomain);
+  }
 }

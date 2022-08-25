@@ -18,6 +18,7 @@ import { SemesterModule } from './semester/semester.module';
 import { WeekModule } from './week/week.module';
 import { ClassModule } from './class/class.module';
 import { GroupModule } from './group/group.module';
+import { ReportModule } from './reports/report.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { GroupModule } from './group/group.module';
     WeekModule,
     ClassModule,
     GroupModule,
+    ReportModule,
   ],
   controllers: [],
   providers: [],

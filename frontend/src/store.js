@@ -39,6 +39,7 @@ import SemesterController from './controllers/Semester/semester';
 import SemestersControllers from './controllers/Semester/semesters';
 import ClassController from './controllers/Class/class';
 import ClassesController from './controllers/Class/classes';
+import ReportsController from './controllers/Reports/report';
 
 Vue.use(Vuex);
 
@@ -83,6 +84,7 @@ const store = new Vuex.Store({
     semesters: SemestersControllers,
     class: ClassController,
     classes: ClassesController,
+    reports: ReportsController,
   }, mutations: {}, actions: {},
 });
 

@@ -101,7 +101,7 @@ export class ClassMappers {
       typeClass: domain.typeClass ? TypeclassMappers.DomainToDetails(domain.typeClass) : null,
       local: domain.local ? LocalMappers.DomainToDetails(domain.local) : null,
       group: domain.group ? GroupMappers.DomainToDetails(domain.group) : null,
-      week: domain.week ? WeekMapper.DomainToDto(domain.week) : null,
+      week: domain.week ? WeekMapper.DomainToDetails(domain.week) : null,
     };
   }
 }
