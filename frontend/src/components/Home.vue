@@ -520,6 +520,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import moment from 'moment';
+import Permission from '@/utils/permission';
 
 Settings.defaultLocale = 'es';
 
@@ -594,8 +595,8 @@ export default {
           resourceTimelinePlugin,
         ],
         locale: 'es',
-        editable: true, // change this for update
-        selectable: true,
+        editable: false, // for edit events
+        selectable: false, // for select events [add too]
         navLinks: true,
         weekends: false, // poner fines de semana
         events: [],
@@ -634,6 +635,7 @@ export default {
       phrases: { ok: 'Aceptar', cancel: 'Cancelar' },
     };
   },
+
   methods: {
     loadAll() {
       this.loadFrom('typeClasses');
@@ -643,6 +645,10 @@ export default {
       this.loadFrom('locals');
       this.loadFrom('semesters');
       // this.loadFrom('classes');
+
+      let isAuthored = this.isLogued();
+      this.config.selectable = isAuthored;
+      this.config.editable = isAuthored;
     },
 
     fixHoursInClasses() {
@@ -1046,6 +1052,14 @@ export default {
             link.remove();
           }
         });
+    },
+
+    viewPanel() {
+      return this.$store.state.profile.hasRole(Permission.VIEW_PANEL);
+    },
+
+    isLogued() {
+      return this.$store.state.profile.isLogued();
     },
   },
   created() {

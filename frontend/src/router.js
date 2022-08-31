@@ -53,6 +53,7 @@ import Semesters from '@/components/Semester/Semesters';
 Vue.use(Router);
 
 const checkforAuth = (to, from, next) => {
+  console.log('checkforAuth');
   if (to.matched.some(route => route.meta.requiresAuth)) {
     Store.state.profile.loadMinData();
     if (Store.state.profile.isLogued() === false) {
@@ -66,6 +67,7 @@ const checkRoles = (to, from, next) => {
     Store.state.profile.loadMinData();
     let haveAccess = true;
     to.meta.requireRoles.forEach((role) => {
+      console.log(role);
       haveAccess = haveAccess & Store.state.profile.hasRole(role);
     });
     if (haveAccess === 0) {
@@ -89,16 +91,13 @@ const router = new Router({
       name: 'navPage',
       component: Nav,
       meta: {
-        requiresAuth: true,
+        // requiresAuth: true,
       },
       children: [
         {
           path: '/home',
           name: 'homePage',
           component: Home,
-          meta: {
-            requiresAuth: true,
-          },
         },
         {
           path: '/universities',
@@ -106,6 +105,9 @@ const router = new Router({
           component: Universities,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -114,6 +116,9 @@ const router = new Router({
           component: University,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -122,6 +127,9 @@ const router = new Router({
           component: Faculties,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -130,6 +138,9 @@ const router = new Router({
           component: Faculty,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -138,6 +149,9 @@ const router = new Router({
           component: ChooseFaculty,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -146,6 +160,9 @@ const router = new Router({
           component: Semesters,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -154,6 +171,9 @@ const router = new Router({
           component: Semester,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
 
@@ -163,6 +183,9 @@ const router = new Router({
           component: ChooseTeacher,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -171,6 +194,9 @@ const router = new Router({
           component: Teachers,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -179,6 +205,9 @@ const router = new Router({
           component: Teacher,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -187,6 +216,9 @@ const router = new Router({
           component: ChooseLocals,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -195,6 +227,9 @@ const router = new Router({
           component: Locals,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -203,6 +238,9 @@ const router = new Router({
           component: Local,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -211,6 +249,9 @@ const router = new Router({
           component: TypeClasses,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -219,6 +260,9 @@ const router = new Router({
           component: TypeClass,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -227,6 +271,9 @@ const router = new Router({
           component: ChooseMajor,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -235,6 +282,9 @@ const router = new Router({
           component: Majors,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -243,6 +293,9 @@ const router = new Router({
           component: Major,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -251,6 +304,9 @@ const router = new Router({
           component: ChooseLesson,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -259,6 +315,9 @@ const router = new Router({
           component: Lessons,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -267,6 +326,9 @@ const router = new Router({
           component: Lesson,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
 
@@ -276,6 +338,9 @@ const router = new Router({
           component: Course,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -292,6 +357,9 @@ const router = new Router({
           component: Event,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -300,6 +368,9 @@ const router = new Router({
           component: Events,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
 
@@ -309,6 +380,9 @@ const router = new Router({
           component: ChooseGroup,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -317,6 +391,9 @@ const router = new Router({
           component: Group,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -325,6 +402,9 @@ const router = new Router({
           component: Groups,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -333,6 +413,9 @@ const router = new Router({
           component: ChooseDepartment,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -341,6 +424,9 @@ const router = new Router({
           component: Department,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -349,15 +435,20 @@ const router = new Router({
           component: Departments,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
-
         {
           path: '/profile',
           name: 'profilePage',
           component: Profile,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -366,6 +457,9 @@ const router = new Router({
           component: Resource,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -374,6 +468,9 @@ const router = new Router({
           component: Resources,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {
@@ -382,6 +479,9 @@ const router = new Router({
           component: Tag,
           meta: {
             requiresAuth: true,
+            requireRoles: [
+              Permission.VIEW_PANEL,
+            ],
           },
         },
         {

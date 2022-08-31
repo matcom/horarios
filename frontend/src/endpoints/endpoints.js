@@ -6,8 +6,6 @@ export default {
   courses: baseUrl + 'courses',
   events: baseUrl + 'events',
   permissions: baseUrl + 'permissions',
-  profile: baseUrl + 'profile',
-  register: baseUrl + 'auth/register',
   roles: baseUrl + 'roles',
   resources: baseUrl + 'resources',
   notifications: baseUrl + 'notifications',
@@ -17,6 +15,9 @@ export default {
   intervals: baseUrl + 'intervals',
   free_locals: baseUrl + 'locals/free',
   free_resources: baseUrl + 'resources/free',
+
+  register: baseUrl + 'auth/register',
+  profile: baseUrl + 'user/profile',
 
   local: baseUrl + 'local',
   localGetAll: baseUrl + 'local/all',

@@ -2,6 +2,7 @@ import Petitions from './petitions';
 import Endpoints from '../endpoints/endpoints';
 
 const data_key = 'calendario-matcom-profile';
+const data_user = 'calendario-matcom-user';
 
 export default {
   data: {
@@ -9,16 +10,17 @@ export default {
     username: '',
     fullname: '',
     email: '',
-    year: '',
     token: '',
     remember: '',
-    role: 0,
+    permissions: 0,
   },
   saveMinData() {
     localStorage.setItem(data_key, JSON.stringify({
       token: String(this.data.token),
       remember: String(this.data.remember),
     }));
+
+    localStorage.setItem(data_user, JSON.stringify(this.data));
   },
   loadMinData() {
     if (localStorage.getItem(data_key) !== null) {
@@ -29,9 +31,14 @@ export default {
   },
   removeMinData() {
     localStorage.removeItem(data_key);
+    localStorage.removeItem(data_user);
   },
   isLogued() {
-    return this.data.token !== '';
+    if (localStorage.getItem(data_user) !== null)
+      this.data = JSON.parse(localStorage.getItem(data_user));
+
+
+    return this.data.token !== '' && this.data.email !== '';
   },
   logOut() {
     this.data.id = -1;
@@ -50,17 +57,20 @@ export default {
       password,
     }).then(response => response.json(), response => console.log('Error getting the response.'));
 
-    console.log(ans);
-
     return ans;
   },
   authenticate(username, password, remember) {
     return this.getAuthJson(username, password)
       .then(json => {
         if (json.hasOwnProperty('token')) {
+
           this.data.token = String(json.token);
           this.data.remember = Boolean(json.remember || false);
           this.saveMinData();
+
+          this.getData().then(r => {
+          });
+
           return true;
         }
         console.log(json.error + ':' + json.message);
@@ -70,7 +80,7 @@ export default {
   getData() {
     this.loadMinData();
     Petitions.clearHeaders();
-    Petitions.set_JSONHeaders(this.data.token, '');
+    Petitions.set_JSONHeaders('', '', this.data.token);
     return Petitions.get(Endpoints.profile).then(
       response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
@@ -78,7 +88,8 @@ export default {
           this.data.email = json.email;
           this.data.username = json.username;
           this.data.id = json.id;
-          this.data.role = json.role;
+          this.data.permissions = json.permissions;
+
           this.saveMinData();
         }
       });
@@ -93,6 +104,15 @@ export default {
     }).then(response => response.json(), response => console.log('Error getting the response.'));
   },
   hasRole(role) {
-    return ((this.isLogued() === true) && ((this.data.role & role) === role));
+    console.log(1, this.isLogued());
+    console.log(2, this.data.permissions & role);
+    console.log(3, this.data.permissions);
+    console.log(4, role);
+
+    let ans = ((this.isLogued() === true) && ((this.data.permissions & role) === role));
+
+    console.log(5, ans);
+
+    return ans;
   },
 };
