@@ -6,11 +6,13 @@ import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 
 export class UserMapper {
   public static PersistToDomain(persist: UserPersistence): User {
+
+    if (!persist) return null;
+
     const domain = User.Create({
       ...persist,
-    }, persist.id);
+    }, persist?.id);
 
-    // TODO: handle this
     if (domain.isFailure)
       throw new Error(domain.unwrapError().message);
 
@@ -25,7 +27,7 @@ export class UserMapper {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       email: domain.email,
-      roles: domain.roles,
+      permissions: domain.permissions,
       password: domain.password,
       status: domain.status,
     };
@@ -36,7 +38,7 @@ export class UserMapper {
       id: domain._id.toString(),
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-      roles: domain.roles,
+      permissions: domain.permissions,
       status: domain.status,
       email: domain.email,
       username: domain.username,

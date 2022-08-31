@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
 
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import { TypeClass } from '../../domain/entities/typeclass.entity';
@@ -15,6 +15,9 @@ import {
   UpdateTypeClassUseCase,
 } from '../../application/useCases';
 import { TypeClassFindAllDto } from '../../application/dtos/typeclass.find-all.dto';
+import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 
 @Controller('typeclass')
 export class TypeClassController {
@@ -56,7 +59,8 @@ export class TypeClassController {
     return ProcessResponse.setResponse(res, ans, TypeclassMappers.AllToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TYPE_CLASS)
   @Post('create')
   async create(@Body() body: TypeclassCreateDto, @Response() res) {
 
@@ -66,7 +70,8 @@ export class TypeClassController {
     return ProcessResponse.setResponse<TypeClass>(res, local, TypeclassMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TYPE_CLASS)
   @Put()
   async update(@Body() body: TypeclassUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -75,7 +80,8 @@ export class TypeClassController {
     return ProcessResponse.setResponse<TypeClass>(res, local, TypeclassMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TYPE_CLASS)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');
