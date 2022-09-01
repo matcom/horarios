@@ -37,7 +37,6 @@ export default {
     if (localStorage.getItem(data_user) !== null)
       this.data = JSON.parse(localStorage.getItem(data_user));
 
-
     return this.data.token !== '' && this.data.email !== '';
   },
   logOut() {
@@ -47,6 +46,7 @@ export default {
     this.data.email = '';
     this.data.year = '';
     this.data.token = '';
+
     this.removeMinData();
   },
   getAuthJson(email, password) {
@@ -104,15 +104,6 @@ export default {
     }).then(response => response.json(), response => console.log('Error getting the response.'));
   },
   hasRole(role) {
-    console.log(1, this.isLogued());
-    console.log(2, this.data.permissions & role);
-    console.log(3, this.data.permissions);
-    console.log(4, role);
-
-    let ans = ((this.isLogued() === true) && ((this.data.permissions & role) === role));
-
-    console.log(5, ans);
-
-    return ans;
+    return ((this.isLogued() === true) && ((this.data.permissions & role) === role));
   },
 };

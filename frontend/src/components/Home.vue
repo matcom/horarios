@@ -492,11 +492,11 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='deleteAllEventsInSerie(detailsClickedEvent.serieId, detailsClickedEvent.info)'>
               Eliminar todos los eventos de la serie
             </button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='deleteEvent(detailsClickedEvent.id, detailsClickedEvent.info)'>
               Eliminar solo este evento
             </button>
@@ -504,6 +504,26 @@
         </div>
       </div>
     </div>
+
+    <!-- Accion sobre toda la serie -->
+<!--    <div class='modal fade' id='allInSerie' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel'-->
+<!--         aria-hidden='true'>-->
+<!--      <div class='modal-dialog' role='document'>-->
+<!--        <div class='modal-content'>-->
+<!--          <div class='modal-header'>-->
+<!--            <h5 class='modal-title' id='exampleModalLabel'>Desea realizar la acción sobre todos los eventos de la serie-->
+<!--              ?</h5>-->
+<!--            <button class='close' type='button' data-dismiss='modal' aria-label='Close'>-->
+<!--              <span aria-hidden='true'>x</span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class='modal-footer'>-->
+<!--            <button class='btn btn-secondary' type='button' data-dismiss='modal'>Solo este evento</button>-->
+<!--            <button class='btn btn-primary' data-dismiss='modal'>Sobre toda la serie</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
   </div>
 </template>
@@ -645,10 +665,6 @@ export default {
       this.loadFrom('locals');
       this.loadFrom('semesters');
       // this.loadFrom('classes');
-
-      let isAuthored = this.isLogued();
-      this.config.selectable = isAuthored;
-      this.config.editable = isAuthored;
     },
 
     fixHoursInClasses() {
@@ -747,7 +763,7 @@ export default {
      * Event has already been dropped on a valid date-time.
      */
     eventDrop(info) {
-      const updateAllEvents = confirm('Desea modificar el horario de todos los eventos de la serie ?');
+      const updateAllEvents = confirm('Se modificará el horario de todos los eventos de la serie. Si cancela solo se actualizará el evento actual.');
 
       const originalEvent = this.classes.find(x => x.id === info.event.id);
       const newStartEvent = info.event.startStr;
@@ -761,9 +777,6 @@ export default {
 
         this.$store.state.profile.loadMinData();
         let token = this.$store.state.profile.data.token;
-
-        console.log(originalEvent);
-        console.log(toUpdate);
 
         this.$store.state.class.editMultiple(token, originalEvent.serieId, originalEvent, toUpdate)
           .then(result => {
@@ -799,8 +812,7 @@ export default {
      * Event has been resized.
      */
     eventResize(info) {
-      console.log('into event resize');
-      console.log(info);
+      // this.eventDrop(info);
     },
 
     // eventSelected(event, jsEvent, view) {
@@ -1063,6 +1075,11 @@ export default {
     },
   },
   created() {
+    let isAuthored = this.isLogued();
+
+    this.config.selectable = isAuthored;
+    this.config.editable = isAuthored;
+
     this.makeQuery();
     this.loadAll();
   },
