@@ -34,10 +34,12 @@ export default {
     localStorage.removeItem(data_user);
   },
   isLogued() {
-    if (localStorage.getItem(data_user) !== null)
-      this.data = JSON.parse(localStorage.getItem(data_user));
+    let temporalData = this.data;
 
-    return this.data.token !== '' && this.data.email !== '';
+    if (localStorage.getItem(data_user) !== null)
+      temporalData = JSON.parse(localStorage.getItem(data_user));
+
+    return temporalData.token !== '' && temporalData.email !== '';
   },
   logOut() {
     this.data.id = -1;
