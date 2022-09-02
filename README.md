@@ -15,7 +15,7 @@ Tutor: Pedro Quintero Rojas
 >- docker-compose
 >- nodejs (superior a la version 16.0.0)
 >  ```bash
->  Para actualizar la version de nodejs:
+>  Para actualizar la version de nodejs: (desde Windows quitar sudo)
 >  
 >  sudo npm cache clean -f
 >  sudo npm install -g n 
@@ -24,7 +24,7 @@ Tutor: Pedro Quintero Rojas
 >- npm (superior a la version 8.0.0)
 
 Estar situado en la raiz de backend (src/backend)
-Si ha ejecutado el proyecto antes, entonces hacer **sudo docker volume rm backend_horarios_postgres -f**
+Si ha ejecutado el proyecto antes, entonces hacer **docker volume rm backend_horarios_postgres -f**
 
 ```bash
 yarn install
