@@ -66,12 +66,12 @@ export default {
       .then(json => {
         if (json.hasOwnProperty('token')) {
 
+          this.getData().then(r => {
+          });
+
           this.data.token = String(json.token);
           this.data.remember = Boolean(json.remember || false);
           this.saveMinData();
-
-          this.getData().then(r => {
-          });
 
           return true;
         }
@@ -106,6 +106,11 @@ export default {
     }).then(response => response.json(), response => console.log('Error getting the response.'));
   },
   hasRole(role) {
-    return ((this.isLogued() === true) && ((this.data.permissions & role) === role));
+    let temporalData = this.data;
+
+    if (localStorage.getItem(data_user) !== null)
+      temporalData = JSON.parse(localStorage.getItem(data_user));
+
+    return ((this.isLogued() === true) && ((temporalData.permissions & role) === role));
   },
 };

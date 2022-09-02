@@ -67,7 +67,6 @@ const checkRoles = (to, from, next) => {
     Store.state.profile.loadMinData();
     let haveAccess = true;
     to.meta.requireRoles.forEach((role) => {
-      console.log(role);
       haveAccess = haveAccess & Store.state.profile.hasRole(role);
     });
     if (haveAccess === 0) {

@@ -506,24 +506,24 @@
     </div>
 
     <!-- Accion sobre toda la serie -->
-<!--    <div class='modal fade' id='allInSerie' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel'-->
-<!--         aria-hidden='true'>-->
-<!--      <div class='modal-dialog' role='document'>-->
-<!--        <div class='modal-content'>-->
-<!--          <div class='modal-header'>-->
-<!--            <h5 class='modal-title' id='exampleModalLabel'>Desea realizar la acción sobre todos los eventos de la serie-->
-<!--              ?</h5>-->
-<!--            <button class='close' type='button' data-dismiss='modal' aria-label='Close'>-->
-<!--              <span aria-hidden='true'>x</span>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--          <div class='modal-footer'>-->
-<!--            <button class='btn btn-secondary' type='button' data-dismiss='modal'>Solo este evento</button>-->
-<!--            <button class='btn btn-primary' data-dismiss='modal'>Sobre toda la serie</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class='modal fade' id='allInSerie' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel'-->
+    <!--         aria-hidden='true'>-->
+    <!--      <div class='modal-dialog' role='document'>-->
+    <!--        <div class='modal-content'>-->
+    <!--          <div class='modal-header'>-->
+    <!--            <h5 class='modal-title' id='exampleModalLabel'>Desea realizar la acción sobre todos los eventos de la serie-->
+    <!--              ?</h5>-->
+    <!--            <button class='close' type='button' data-dismiss='modal' aria-label='Close'>-->
+    <!--              <span aria-hidden='true'>x</span>-->
+    <!--            </button>-->
+    <!--          </div>-->
+    <!--          <div class='modal-footer'>-->
+    <!--            <button class='btn btn-secondary' type='button' data-dismiss='modal'>Solo este evento</button>-->
+    <!--            <button class='btn btn-primary' data-dismiss='modal'>Sobre toda la serie</button>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
   </div>
 </template>
@@ -665,6 +665,13 @@ export default {
       this.loadFrom('locals');
       this.loadFrom('semesters');
       // this.loadFrom('classes');
+
+      setTimeout(() => {
+        let isAuthored = this.isLogued();
+        console.log(isAuthored);
+        this.config.selectable = isAuthored;
+        this.config.editable = isAuthored;
+      }, 750);
     },
 
     fixHoursInClasses() {
@@ -677,7 +684,6 @@ export default {
     },
 
     updateEventsInCalendar() {
-      console.log(this.config.events);
       this.config.events = [];
       this.classes.forEach(c => {
         this.config.events.push({
@@ -769,15 +775,14 @@ export default {
       const newStartEvent = info.event.startStr;
       const newEndEvent = info.event.endStr;
 
+      let toUpdate = Object.assign({}, originalEvent);
+      toUpdate.start = newStartEvent;
+      toUpdate.end = newEndEvent;
+
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
       if (updateAllEvents) {
-        let toUpdate = Object.assign({}, originalEvent);
-
-        toUpdate.start = newStartEvent;
-        toUpdate.end = newEndEvent;
-
-        this.$store.state.profile.loadMinData();
-        let token = this.$store.state.profile.data.token;
-
         this.$store.state.class.editMultiple(token, originalEvent.serieId, originalEvent, toUpdate)
           .then(result => {
             if (result === true) {
@@ -806,13 +811,27 @@ export default {
             }
           });
       }
+      else {
+        this.$store.state.class.edit(token, toUpdate)
+          .then(result => {
+            if (result === true) {
+              originalEvent.start = toUpdate.start;
+              originalEvent.end = toUpdate.end;
+
+              this.updateEventsInCalendar();
+            } else {
+              info.revert();
+              alert(this.$store.state.class.data.error);
+            }
+          });
+      }
     },
 
     /**
      * Event has been resized.
      */
     eventResize(info) {
-      // this.eventDrop(info);
+      this.eventDrop(info);
     },
 
     // eventSelected(event, jsEvent, view) {
@@ -1075,11 +1094,6 @@ export default {
     },
   },
   created() {
-    let isAuthored = this.isLogued();
-
-    this.config.selectable = isAuthored;
-    this.config.editable = isAuthored;
-
     this.makeQuery();
     this.loadAll();
   },
