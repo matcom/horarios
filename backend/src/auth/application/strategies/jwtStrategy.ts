@@ -8,10 +8,10 @@ import { UserStatus } from 'src/user/domain/enums/user.status';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+
   constructor(
     private readonly findByEmailUseCase: FindByEmailUserUseCase,
     configService: AppConfigService) {
-
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
