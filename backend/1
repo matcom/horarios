@@ -3072,3 +3072,65 @@ l.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 2022-09-02 09:35:01,599 [6598358]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T13:35:01.597Z] No value found for meanLogProb -- only got {"promptCharLen":456,"promptEndPos":409,"documentLength":1091,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":1,"numTokens":1,"compCharLen":1,"numLines":1,"confidence":null,"python":0}
 2022-09-02 09:41:34,555 [6991314]   WARN - #c.g.c.l.LSPManager - failed to create text document for newly opened file: com.intellij.openapi.vcs.changes.EditorTabPreview$EditorTabDiffPreviewVirtualFile@5d4ecb1:com.intellij.openapi.vcs.changes.EditorTabDiffPreviewProvider@5d4ec92
 2022-09-02 09:41:34,555 [6991314]   WARN - #c.g.c.l.LSPManager - failed to create text document for newly opened file: com.intellij.openapi.vcs.changes.EditorTabPreview$EditorTabDiffPreviewVirtualFile@5d4ecb1:com.intellij.openapi.vcs.changes.EditorTabDiffPreviewProvider@5d4ec92
+2022-09-02 09:56:34,828 [7891587]   WARN - #c.i.o.a.i.ActionUpdater - 123 ms to call on EDT CreateFromTemplateGroup#update (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup). Use `UpdateInBackground`.
+2022-09-02 09:56:34,828 [7891587]   WARN - #c.i.o.a.i.ActionUpdater - 123 ms to call on EDT CreateFromTemplateGroup#update (com.intellij.ide.fileTemplates.actions.CreateFromTemplateGroup). Use `UpdateInBackground`.
+2022-09-02 10:02:39,039 [8255798]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme WarmNeon - old: WarmNeon, new WarmNeon
+2022-09-02 10:02:39,039 [8255798]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme WarmNeon - old: WarmNeon, new WarmNeon
+2022-09-02 10:02:39,042 [8255801]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme VibrantInk - old: VibrantInk, new VibrantInk
+2022-09-02 10:02:39,042 [8255801]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme VibrantInk - old: VibrantInk, new VibrantInk
+2022-09-02 10:02:39,044 [8255803]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Twilight - old: Twilight, new Twilight
+2022-09-02 10:02:39,044 [8255803]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Twilight - old: Twilight, new Twilight
+2022-09-02 10:02:39,046 [8255805]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Railscasts - old: Railscasts, new Railscasts
+2022-09-02 10:02:39,046 [8255805]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Railscasts - old: Railscasts, new Railscasts
+2022-09-02 10:02:39,049 [8255808]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Monokai - old: Monokai, new Monokai
+2022-09-02 10:02:39,049 [8255808]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Monokai - old: Monokai, new Monokai
+2022-09-02 10:02:39,051 [8255810]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Github - old: Github, new Github
+2022-09-02 10:02:39,051 [8255810]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Github - old: Github, new Github
+2022-09-02 10:02:39,054 [8255813]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Cobalt - old: Cobalt, new Cobalt
+2022-09-02 10:02:39,054 [8255813]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Cobalt - old: Cobalt, new Cobalt
+2022-09-02 10:02:39,056 [8255815]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Blackboard - old: Blackboard, new Blackboard
+2022-09-02 10:02:39,056 [8255815]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme Blackboard - old: Blackboard, new Blackboard
+2022-09-02 10:02:39,058 [8255817]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme All hallow's eve - old: All hallow's eve, new All hallow's eve
+2022-09-02 10:02:39,058 [8255817]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme All hallow's eve - old: All hallow's eve, new All hallow's eve
+2022-09-02 10:02:39,058 [8255817]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme IntelliJ Light - old: IntelliJ Light, new IntelliJ Light
+2022-09-02 10:02:39,058 [8255817]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme IntelliJ Light - old: IntelliJ Light, new IntelliJ Light
+2022-09-02 10:02:39,060 [8255819]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme High contrast - old: High contrast, new High contrast
+2022-09-02 10:02:39,060 [8255819]   WARN - #c.i.c.ComponentStoreImpl - Duplicated scheme High contrast - old: High contrast, new High contrast
+2022-09-02 10:04:29,863 [8366622]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:29.862Z] No value found for meanLogProb -- only got {"promptCharLen":70,"promptEndPos":31,"documentLength":819,"delayMs":0,"promptComputeTimeMs":2,"timeSinceIssuedMs":1,"numTokens":2,"compCharLen":1,"numLines":1,"meanAlternativeLogProb":-21.149452,"python":0}
+2022-09-02 10:04:29,864 [8366623]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:29.862Z] No value found for meanLogProb -- only got {"promptCharLen":70,"promptEndPos":31,"documentLength":819,"delayMs":0,"promptComputeTimeMs":2,"timeSinceIssuedMs":1,"numTokens":2,"compCharLen":1,"numLines":1,"meanAlternativeLogProb":-21.149452,"confidence":null,"python":0}
+2022-09-02 10:04:29,863 [8366622]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:29.862Z] No value found for meanLogProb -- only got {"promptCharLen":70,"promptEndPos":31,"documentLength":819,"delayMs":0,"promptComputeTimeMs":2,"timeSinceIssuedMs":1,"numTokens":2,"compCharLen":1,"numLines":1,"meanAlternativeLogProb":-21.149452,"python":0}
+2022-09-02 10:04:29,864 [8366623]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:29.862Z] No value found for meanLogProb -- only got {"promptCharLen":70,"promptEndPos":31,"documentLength":819,"delayMs":0,"promptComputeTimeMs":2,"timeSinceIssuedMs":1,"numTokens":2,"compCharLen":1,"numLines":1,"meanAlternativeLogProb":-21.149452,"confidence":null,"python":0}
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:04:32.839Z] Invalid streamingData
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:04:32.839Z] Invalid streamingData,joinedText:[api] not a substring of joinedTokens:[]
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:04:32.839Z] Invalid streamingData
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:04:32.839Z] Invalid streamingData,joinedText:[api] not a substring of joinedTokens:[]
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:32.840Z] No value found for meanLogProb -- only got {"promptCharLen":92,"promptEndPos":53,"documentLength":804,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":1,"numTokens":0,"compCharLen":3,"numLines":1,"python":0}
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:32.840Z] No value found for meanLogProb -- only got {"promptCharLen":92,"promptEndPos":53,"documentLength":804,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":1,"numTokens":0,"compCharLen":3,"numLines":1,"python":0}
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:32.840Z] No value found for meanLogProb -- only got {"promptCharLen":92,"promptEndPos":53,"documentLength":804,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":1,"numTokens":0,"compCharLen":3,"numLines":1,"confidence":null,"python":0}
+2022-09-02 10:04:32,841 [8369600]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:04:32.840Z] No value found for meanLogProb -- only got {"promptCharLen":92,"promptEndPos":53,"documentLength":804,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":1,"numTokens":0,"compCharLen":3,"numLines":1,"confidence":null,"python":0}
+2022-09-02 10:05:44,707 [8441466]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:05:44.701Z] Invalid streamingData
+2022-09-02 10:05:44,707 [8441466]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:05:44.701Z] Invalid streamingData
+2022-09-02 10:05:44,708 [8441467]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:05:44.701Z] Invalid streamingData,joinedText:[pp] not a substring of joinedTokens:[]
+2022-09-02 10:05:44,708 [8441467]   WARN - #copilot - [ERROR] [streamChoices] [2022-09-02T14:05:44.701Z] Invalid streamingData,joinedText:[pp] not a substring of joinedTokens:[]
+2022-09-02 10:05:44,709 [8441468]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:05:44.704Z] No value found for meanLogProb -- only got {"promptCharLen":393,"promptEndPos":354,"documentLength":1107,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":0,"numTokens":0,"compCharLen":2,"numLines":1,"python":0}
+2022-09-02 10:05:44,709 [8441468]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:05:44.704Z] No value found for meanLogProb -- only got {"promptCharLen":393,"promptEndPos":354,"documentLength":1107,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":0,"numTokens":0,"compCharLen":2,"numLines":1,"python":0}
+2022-09-02 10:05:44,709 [8441468]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:05:44.704Z] No value found for meanLogProb -- only got {"promptCharLen":393,"promptEndPos":354,"documentLength":1107,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":0,"numTokens":0,"compCharLen":2,"numLines":1,"confidence":null,"python":0}
+2022-09-02 10:05:44,709 [8441468]   WARN - #copilot - [ERROR] [restraint] [2022-09-02T14:05:44.704Z] No value found for meanLogProb -- only got {"promptCharLen":393,"promptEndPos":354,"documentLength":1107,"delayMs":0,"promptComputeTimeMs":0,"timeSinceIssuedMs":0,"numTokens":0,"compCharLen":2,"numLines":1,"confidence":null,"python":0}
+2022-09-02 10:14:32,297 [8969056]   WARN - #c.i.o.a.i.ActionUpdater - 1976 ms to grab EDT for TabListAction#update (com.intellij.ide.actions.TabListAction)
+2022-09-02 10:14:32,297 [8969056]   WARN - #c.i.o.a.i.ActionUpdater - 1976 ms to grab EDT for TabListAction#update (com.intellij.ide.actions.TabListAction)
+2022-09-02 10:14:32,297 [8969056]   WARN - #c.i.o.a.i.ActionUpdater - 1976 ms to grab EDT for TabListAction#update (com.intellij.ide.actions.TabListAction)
+2022-09-02 10:14:32,297 [8969056]   WARN - #c.i.o.a.i.ActionUpdater - 1976 ms to grab EDT for TabListAction#update (com.intellij.ide.actions.TabListAction)
+2022-09-02 10:14:50,728 [8987487]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 5539ms, details saved to /home/jch/.cache/JetBrains/WebStorm2022.1/log/threadDumps-freeze-20220902-101447-WS-221.5080.193-5sec
+2022-09-02 10:14:50,728 [8987487]   WARN - #c.i.d.PerformanceWatcherImpl - UI was frozen for 5539ms, details saved to /home/jch/.cache/JetBrains/WebStorm2022.1/log/threadDumps-freeze-20220902-101447-WS-221.5080.193-5sec
+2022-09-02 10:15:00,416 [8997175]   WARN - #c.i.l.j.s.JSLanguageServiceQueue - TypeScriptServerServiceImpl: Pool did not terminate in 50 milliseconds
+2022-09-02 10:15:00,416 [8997175]   WARN - #c.i.l.j.s.JSLanguageServiceQueue - TypeScriptServerServiceImpl: Pool did not terminate in 50 milliseconds
+2022-09-02 10:15:03,555 [9000314] SEVERE - #c.i.o.v.n.RefreshQueueImpl - null
+org.jetbrains.concurrency.AsyncPromiseKt$CANCELED$1
+2022-09-02 10:15:03,555 [9000314] SEVERE - #c.i.o.v.n.RefreshQueueImpl - null
+org.jetbrains.concurrency.AsyncPromiseKt$CANCELED$1
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - WebStorm 2022.1  Build #WS-221.5080.193
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - JDK: 11.0.14.1; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - OS: Linux
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - WebStorm 2022.1  Build #WS-221.5080.193
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - JDK: 11.0.14.1; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2022-09-02 10:15:03,556 [9000315] SEVERE - #c.i.o.v.n.RefreshQueueImpl - OS: Linux
