@@ -10,8 +10,9 @@ import { PaginatedUserUseCase } from '../../application/useCases/user.paginate.u
 import { UserPaginatedDto } from '../../application/dtos/user.paginated.dto';
 import { Result } from '../../../shared/core/Result';
 import { right } from '../../../shared/core/Either';
+import { UserPermissions } from '../../domain/enums/user.permissions';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
 
-//@UseGuards(RolesGuard)
 @Controller('user')
 export class UserController {
 
@@ -34,6 +35,7 @@ export class UserController {
 
 
   @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_USER)
   @Post('create')
   async create(@Body() userCreateDto: UserCreateDto, @Response() res) {
     this._logger.log('Create user');
@@ -44,6 +46,7 @@ export class UserController {
 
 
   @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_USER)
   @Post('update')
   async update(@Body() updateUserDto: UserUpdateDto, @Response() res) {
     this._logger.log('Update user');
