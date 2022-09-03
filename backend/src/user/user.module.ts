@@ -6,7 +6,7 @@ import {CreateUserUseCase} from './application/useCases/user.create.use-case';
 import {FindByEmailUserUseCase} from './application/useCases/user.findByEmail.use-case';
 import {FindByIdUserUseCase} from './application/useCases/user.findById.use-case';
 import {UpdateUserUseCase} from './application/useCases/user.update.use-case';
-import {UserController} from './controller/UserController';
+import {UserController} from './presentation/controllers/user.controller';
 import {UserPersistence} from './infra/entities/user.persistence';
 import {UserRepository} from './infra/repositories/user.repository';
 import {PaginatedUserUseCase} from "./application/useCases/user.paginate.use-case";
