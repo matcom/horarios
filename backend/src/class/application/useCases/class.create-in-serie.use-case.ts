@@ -80,6 +80,7 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
   private async work(request: ClassCreateInSerieDto, repo: IRepository<Class>, serieId: string, endSemester: Date): Promise<CreateMultipleClassUseCaseResponse> {
 
     let answer: MultipleResponseDto[] = [];
+    let saved = [];
     while (true) {
 
       if (!(request.start.getDay() == 6 || request.start.getDay() == 0)) {
@@ -89,11 +90,10 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
           serieId,
         }, false);
 
-
         if (ans.isLeft())
-          return left(Result.Fail(new AppError.UnexpectedError(new Error(ans.value.unwrapError().message))));
+          return left(Result.Fail(new AppError.UnexpectedError(new Error('Fallo en la creacion multiple.\n\n' + ans.value.unwrapError().message))));
 
-        await repo.save(ans.value.unwrap());
+        saved.push(ans.value.unwrap());
 
         let unwrapped = ans.value.unwrap();
         answer.push({
@@ -109,6 +109,9 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
       if (request.end.getTime() > endSemester.getTime())
         break;
     }
+
+    for (let i = 0; i < saved.length; i++)
+      await repo.save(saved[i]);
 
     return right(Result.Ok({
       items: answer,

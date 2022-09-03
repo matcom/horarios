@@ -18,12 +18,11 @@ export class ProcessResponse {
       return res.status(200).json(funcMapper(value));
     }
 
-
     const error = data.value.unwrapError();
 
     if (error.name === AppError.UnexpectedError.name) {
-      return res.status(400).json({
-        code: 400,
+      return res.status(500).json({
+        code: 500,
         error: error.message,
       });
 

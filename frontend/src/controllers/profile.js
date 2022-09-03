@@ -30,8 +30,10 @@ export default {
     }
   },
   removeMinData() {
-    localStorage.removeItem(data_key);
-    localStorage.removeItem(data_user);
+    // localStorage.removeItem(data_key);
+    // localStorage.removeItem(data_user);
+
+    localStorage.clear();
   },
   isLogued() {
     let temporalData = this.data;

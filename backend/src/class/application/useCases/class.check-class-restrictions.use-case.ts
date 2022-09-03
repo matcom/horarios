@@ -6,6 +6,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ClassRepository } from '../../infra/repositories/class.repository';
 import { Brackets } from 'typeorm';
 import { Class } from '../../domain/entities/class.entity';
+import * as moment from 'moment';
 
 export type CheckClassUseCaseResponse = Either<AppError.UnexpectedErrorResult<any>
   | AppError.ValidationErrorResult<any>,
@@ -55,7 +56,7 @@ export class CheckClassUseCase implements IUseCase<Class, Promise<CheckClassUseC
         if (teacherRestrictions > 0)
           return left(Result.Fail(new
           AppError
-            .ValidationError('Estado invalido para esta clase. No se puede crear. Posibles razones: profesor ya asignado a otra clase en ese horario o en parte de ese horario.')));
+            .ValidationError(`Estado invalido para esta clase (${moment(request.start).format('MMMM Do YYYY, h:mm:ss a')}). No se puede crear. Posibles razones: profesor ya asignado a otra clase en ese horario o en parte de ese horario.`)));
       }
 
     const localRestrictions = await qB
@@ -79,7 +80,7 @@ export class CheckClassUseCase implements IUseCase<Class, Promise<CheckClassUseC
     if (localRestrictions > 0)
       return left(Result.Fail(new
       AppError
-        .ValidationError('Estado invalido para esta clase. No se puede crear. Posibles razones: local ya asignado a otra clase en ese horario, o en parte de ese horario.')));
+        .ValidationError(`Estado invalido para esta clase  (${moment(request.start).format('MMMM Do YYYY, h:mm:ss a')}). No se puede crear. Posibles razones: local ya asignado a otra clase en ese horario, o en parte de ese horario.`)));
 
 
     return right(Result.Ok());

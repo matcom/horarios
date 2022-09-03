@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
 import {
   CreateGroupUseCase,
   FindAllGroupUseCase,
@@ -15,6 +15,9 @@ import { GroupUpdateDto } from '../../application/dtos/group.update.dto';
 import { GroupCreateDto } from '../../application/dtos/group.create.dto';
 import { GroupMappers } from '../../infra/mappers/group.mapper';
 import { GroupFindAllDto } from '../../application/dtos/group.find-all.dto';
+import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 
 @Controller('group')
 export class GroupController {
@@ -66,7 +69,8 @@ export class GroupController {
     return ProcessResponse.setResponse(res, ans, GroupMappers.AllToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_GROUP)
   @Post('create')
   async create(@Body() body: GroupCreateDto, @Response() res) {
 
@@ -76,7 +80,8 @@ export class GroupController {
     return ProcessResponse.setResponse<Group>(res, group, GroupMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_GROUP)
   @Put()
   async update(@Body() body: GroupUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -85,7 +90,8 @@ export class GroupController {
     return ProcessResponse.setResponse<Group>(res, group, GroupMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_GROUP)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

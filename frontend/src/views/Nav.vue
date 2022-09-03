@@ -35,7 +35,7 @@
         <div class='collapse' id='collapse_horarios' v-if='this.isLogued()'>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'universitiesPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Universidades</span>
               <i class='fas fa-lock px-4'></i>
@@ -43,7 +43,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseFacultyPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseFacultyPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Facultades</span>
               <i class='fas fa-lock px-4'></i>
@@ -51,7 +51,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseMajorPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseMajorPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Carreras</span>
               <i class='fas fa-lock px-4'></i>
@@ -59,7 +59,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseLocalPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseLocalPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Locales</span>
               <i class='fas fa-lock px-4'></i>
@@ -67,7 +67,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseTeacherPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseTeacherPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
               <span>Profesores</span>
               <i class='fas fa-lock px-4'></i>
@@ -75,7 +75,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseLessonPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseLessonPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Asignaturas</span>
               <i class='fas fa-lock px-4'></i>
@@ -83,7 +83,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'typeClassesPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'typeClassesPage'}" class='nav-link'>
               <i class='fas fa-fw fa-th-list'></i>
               <span>Tipos de clase</span>
               <i class='fas fa-lock px-4'></i>
@@ -91,7 +91,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseGroupPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseGroupPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
               <span>Grupos</span>
               <i class='fas fa-lock px-4'></i>
@@ -99,7 +99,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
               <span>Departamentos</span>
               <i class='fas fa-lock px-4'></i>
@@ -107,7 +107,7 @@
           </li>
 
           <li class='nav-item form-inline'>
-            <router-link :to="{name: 'semestersPage'}" class='nav-link'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'semestersPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
               <span>Semestres</span>
               <i class='fas fa-lock px-4'></i>
@@ -337,6 +337,9 @@ export default {
     };
   },
   methods: {
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
     logoutUser() {
       this.$store.state.profile.logOut();
       this.$router.push({ name: 'loginPage' });

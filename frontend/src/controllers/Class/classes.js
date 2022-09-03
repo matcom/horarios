@@ -19,7 +19,7 @@ export default {
     return Petitions.post(Endpoints.multipleCreateClass, body)
       .then(response => response.json())
       .then(json => {
-        json = json.items;
+        json = !json.hasOwnProperty('error') ? json.items : json;
 
         this.data = json;
         this.saveMinData();

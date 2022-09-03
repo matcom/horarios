@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
 import {
   CreateTeacherUseCase,
   FindAllTeacherUseCase,
@@ -15,6 +15,9 @@ import { TeacherUpdateDto } from '../../application/dtos/teacher.update.dto';
 import { TeacherCreateDto } from '../../application/dtos/teacher.create.dto';
 import { TeacherMappers } from '../../infra/mappers/teacher.mappers';
 import { TeacherFindAllDto } from '../../application/dtos/teacher.find-all.dto';
+import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 
 @Controller('teacher')
 export class TeacherController {
@@ -67,7 +70,8 @@ export class TeacherController {
     return ProcessResponse.setResponse(res, pag, TeacherMappers.PaginatedToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER)
   @Post('create')
   async create(@Body() body: TeacherCreateDto, @Response() res) {
 
@@ -77,7 +81,8 @@ export class TeacherController {
     return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER)
   @Put()
   async update(@Body() body: TeacherUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -86,7 +91,8 @@ export class TeacherController {
     return ProcessResponse.setResponse<Teacher>(res, teacher, TeacherMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');
