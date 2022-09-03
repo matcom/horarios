@@ -66,7 +66,7 @@
         <footer class='sticky-footer'>
           <div class='container'>
             <div class='copyright text-center text-dark'>
-              <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</strong>
+              <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2022</strong>
             </div>
           </div>
         </footer>

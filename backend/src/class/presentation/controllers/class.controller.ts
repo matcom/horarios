@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
 import {
   CreateClassUseCase,
   CreteMultipleClassInSameSerieUseCase,
@@ -22,6 +22,9 @@ import { FacultyFindAllDto } from '../../../faculty/application/dtos/faculty.fin
 import { ClassUpdateMultipleInSameSerieDto } from '../../application/dtos/class-update-multiple-in-same-serie.dto';
 import { ClassQueryDto } from '../../application/dtos/class.query.dto';
 import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-serie.dto';
+import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
 
 @Controller('class')
 export class ClassController {
@@ -85,7 +88,8 @@ export class ClassController {
     return ProcessResponse.setResponse(res, pag, ClassMappers.PaginatedToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.CREATE_EVENT)
   @Post('create')
   async create(@Body() body: ClassCreateDto, @Response() res) {
 
@@ -95,6 +99,8 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.CREATE_EVENT)
   @Post('create/multiple')
   async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
     this._logger.log('Create in serie');
@@ -111,7 +117,8 @@ export class ClassController {
     return ProcessResponse.setResponse(res, c, ClassMappers.AllToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.UPDATE_EVENT)
   @Put()
   async update(@Body() body: ClassUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -121,6 +128,8 @@ export class ClassController {
   }
 
 
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.CREATE_EVENT)
   @Put('multiple')
   async updateMultiple(@Body() body: ClassUpdateMultipleInSameSerieDto, @Response() res) {
     this._logger.log('Update in serie');
@@ -129,7 +138,8 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, a => a);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.DELETE_EVENT)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');
@@ -138,6 +148,8 @@ export class ClassController {
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.DELETE_EVENT)
   @Delete('in_serie')
   async deleteInSerie(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete In Serie');

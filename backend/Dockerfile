@@ -1,6 +1,6 @@
-FROM node:16.16-alpine3.15 AS development
+FROM docker.uclv.cu/node:16-alpine AS development
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/api
 
 COPY package*.json ./
 
@@ -12,12 +12,12 @@ COPY . .
 
 RUN npm run build
 
-FROM node:16.16-alpine3.15 as production
+FROM docker.uclv.cu/node:16-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/api
 
 COPY package*.json ./
 
@@ -25,6 +25,6 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=development /usr/src/api/dist ./dist
 
 CMD ["node", "dist/main"]

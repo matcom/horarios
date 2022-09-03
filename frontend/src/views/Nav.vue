@@ -20,18 +20,19 @@
             <span>Inicio</span></router-link>
         </li>
 
-        <li class='nav-item'>
+
+        <li class='nav-item' v-if='this.isLogued()'>
           <router-link :to="{name: 'usersPage'}" class='nav-link'>
             <i class='fas fa-fw fa-user'></i>
             <span>Usuarios</span></router-link>
         </li>
 
         <button class='btn btn-primary collapse-header' data-toggle='collapse' data-target='#collapse_horarios'
-                aria-expanded='false' aria-controls='collapse_horarios'>
+                aria-expanded='false' aria-controls='collapse_horarios' v-if='this.isLogued()'>
           Horario Utilidades
         </button>
 
-        <div class='collapse' id='collapse_horarios'>
+        <div class='collapse' id='collapse_horarios' v-if='this.isLogued()'>
 
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'universitiesPage'}" class='nav-link'>
@@ -48,7 +49,6 @@
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
-
 
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'chooseMajorPage'}" class='nav-link'>
@@ -89,6 +89,7 @@
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
+
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'chooseGroupPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
@@ -96,6 +97,7 @@
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
+
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
@@ -103,6 +105,7 @@
               <i class='fas fa-lock px-4'></i>
             </router-link>
           </li>
+
           <li class='nav-item form-inline'>
             <router-link :to="{name: 'semestersPage'}" class='nav-link'>
               <i class='fas fa-fw fa-people-carry'></i>
@@ -183,7 +186,7 @@
                           </div>
                       </div>
                       <div>
-                          <div class="small text-gray-500">12 de diciembre del 2019</div>
+                          <div class="small text-gray-500">12 de diciembre del 2020</div>
                           <span class="font-weight-bold">Un nuevo reporte esta listo para ser descargado</span>
                           <div class="small text-gray-500">Grupo(s): C322</div>
                       </div>
@@ -195,7 +198,7 @@
                           </div>
                       </div>
                       <div>
-                          <div class="small text-gray-500">7 de diciembre del 2019</div>
+                          <div class="small text-gray-500">7 de diciembre del 2020</div>
                           290.29 dolares han sido depositados en su cuenta.
                       </div>
                   </a> -->
@@ -217,35 +220,55 @@
                 </div>
               </li>
               <div class='topbar-divider d-none d-sm-block'></div>
-              <!-- Nav Item - User Information -->
-              <li class='nav-item dropdown no-arrow'>
-                <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
-                   data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                  <span class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ username }}</span>
-                  <img class='img-profile rounded-circle' :src='user_pic_location'>
-                </a>
-                <!-- Dropdown - User Information -->
-                <div class='dropdown-menu dropdown-menu-right shadow animated--grow-in'
-                     aria-labelledby='userDropdown'>
-                  <router-link :to="{name: 'profilePage'}" class='dropdown-item'>
-                    <i class='fas fa-user fa-sm fa-fw mr-2 text-gray-400'></i>
-                    Perfil
-                  </router-link>
-                  <router-link v-if='viewPanel()' :to="{name: 'panelPage'}" class='dropdown-item'>
-                    <i class='fas fa-edit fa-sm fa-fw mr-2 text-gray-400'></i>
-                    Administrar
-                  </router-link>
-                  <!-- <a class="dropdown-item" href="#">
-                      <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                      Configuración
-                  </a> -->
-                  <div class='dropdown-divider'></div>
-                  <a class='dropdown-item' href='#' data-toggle='modal' data-target='#logoutModal'>
-                    <i class='fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400'></i>
-                    Cerrar Sesión
+
+              <div v-if='isLogued()'>
+
+                <li class='nav-item dropdown no-arrow'>
+                  <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
+                     data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <span class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ username }}</span>
+                    <i class='fas fa-user fa-lg fa-fw mr-2 text-gray-400'></i>
+                    <!--                    <img class='img-profile rounded-circle' :src='user_pic_location'>-->
                   </a>
-                </div>
-              </li>
+                  <!-- Dropdown - User Information -->
+                  <div class='dropdown-menu dropdown-menu-right shadow animated--grow-in'
+                       aria-labelledby='userDropdown'>
+                    <router-link :to="{name: 'profilePage'}" class='dropdown-item'>
+                      <i class='fas fa-user fa-sm fa-fw mr-2 text-gray-400'></i>
+                      Perfil
+                    </router-link>
+                    <router-link v-if='viewPanel()' :to="{name: 'panelPage'}" class='dropdown-item'>
+                      <i class='fas fa-edit fa-sm fa-fw mr-2 text-gray-400'></i>
+                      Administrar
+                    </router-link>
+                    <!-- <a class="dropdown-item" href="#">
+                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Configuración
+                    </a> -->
+                    <div class='dropdown-divider'></div>
+                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#logoutModal'>
+                      <i class='fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400'></i>
+                      Cerrar Sesión
+                    </a>
+                  </div>
+                </li>
+
+              </div>
+              <div v-else>
+
+                <li class='nav-item dropdown no-arrow'>
+                  <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
+                     data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    <!--                    <img class='img-profile rounded-circle' :src='user_pic_location'>-->
+                    <router-link :to="{name: 'loginPage'}" class='dropdown-item'>
+                      <i class='fas fa-user fa-fw mr-2 text-gray-400'></i>
+                      <span class='mr-3 d-none d-lg-inline text-gray-600 small'>Login</span>
+                    </router-link>
+                  </a>
+                </li>
+
+              </div>
+
             </ul>
           </nav>
           <!-- End of Topbar -->
@@ -274,6 +297,7 @@
     <!-- <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a> -->
+
     <!-- Logout Modal-->
     <div class='modal fade' id='logoutModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel'
          aria-hidden='true'>
@@ -292,6 +316,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -321,6 +346,9 @@ export default {
     },
     viewPanel() {
       return this.$store.state.profile.hasRole(Permission.VIEW_PANEL);
+    },
+    isLogued() {
+      return this.$store.state.profile.isLogued();
     },
     render_date(start) {
       return renderPresentation(start, null);

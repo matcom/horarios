@@ -36,7 +36,7 @@
           </button>
 
           <div class='dropdown-menu'>
-            <a v-for='u in this.universities' :key='u.id' class='dropdown-item'
+            <a style='cursor: pointer' v-for='u in this.universities' :key='u.id' class='dropdown-item'
                @click.prevent='chooseUniversity(u.fullName)'>{{ u.fullName }}</a>
           </div>
         </div>
