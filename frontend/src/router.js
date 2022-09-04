@@ -53,7 +53,6 @@ import Semesters from '@/components/Semester/Semesters';
 Vue.use(Router);
 
 const checkforAuth = (to, from, next) => {
-  console.log('checkforAuth');
   if (to.matched.some(route => route.meta.requiresAuth)) {
     Store.state.profile.loadMinData();
     if (Store.state.profile.isLogued() === false) {
