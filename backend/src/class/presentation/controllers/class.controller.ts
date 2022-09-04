@@ -109,14 +109,6 @@ export class ClassController {
     return ProcessResponse.setResponse(res, c);
   }
 
-  @Post('query')
-  async makeQuery(@Body() body: ClassQueryDto, @Response() res) {
-    this._logger.log('Make query');
-
-    const c = await this.queryClass.execute(body);
-    return ProcessResponse.setResponse(res, c, ClassMappers.AllToDto);
-  }
-
   @UseGuards(JwtAuthGuard)
   @PermissionsDecorator(UserPermissions.UPDATE_EVENT)
   @Put()
