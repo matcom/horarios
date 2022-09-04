@@ -10,14 +10,14 @@
           <input type='text' class='form-control form-control-user' id='username' placeholder='Usuario'
                  v-model='user.username' :disabled='!is_edit'>
         </div>
-        <div class='form-group'>
-          <input type='text' class='form-control form-control-user' id='firstName' placeholder='Nombre'
-                 v-model='user.firstname' :disabled='!is_edit'>
-        </div>
-        <div class='form-group'>
-          <input type='text' class='form-control form-control-user' id='lastName' placeholder='Apellidos'
-                 v-model='user.lastname' :disabled='!is_edit'>
-        </div>
+        <!--        <div class='form-group'>-->
+        <!--          <input type='text' class='form-control form-control-user' id='firstName' placeholder='Nombre'-->
+        <!--                 v-model='user.firstname' :disabled='!is_edit'>-->
+        <!--        </div>-->
+        <!--        <div class='form-group'>-->
+        <!--          <input type='text' class='form-control form-control-user' id='lastName' placeholder='Apellidos'-->
+        <!--                 v-model='user.lastname' :disabled='!is_edit'>-->
+        <!--        </div>-->
         <div class='form-group'>
           <input type='email' class='form-control form-control-user' id='email' placeholder='Correo'
                  v-model='user.email' :disabled='!is_edit'>
@@ -44,9 +44,10 @@ export default {
   data() {
     return {
       user: {
+        id: '',
         username: '',
-        firstname: '',
-        lastname: '',
+        // firstname: '',
+        // lastname: '',
         email: '',
         user_img: './img/default_user_image.jpeg',
         password: '',
@@ -60,7 +61,10 @@ export default {
   methods: {
     toogleEdit: function() {
       if (this.is_edit) {
-        // Hacer request
+        this.$store.state.profile.loadMinData();
+        let token = this.$store.state.profile.data.token;
+
+        this.$store.state.profile.updateUser(token, this.user, this.user.id);
       }
       this.is_edit = !this.is_edit;
       if (this.is_edit) {
@@ -74,6 +78,7 @@ export default {
     this.$store.state.profile.getData().then(() => {
       this.user.username = this.$store.state.profile.data.username;
       this.user.email = this.$store.state.profile.data.email;
+      this.user.id = this.$store.state.profile.data.id;
     });
   },
 };

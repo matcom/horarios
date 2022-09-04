@@ -8,7 +8,7 @@ import Home from './components/Home';
 import Login from './views/Login';
 import Nav from './views/Nav';
 import NotFound from './views/NotFound';
-import Profile from './components/Profile';
+import Profile from './components/Profile/Profile';
 import Register from './views/Register';
 import Resource from './components/Resource';
 import Resources from './components/Resources';

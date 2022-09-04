@@ -144,6 +144,9 @@
 </template>
 
 <script>
+
+import * as moment from 'moment';
+
 export default {
   name: 'Semester',
   data() {
@@ -167,6 +170,10 @@ export default {
       this.$store.state.semester.getDetails(token, this.semester.id).then(result => {
         if (result === true) {
           this.semester = this.$store.state.semester.data;
+
+          this.semester.start = moment(this.semester.start);
+          this.semester.end = moment(this.semester.end);
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }

@@ -113,7 +113,7 @@
                 </div>
                 <div class='col-md-6'>
                   <div class='form-group'>
-                    <label for='input-year' class='col-form-label'>Anno:</label>
+                    <label for='input-year' class='col-form-label'>Año:</label>
                     <input type='number' max='5' min='1' class='form-control' id='input-year' v-model='group.year'>
                   </div>
                 </div>
