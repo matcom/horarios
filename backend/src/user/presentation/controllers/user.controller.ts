@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Request, Response, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Put, Request, Response, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/application/guards/jwtAuthGuard';
 import { ProcessResponse } from 'src/shared/core/utils/processResponse';
 import { UserCreateDto } from '../../application/dtos/user.create.dto';
@@ -47,7 +47,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @PermissionsDecorator(UserPermissions.HANDLE_USER)
-  @Post('update')
+  @Put()
   async update(@Body() updateUserDto: UserUpdateDto, @Response() res) {
     this._logger.log('Update user');
 

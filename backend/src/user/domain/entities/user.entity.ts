@@ -26,6 +26,7 @@ type updateUserProps = {
   password?: string;
   status?: UserStatus;
   permissions?: number;
+  email?: string;
 };
 
 
@@ -124,6 +125,7 @@ export class User extends DomainEntity<UserProps> {
       this.props.permissions = props.permissions;
 
     this.props.status = props.status ?? this.props.status;
+    this.props.email = props.email ?? this.props.email;
 
 
     return Result.Ok(this);
