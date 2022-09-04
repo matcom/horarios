@@ -64,11 +64,17 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newSemester.fullName'>
+                <input type='text'
+                       :class="{'form-control': true, 'border-danger': errors & 1}"
+                       id='input-fullName'
+                       v-model='newSemester.fullName'>
               </div>
               <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newSemester.shortName'>
+                <label for='input-shortName' class='col-form-label'>Nombre Reducido :</label>
+                <input type='text'
+                       :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
+                       id='input-shortName'
+                       v-model='newSemester.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
@@ -80,17 +86,23 @@
               </div>
               <div class='form-group'>
                 <label for='input-start' class='col-form-label'>Inicio:</label>
-                <input type='date' class='form-control' id='input-start' v-model='newSemester.start'>
+                <input type='date'
+                       :class="{'form-control': true, 'border-danger': errors & (1 << 2)}"
+                       id='input-start'
+                       v-model='newSemester.start'>
               </div>
               <div class='form-group'>
                 <label for='input-end' class='col-form-label'>Fin:</label>
-                <input type='date' class='form-control' id='input-end' v-model='newSemester.end'>
+                <input type='date'
+                       :class="{'form-control': true, 'border-danger': errors & (1 << 3)}"
+                       id='input-end'
+                       v-model='newSemester.end'>
               </div>
             </form>
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveSemester()'>
+            <button type='button' class='btn btn-primary' @click='saveSemester()'>
               Guardar
             </button>
           </div>
@@ -111,6 +123,7 @@ export default {
       semesters: [],
       text: '',
       val: 1,
+      errors: 0,
       newSemester: {
         fullName: '',
         shortName: '',
@@ -168,7 +181,23 @@ export default {
     addSemester() {
       $('#modalCreate').modal('show');
     },
+    checkErrors() {
+      this.errors |= (this.newSemester.fullName === '') ? 1 : this.errors;
+      this.errors |= (this.newSemester.shortName === '') ? (1 << 1) : this.errors;
+      this.errors |= (!this.newSemester.start) ? (1 << 2) : this.errors;
+      this.errors |= (!this.newSemester.end) ? (1 << 3) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveSemester() {
+      if (this.checkErrors()) return;
+
+      $('#modalCreate').modal('hide');
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
