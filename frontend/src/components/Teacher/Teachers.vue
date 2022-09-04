@@ -64,21 +64,31 @@
                 <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                    <input type='text' class='form-control' id='input-fullName' v-model='newTeacher.fullName'>
+                    <input type='text'
+                           :class="{'form-control': true, 'border-danger': errors & 1}"
+                           id='input-fullName'
+                           v-model='newTeacher.fullName'>
                   </div>
                   <div class='form-group'>
-                    <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                    <input type='text' class='form-control' id='input-shortName' v-model='newTeacher.shortName'>
-                  </div>
-                  <div class='form-group'>
-                    <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                    <input type='number' class='form-control' id='input-priority' v-model='newTeacher.priority' />
+                    <label for='input-shortName' class='col-form-label'>Nombre Reducido:</label>
+                    <input type='text'
+                           :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
+                           id='input-shortName'
+                           v-model='newTeacher.shortName'>
                   </div>
                 </div>
                 <div class='col-md-6'>
                   <div class='form-group'>
-                    <label for='input-description' class='col-form-label'>Email:</label>
-                    <input class='form-control' id='input-description' v-model='newTeacher.email'>
+                    <div class='form-group'>
+                      <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                      <input type='number' class='form-control' id='input-priority' v-model='newTeacher.priority' />
+                    </div>
+                    
+                    <label for='input-description' class='col-form-label'>Correo:</label>
+                    <input type='text'
+                           :class="{'form-control': true, 'border-danger': errors & (1 << 2)}"
+                           id='input-description'
+                           v-model='newTeacher.email'>
                   </div>
 
                   <!--                  <div class='form-group'>-->
@@ -126,7 +136,7 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveTeacher()'>
+            <button type='button' class='btn btn-primary' @click='saveTeacher()'>
               Guardar
             </button>
           </div>
@@ -146,6 +156,7 @@ export default {
       btnSelectFacultyText: 'Elegir facultad',
       text: '',
       val: 1,
+      errors: 0,
       universities: [],
       faculties: [], // indica las facultades de la universidad elegida
       teachers: [],
@@ -216,7 +227,22 @@ export default {
     addTeacher() {
       $('#modalCreate').modal('show');
     },
+    checkErrors() {
+      this.errors |= (this.newTeacher.fullName === '') ? 1 : this.errors;
+      this.errors |= (this.newTeacher.shortName === '') ? (1 << 1) : this.errors;
+      this.errors |= (this.newTeacher.email === '') ? (1 << 2) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveTeacher() {
+      if (this.checkErrors()) return;
+
+      $('#modalCreate').modal('hide');
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
