@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
 import { LocalPersistence } from '../../../local/infra/entities/local.persistence';
@@ -18,7 +18,7 @@ export class LessonPersistence extends PersistentEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 1 })
   priority: number;
 
   // @Column({ type: 'int' })
