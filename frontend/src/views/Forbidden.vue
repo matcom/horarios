@@ -11,8 +11,11 @@
                 <div class='col-lg'>
                   <div class='text-center'>
                     <div class='error mx-auto' data-text='403'>403</div>
-                    <p class='lead text-gray-800 mb-5'>No tiene los permisos necesarios.</p>
+                    <p class='lead text-gray-800 mb-5'>
+                      No tiene los permisos necesarios. Se recomienda hacer login nuevamente.</p>
                     <router-link :to="{ name: 'homePage' }">Ir a inicio</router-link>
+                    <br>
+                    <router-link :to="{name: 'loginPage'}"> Login</router-link>
                   </div>
                 </div>
               </div>

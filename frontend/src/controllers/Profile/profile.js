@@ -1,5 +1,5 @@
-import Petitions from './petitions';
-import Endpoints from '../endpoints/endpoints';
+import Petitions from '../petitions';
+import Endpoints from '../../endpoints/endpoints';
 
 const data_key = 'calendario-matcom-profile';
 const data_user = 'calendario-matcom-user';
@@ -114,5 +114,16 @@ export default {
       temporalData = JSON.parse(localStorage.getItem(data_user));
 
     return ((this.isLogued() === true) && ((temporalData.permissions & role) === role));
+  },
+  updateUser(token, body, id) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.put(Endpoints.users, {
+      id,
+      data: { ...body },
+    })
+      .then(response => response.json(),
+        response => console.log('Error getting the response.'));
   },
 };

@@ -4,7 +4,7 @@ import CourseController from './controllers/course';
 import CoursesController from './controllers/courses';
 import EventController from './controllers/event';
 import EventsController from './controllers/events';
-import ProfileController from './controllers/profile';
+import ProfileController from './controllers/Profile/profile';
 import QueryController from './controllers/query';
 import ResourceController from './controllers/resource';
 import ResourcesController from './controllers/resources';

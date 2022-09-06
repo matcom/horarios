@@ -7,5 +7,6 @@ export type UserUpdateDto = {
     permissions?: number;
     password?: string;
     status?: UserStatus;
+    email?: string;
   }
 }

@@ -784,6 +784,7 @@ export default {
       let toSendLocals = [];
       let toSendResources = [];
       let toSendUsers = [];
+      let toSendTypes = [];
       let toSendStartDate = null;
       let toSendEndDate = null;
 
@@ -792,6 +793,8 @@ export default {
       this.groups.forEach(this.getMarkedData(toSendGroups));
       this.locals.forEach(this.getMarkedData(toSendLocals));
       this.resources.forEach(this.getMarkedData(toSendResources));
+      this.lessons.forEach(this.getMarkedData(toSendLessons));
+      this.typeClasses.forEach(this.getMarkedData(toSendTypes));
 
       if (this.datetimeStart !== '') {
         toSendStartDate = this.datetimeStart;
@@ -801,7 +804,14 @@ export default {
         toSendEndDate = this.datetimeEnd;
       }
 
-      this.$store.state.query.makeQuery(token, toSendLessons, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
+      this.$store.state.query.makeQuery(
+        token,
+        toSendLessons,
+        toSendLocals,
+        toSendGroups,
+        toSendTypes,
+        toSendStartDate,
+        toSendEndDate)
         .then(result => {
           if (result === true) {
             this.classes = this.$store.state.query.data;

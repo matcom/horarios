@@ -56,7 +56,7 @@ export class Week extends DomainEntity<WeekProps> {
   }
 
   get priority(): number {
-    return this.props.priority;
+    return this.props.priority ?? 1;
   }
 
   get createdAt(): Date {
