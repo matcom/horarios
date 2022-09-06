@@ -61,11 +61,17 @@
             <form>
               <div class='form-group'>
                 <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='newDepartment.fullName'>
+                <input type='text'
+                       :class="{'form-control': true, 'border-danger': errors & 1}"
+                       id='input-fullName'
+                       v-model='newDepartment.fullName'>
               </div>
               <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='newDepartment.shortName'>
+                <label for='input-shortName' class='col-form-label'>Nombre Reducido:</label>
+                <input type='text'
+                       :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
+                       id='input-shortName'
+                       v-model='newDepartment.shortName'>
               </div>
               <div class='form-group'>
                 <label for='input-priority' class='col-form-label'>Prioridad:</label>
@@ -80,7 +86,7 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveDepartment()'>
+            <button type='button' class='btn btn-primary' @click='saveDepartment()'>
               Guardar
             </button>
           </div>
@@ -101,6 +107,7 @@ export default {
       departments: [],
       text: '',
       val: 1,
+      errors: 0,
       newDepartment: {
         fullName: '',
         shortName: '',
@@ -163,7 +170,21 @@ export default {
     addDepartment() {
       $('#modalCreate').modal('show');
     },
+    checkErrors() {
+      this.errors |= (this.newDepartment.fullName === '') ? 1 : this.errors;
+      this.errors |= (this.newDepartment.shortName === '') ? (1 << 1) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveDepartment() {
+      if (this.checkErrors()) return;
+
+      $('#modalCreate').modal('hide');
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 

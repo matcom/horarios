@@ -8,7 +8,7 @@ import Home from './components/Home';
 import Login from './views/Login';
 import Nav from './views/Nav';
 import NotFound from './views/NotFound';
-import Profile from './components/Profile';
+import Profile from './components/Profile/Profile';
 import Register from './views/Register';
 import Resource from './components/Resource';
 import Resources from './components/Resources';
@@ -53,7 +53,6 @@ import Semesters from '@/components/Semester/Semesters';
 Vue.use(Router);
 
 const checkforAuth = (to, from, next) => {
-  console.log('checkforAuth');
   if (to.matched.some(route => route.meta.requiresAuth)) {
     Store.state.profile.loadMinData();
     if (Store.state.profile.isLogued() === false) {

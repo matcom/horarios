@@ -4,7 +4,7 @@ import CourseController from './controllers/course';
 import CoursesController from './controllers/courses';
 import EventController from './controllers/event';
 import EventsController from './controllers/events';
-import ProfileController from './controllers/profile';
+import ProfileController from './controllers/Profile/profile';
 import QueryController from './controllers/query';
 import ResourceController from './controllers/resource';
 import ResourcesController from './controllers/resources';
@@ -40,6 +40,7 @@ import SemestersControllers from './controllers/Semester/semesters';
 import ClassController from './controllers/Class/class';
 import ClassesController from './controllers/Class/classes';
 import ReportsController from './controllers/Reports/report';
+import LocationController from './controllers/Location/location';
 
 Vue.use(Vuex);
 
@@ -85,6 +86,7 @@ const store = new Vuex.Store({
     class: ClassController,
     classes: ClassesController,
     reports: ReportsController,
+    location: LocationController,
   }, mutations: {}, actions: {},
 });
 

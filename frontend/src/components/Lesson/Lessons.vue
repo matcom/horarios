@@ -65,20 +65,29 @@
 
                   <div class='form-lesson'>
                     <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                    <input type='text' class='form-control' id='input-fullName' v-model='newLesson.fullName'>
+                    <input type='text'
+                           id='input-fullName'
+                           :class="{'form-control': true, 'border-danger': errors & 1}"
+                           v-model='newLesson.fullName'>
                   </div>
 
                   <div class='form-lesson'>
-                    <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                    <input type='text' class='form-control' id='input-shortName' v-model='newLesson.shortName'>
+                    <label for='input-shortName' class='col-form-label'>Nombre reducido:</label>
+                    <input type='text'
+                           :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
+                           id='input-shortName'
+                           v-model='newLesson.shortName'>
                   </div>
 
                 </div>
 
                 <div class='col-md-6'>
                   <div class='form-lesson'>
-                    <label for='input-description' class='col-form-label'>Year:</label>
-                    <input class='form-control' id='input-description' v-model='newLesson.year'>
+                    <label for='input-description' class='col-form-label'>Año:</label>
+                    <input
+                      :class="{'form-control': true, 'border-danger': errors & (1 << 2)}"
+                      id='input-description'
+                      v-model='newLesson.year'>
                   </div>
 
 
@@ -103,7 +112,7 @@
                   <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
                     <button
                       :style='[selectedTeacher.id ? {"color": "green"}: {} ]'
-                      class='btn btn-light dropdown-toggle'
+                      :class="{'btn': true, 'btn-light': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
                       type='button' id='teacher_drop_down'
                       data-toggle='dropdown'
                       aria-haspopup='true' aria-expanded='true'>
@@ -121,7 +130,7 @@
 
                   <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
                     <button :style='[selectedSemester.id ? {"color": "green"} : {}]'
-                            class='btn btn-light dropdown-toggle'
+                            :class="{'btn': true, 'btn-light': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 4)}"
                             type='button' id='teacher_drop_down'
                             data-toggle='dropdown'
                             aria-haspopup='true' aria-expanded='true'>
@@ -150,7 +159,7 @@
 
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveLesson()'>
+            <button type='button' class='btn btn-primary' @click='saveLesson()'>
               Guardar
             </button>
           </div>
@@ -172,6 +181,7 @@ export default {
       semesters: [],
       text: '',
       val: 1,
+      errors: 0,
       major: {},
       newLesson: {
         fullName: '',
@@ -183,6 +193,7 @@ export default {
         teacherId: {},
         semesterIds: [],
         localId: {},
+        year: '',
       },
       selectedTeacher: {},
       selectedLocal: {},
@@ -249,13 +260,28 @@ export default {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
-
-
     },
     addLesson() {
       $('#modalCreate').modal('show');
     },
+    checkErrors() {
+      this.errors |= (this.newLesson.fullName === '') ? 1 : this.errors;
+      this.errors |= (this.newLesson.shortName === '') ? (1 << 1) : this.errors;
+      this.errors |= (this.newLesson.year === '') ? (1 << 2) : this.errors;
+      this.errors |= (Object.keys(this.selectedTeacher).length === 0) ? (1 << 3) : this.errors;
+      this.errors |= (!this.semesters.some(x => x.selected === true)) ? (1 << 4) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveLesson() {
+      if (this.checkErrors()) return;
+
+      $('#modalCreate').modal('hide');
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
 import {
   CreateLessonUseCase, FindAllLessonUseCase,
   FindByIdLessonUseCase, FindDetailsLessonUseCase, PaginatedLessonUseCase, RemoveLessonUseCase,
@@ -14,6 +14,9 @@ import { UniversityFindAllDto } from '../../../university/application/dtos/unive
 import { TeacherMappers } from '../../../teacher/infra/mappers/teacher.mappers';
 import { FindAllTeacherUseCase } from '../../../teacher/application/useCases';
 import { TeacherFindAllDto } from '../../../teacher/application/dtos/teacher.find-all.dto';
+import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
 
 @Controller('lesson')
 export class LessonController {
@@ -65,7 +68,8 @@ export class LessonController {
     return ProcessResponse.setResponse(res, pag, LessonMappers.PaginatedToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_LESSON)
   @Post('create')
   async create(@Body() body: LessonCreateDto, @Response() res) {
 
@@ -75,7 +79,8 @@ export class LessonController {
     return ProcessResponse.setResponse<Lesson>(res, lesson, LessonMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_LESSON)
   @Put()
   async update(@Body() body: LessonUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -84,7 +89,8 @@ export class LessonController {
     return ProcessResponse.setResponse<Lesson>(res, lesson, LessonMappers.DomainToDto);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_LESSON)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

@@ -28,6 +28,7 @@ type ClassProps = DomainBaseProps & DomainTimestamp & {
   end: Date;
   serieId: string;
   color: string;
+  resourceId: string;
 };
 
 
@@ -45,6 +46,10 @@ export class Class extends DomainEntity<ClassProps> {
 
   get groupId(): { id: string } {
     return this.props.groupId;
+  }
+
+  get resourceId(): string {
+    return this.props.resourceId;
   }
 
   get group(): Group {
@@ -112,7 +117,7 @@ export class Class extends DomainEntity<ClassProps> {
   }
 
   get priority(): number {
-    return this.props.priority;
+    return this.props.priority ?? 1;
   }
 
   get createdAt(): Date {
@@ -161,6 +166,7 @@ export class Class extends DomainEntity<ClassProps> {
     this.props.end = props.end ?? this.props.end;
     this.props.groupId = props.groupId ?? this.props.groupId;
     this.props.weekId = props.weekId ?? this.props.weekId;
+    this.props.resourceId = this.props.localId.id;
 
     this.props.updatedAt = new Date();
   }

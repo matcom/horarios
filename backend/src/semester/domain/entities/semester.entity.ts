@@ -40,7 +40,7 @@ export class Semester extends DomainEntity<SemesterProps> {
   }
 
   get priority(): number {
-    return this.props.priority;
+    return this.props.priority ?? 1;
   }
 
   get createdAt(): Date {

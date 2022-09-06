@@ -42,7 +42,6 @@ export class CreateSemesterUseCase implements IUseCase<SemesterCreateDto, Promis
     if (ans.isRight && ans.value.unwrap().items.length > 0)
       return left(Result.Fail(new AppError.UnexpectedError(new Error('Semester overlapping'))));
 
-
     request.start = new Date(request.start);
     request.end = new Date(request.end);
 

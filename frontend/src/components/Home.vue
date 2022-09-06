@@ -161,7 +161,10 @@
 
               <div class='form-group'>
                 <label for='input-view' class='col-form-label'>Visualizar en el horario:</label>
-                <input class='form-control' id='input-view' v-model='newClass.viewInCard' />
+                <input type='text'
+                       :class="{'form-control': true, 'border-danger': errors & 1}"
+                       id='input-view'
+                       v-model='newClass.viewInCard' />
               </div>
 
               <div class='form-group'>
@@ -178,12 +181,15 @@
                 <div class='col-sm-6'>
 
                   <div class='form-group'>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-university'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='teachers.length === 0'
-                            :style='[this.teachers.some(x => x.selected) ? {"background-color": "green"}: {}]'
+                    <button
+                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 1)}"
+                      type='button'
+                      id='input-select-university'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='false'
+                      style='width: 220px; height: 40px;'
+                      :disabled='teachers.length === 0'
+                      :style='[this.teachers.some(x => x.selected) ? {"background-color": "green"}: {}]'
                     >
                       Elija de la lista
                     </button>
@@ -213,11 +219,14 @@
                 <div class='col-sm-6'>
 
                   <div class='form-group'>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.lessons.length === 0'
+                    <button
+                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 2)}"
+                      type='button'
+                      id='input-select-faculty'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='false'
+                      style='width: 220px; height: 40px;'
+                      :disabled='this.lessons.length === 0'
                     >
                       {{
                         !(newClass.lessonId && newClass.lessonId.id)
@@ -242,11 +251,14 @@
 
                 <div class='col-sm-6'>
                   <div class='form-group'>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.locals.length === 0'
+                    <button
+                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
+                      type='button'
+                      id='input-select-faculty'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='false'
+                      style='width: 220px; height: 40px;'
+                      :disabled='this.locals.length === 0'
                     >
                       {{
                         !(newClass.localId && newClass.localId.id)
@@ -270,11 +282,14 @@
 
                 <div class='col-sm-6'>
                   <div class='form-group'>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.typeClasses.length === 0'
+                    <button
+                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 4)}"
+                      type='button'
+                      id='input-select-faculty'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='false'
+                      style='width: 220px; height: 40px;'
+                      :disabled='this.typeClasses.length === 0'
                     >
                       {{
                         !(newClass.typeClassId && newClass.typeClassId.id)
@@ -298,11 +313,14 @@
 
                 <div class='col-sm-6'>
                   <div class='form-group'>
-                    <button class='btn btn-secondary btn-lg dropdown-toggle' type='button' id='input-select-faculty'
-                            data-toggle='dropdown'
-                            aria-haspopup='true' aria-expanded='false'
-                            style='width: 220px; height: 40px;'
-                            :disabled='this.groups.length === 0'
+                    <button
+                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 5)}"
+                      type='button'
+                      id='input-select-faculty'
+                      data-toggle='dropdown'
+                      aria-haspopup='true' aria-expanded='false'
+                      style='width: 220px; height: 40px;'
+                      :disabled='this.groups.length === 0'
                     >
                       {{
                         !(newClass.groupId && newClass.groupId.id)
@@ -321,13 +339,17 @@
 
               <div class='row'>
                 <div class='col col-md-6'>
-                  <input type='checkbox' v-model='newClass.inSerie' /> Crear en serie ?
+                  <input type='checkbox'
+                         v-model='newClass.inSerie' /> Crear en serie ?
                 </div>
 
                 <div class='col col-md-6'>
 
                   <div class='form-group'>
-                    <input type='number' :disabled='!newClass.inSerie' class='form-control'
+                    <input type='number'
+                           class='form-control'
+                           :class="{'form-control': true, 'border-danger': newClass.inSerie && errors & (1 << 6)}"
+                           :disabled='!newClass.inSerie'
                            v-model='newClass.frequency' />
                   </div>
 
@@ -338,7 +360,7 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancelar</button>
-            <button type='button' class='btn btn-primary' data-dismiss='modal' @click='saveClass()'>
+            <button type='button' class='btn btn-primary' @click='saveClass()'>
               Guardar
             </button>
           </div>
@@ -563,11 +585,13 @@ export default {
       events: [],
       classes: [],
       typeClasses: [],
+      errors: 0,
       detailsClickedEvent: {
         id: '',
         description: '',
         viewInCard: '',
         localId: {},
+        resourceId: '',
         lessonId: {},
         typeClassId: {},
         teacherIds: [],
@@ -603,6 +627,7 @@ export default {
         groupId: {},
         inSerie: false,
         frequency: 0,
+        resourceId: '',
       },
       actualSelectInfo: {},
       config: {
@@ -621,18 +646,31 @@ export default {
         weekends: false, // poner fines de semana
         events: [],
         resources: [],
-        // views: {
-        //   timeGridFourDay: {
-        //     type: 'timeGrid',
-        //     duration: { days: 5 },
-        //     buttonText: '4 day',
-        //   },
-        // },
+        views: {
+          by_resources: {
+            type: 'resourceTimeline',
+            // duration: { days: 5 },
+            buttonText: 'Recursos',
+          },
+          by_week: {
+            type: 'timeGridWeek',
+            buttonText: 'Semanal',
+          },
+          by_month: {
+            type: 'dayGridMonth',
+            buttonText: 'Mensual',
+          },
+          by_day: {
+            type: 'timeGridDay',
+            buttonText: 'Diario',
+          },
+        },
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,resourceTimelineWeek',
+          right: 'by_day,by_week,by_month,by_resources',
         },
+        groupByResourceAndDates: true,
         initialView: 'timeGridWeek',
         slotDuration: '00:30:00', // tiempo que cubre una celda
         scrollTime: '08:00:00',
@@ -668,9 +706,10 @@ export default {
 
       setTimeout(() => {
         let isAuthored = this.isLogued();
-        console.log(isAuthored);
+
         this.config.selectable = isAuthored;
         this.config.editable = isAuthored;
+
       }, 750);
     },
 
@@ -683,6 +722,15 @@ export default {
       }
     },
 
+    loadResources() {
+      this.config.resources = this.locals.map(l => {
+        return {
+          id: l.id,
+          title: l.fullName,
+        };
+      });
+    },
+
     updateEventsInCalendar() {
       this.config.events = [];
       this.classes.forEach(c => {
@@ -692,6 +740,7 @@ export default {
           start: c.start,
           end: c.end,
           color: c.color,
+          resourceId: c.resourceId,
         });
       });
     },
@@ -708,6 +757,10 @@ export default {
             if (arg === 'classes') {
               this.fixHoursInClasses();
               this.updateEventsInCalendar();
+            }
+
+            if (arg === 'locals') {
+              this.loadResources();
             }
           }
         });
@@ -731,6 +784,7 @@ export default {
       let toSendLocals = [];
       let toSendResources = [];
       let toSendUsers = [];
+      let toSendTypes = [];
       let toSendStartDate = null;
       let toSendEndDate = null;
 
@@ -739,6 +793,8 @@ export default {
       this.groups.forEach(this.getMarkedData(toSendGroups));
       this.locals.forEach(this.getMarkedData(toSendLocals));
       this.resources.forEach(this.getMarkedData(toSendResources));
+      this.lessons.forEach(this.getMarkedData(toSendLessons));
+      this.typeClasses.forEach(this.getMarkedData(toSendTypes));
 
       if (this.datetimeStart !== '') {
         toSendStartDate = this.datetimeStart;
@@ -748,7 +804,14 @@ export default {
         toSendEndDate = this.datetimeEnd;
       }
 
-      this.$store.state.query.makeQuery(token, toSendLessons, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
+      this.$store.state.query.makeQuery(
+        token,
+        toSendLessons,
+        toSendLocals,
+        toSendGroups,
+        toSendTypes,
+        toSendStartDate,
+        toSendEndDate)
         .then(result => {
           if (result === true) {
             this.classes = this.$store.state.query.data;
@@ -810,8 +873,7 @@ export default {
               alert(this.$store.state.class.data.error);
             }
           });
-      }
-      else {
+      } else {
         this.$store.state.class.edit(token, toUpdate)
           .then(result => {
             if (result === true) {
@@ -856,12 +918,31 @@ export default {
           start,
           end,
           allDay,
+          resourceId: data.resourceId,
         });
       }
 
     },
+    checkErrors() {
+      this.errors |= (this.newClass.viewInCard === '') ? 1 : this.errors;
+      this.errors |= (!this.teachers.some(x => x.selected === true)) ? (1 << 1) : this.errors;
+      this.errors |= (Object.keys(this.newClass.lessonId).length === 0) ? (1 << 2) : this.errors;
+      this.errors |= (Object.keys(this.newClass.localId).length === 0) ? (1 << 3) : this.errors;
+      this.errors |= (Object.keys(this.newClass.typeClassId).length === 0) ? (1 << 4) : this.errors;
+      this.errors |= (Object.keys(this.newClass.groupId).length === 0) ? (1 << 5) : this.errors;
+      this.errors |= (this.newClass.inSerie && this.newClass.frequency === 0) ? (1 << 6) : this.errors;
 
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveClass() {
+      if (this.checkErrors()) return;
+
+      $('#modalCreate').modal('hide');
+
       const title = this.newClass.viewInCard;
       let selectInfo = this.actualSelectInfo;
 
@@ -876,6 +957,7 @@ export default {
       this.newClass.priority = 1; // TODO: check this
       this.newClass.start = startDate;
       this.newClass.end = endDate;
+      this.newClass.resourceId = this.newClass.localId.id;
 
       this.teachers.forEach(s => {
         if (s.selected)

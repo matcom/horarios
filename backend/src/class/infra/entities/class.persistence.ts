@@ -19,7 +19,7 @@ export class ClassPersistence extends PersistentEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 1 })
   priority: number;
 
   @Column({ type: 'text', name: 'local_id' })
@@ -36,6 +36,9 @@ export class ClassPersistence extends PersistentEntity {
 
   @Column({ type: 'timestamp' })
   start: Date;
+
+  @Column({ type: 'text', nullable: true })
+  resourceId: string;
 
   @Column({ type: 'timestamp' })
   end: Date;

@@ -11,11 +11,11 @@ export default {
   notifications: baseUrl + 'notifications',
   tags: baseUrl + 'tags',
   token: baseUrl + 'auth/login',
-  users: baseUrl + 'users',
   intervals: baseUrl + 'intervals',
   free_locals: baseUrl + 'locals/free',
   free_resources: baseUrl + 'resources/free',
 
+  users: baseUrl + 'user',
   register: baseUrl + 'auth/register',
   profile: baseUrl + 'user/profile',
 

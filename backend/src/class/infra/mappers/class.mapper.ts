@@ -55,6 +55,7 @@ export class ClassMappers {
       end: domain.end,
       serieId: domain.serieId,
       color: domain.color,
+      resourceId: domain.resourceId,
     };
   }
 
@@ -71,6 +72,7 @@ export class ClassMappers {
       start: domain.start,
       serieId: domain.serieId,
       color: domain.color,
+      resourceId: domain.resourceId,
     };
   }
 
