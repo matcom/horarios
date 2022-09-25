@@ -5,11 +5,11 @@ import { BaseRestrictionPersistence } from './base-restriction.base-persistence'
 @Index(['id'], { unique: true })
 export class CountRestrictionsPersistence extends BaseRestrictionPersistence {
 
-  @Column({ type: 'int' })
-  min: number;
+  @Column({ type: 'int', nullable: true })
+  min?: number;
 
-  @Column({ type: 'int' })
-  part: number;
+  @Column({ type: 'int', nullable: true })
+  part?: number;
 
   @Column({ type: 'text' })
   operator: string;

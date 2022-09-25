@@ -1,10 +1,11 @@
 import { BaseRestriction, BaseRestrictionProps } from './base-restriction';
 import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
+import { AppError } from '../../../shared/core/errors/AppError';
 
 type CountRestrictionProps = BaseRestrictionProps & {
-  min: number;
-  part: number;
+  min?: number;
+  part?: number;
   operator: string;
 }
 
@@ -47,6 +48,13 @@ export class CountRestrictions extends BaseRestriction<CountRestrictionProps> {
   }
 
   public static Create(props: CountRestrictionProps, id: string = null): Result<CountRestrictions> {
+
+    if (props.interval == 0)
+      return Result.Fail(new AppError.ValidationError('Interval cannot be 0'));
+
+    if (props.min == null && props.part == null)
+      return Result.Fail(new AppError.ValidationError('Min or part must be defined'));
+
     return Result.Ok(new CountRestrictions(props, new UniqueEntityID(id)));
   }
 

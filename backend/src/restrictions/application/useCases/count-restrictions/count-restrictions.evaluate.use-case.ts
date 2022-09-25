@@ -8,7 +8,7 @@ import { CountRestrictions } from '../../../domain/entities/count-restriction.en
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { RestrictionType } from '../../../domain/enums/restriction-type';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery } from '../../utils/utils';
+import { BodyQuery, Opera } from '../../utils/utils';
 import { EvaluateCountRestrictionsResponseDto } from '../../dtos/count-restrictions/evaluate-restrictions.response.dto';
 
 export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateCountRestrictionsResponseDto[]>
@@ -40,21 +40,39 @@ export class EvaluateCountRestrictionUseCase implements IUseCase<{}, Promise<Eva
 
     try {
       let ans: EvaluateCountRestrictionsResponseDto[] = [];
-      for (let i = 0; i < restrictions.length; ++i) {
-        const r = restrictions[i];
+      for (let t = 0; t < restrictions.length; ++t) {
+        const r = restrictions[t];
         const condition = JSON.parse(r.condition);
         const where = this.buildWhere.build(condition);
 
-        const rawQuery = `${bodyQuery} WHERE ${where}`;
-
+        const rawQuery = `${bodyQuery} WHERE ${where} ORDER BY "class"."start" ASC`;
         const evaluation = await this.classRepository.executeRawQuery(rawQuery, []);
 
-        ans.push({
-          restrictionId: r._id.toString(),
-          classes: evaluation,
-        });
+        let intervals = [];
+        for (let i = 0, k = 0; i < evaluation.length; i += r.interval, ++k) {
+          intervals.push([]);
+
+          for (let j = 0; j < r.interval; ++j)
+            intervals[k].push(evaluation[i + j]);
+        }
+
+        let count = 0;
+        if (r.min) {
+          for (let i = 0; i < intervals.length; ++i)
+            count += (Opera(r.min, intervals[i].length, r.operator)) ? 1 : 0;
+        } else if (r.part) {
+          for (let i = 1; i < intervals.length; ++i)
+            count += (Opera(intervals[i].length, r.part * intervals[i - 1].length, r.operator)) ? 1 : 0;
+        }
+        const final = count / intervals.length;
+        console.log(count, intervals.length, final, evaluation.length);
+
+        // TODO: add r.id if restriction isn't passed. i don't know how handle that
+        // ans.push({
+        //   restrictionId: r._id.toString(),
+        // });
       }
-      return right(Result.Ok());
+      return right(Result.Ok(ans));
     } catch (error) {
       return left(Result.Fail(new AppError.UnexpectedError(error)));
     }

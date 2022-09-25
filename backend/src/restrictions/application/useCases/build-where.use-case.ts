@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Tree } from '../dtos/tree.dto';
-import ExistInEnum, { RowLocations } from '../utils/utils';
+import { ExistInEnum, RowLocations } from '../utils/utils';
 import NumberOperators from '../../domain/enums/number_operators';
 
 @Injectable()
