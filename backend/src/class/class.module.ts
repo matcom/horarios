@@ -37,7 +37,7 @@ import { ClassRepositoryFact } from './infra/repositories/class.repository.fact'
       useClass: ClassRepositoryFact,
     },
   ],
-  exports: [FindAllClassUseCase, FindAllWithDetailsClassUseCase],
+  exports: [FindAllClassUseCase, FindAllWithDetailsClassUseCase, ClassRepository],
   controllers: [ClassController],
 })
 export class ClassModule {

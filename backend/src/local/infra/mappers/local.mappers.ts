@@ -30,6 +30,7 @@ export class LocalMappers {
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
       facultyId: domain.facultyId,
+      capacity: domain.capacity,
     };
   }
 
@@ -49,6 +50,7 @@ export class LocalMappers {
       priority: domain.priority,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
+      capacity: domain.capacity,
     };
   }
 
