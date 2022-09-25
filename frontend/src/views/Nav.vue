@@ -75,6 +75,14 @@
           </li>
 
           <li class='nav-item form-inline'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'restrictionsConditionsPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Restricciones</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+          <li class='nav-item form-inline'>
             <router-link @click.native='scrollToTop()' :to="{name: 'chooseLessonPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Asignaturas</span>

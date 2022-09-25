@@ -41,6 +41,8 @@ import ClassController from './controllers/Class/class';
 import ClassesController from './controllers/Class/classes';
 import ReportsController from './controllers/Reports/report';
 import LocationController from './controllers/Location/location';
+import RestrictionsControllers from './controllers/Restrictions/restrictions';
+import SimpleCountRestrictions from './controllers/Restrictions/simple_count_restrictions';
 
 Vue.use(Vuex);
 
@@ -87,6 +89,8 @@ const store = new Vuex.Store({
     classes: ClassesController,
     reports: ReportsController,
     location: LocationController,
+    restrictions: RestrictionsControllers,
+    simpleCountRestrictions: SimpleCountRestrictions,
   }, mutations: {}, actions: {},
 });
 

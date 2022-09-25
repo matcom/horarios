@@ -58,4 +58,6 @@ export default {
   lessonsGetAll: baseUrl + 'lesson/all',
 
   excelReport: baseUrl + 'reports/excel',
+
+  simpleCountRestrictions: baseUrl + 'countrestrictions',
 };

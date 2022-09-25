@@ -82,6 +82,10 @@
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
                 <textarea class='form-control' id='input-description' v-model='newLocal.description'></textarea>
               </div>
+              <div class='form-group'>
+                <label for='input-capacity' class='col-form-label'>Capacidad:</label>
+                <textarea class='form-control' id='input-capacity' v-model='newLocal.capacity'></textarea>
+              </div>
             </form>
           </div>
           <div class='modal-footer'>
@@ -114,6 +118,7 @@ export default {
         priority: '',
         description: '',
         facultyId: '',
+        capacity: '',
       },
     };
   },

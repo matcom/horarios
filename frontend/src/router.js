@@ -49,6 +49,9 @@ import Lesson from '@/components/Lesson/Lesson';
 import ChooseTeacher from '@/components/Teacher/ChooseTeacher';
 import Semester from '@/components/Semester/Semester';
 import Semesters from '@/components/Semester/Semesters';
+import HandleConditions from '@/components/Restrictions/HandleConditions';
+import HandleRestrictionsSimpleCount from '@/components/Restrictions/SimpleCountRestrictions';
+import ChooseRestrictionType from '@/components/Restrictions/ChooseRestrictionType';
 
 Vue.use(Router);
 
@@ -345,6 +348,33 @@ const router = new Router({
           path: '/courses',
           name: 'coursesPage',
           component: Courses,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/restrictions/conditions',
+          name: 'restrictionsConditionsPage',
+          component: HandleConditions,
+          meta: {
+            requiresAuth: true,
+            // requireRoles: [
+            //   Permission.RESTRICTIONS_VIEW,
+            // ],
+          },
+        },
+        {
+          path: '/restrictions/simple_count',
+          name: 'simpleCountRestrictionsPage',
+          component: HandleRestrictionsSimpleCount,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'restrictions/type',
+          name: 'chooseRestrictionsTypePage',
+          component: ChooseRestrictionType,
           meta: {
             requiresAuth: true,
           },

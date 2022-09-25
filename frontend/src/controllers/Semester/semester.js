@@ -5,16 +5,20 @@ const data_key = 'calendario-matcom-semester';
 const baseEndpoint = Endpoints.semesters;
 
 export default {
-  data: [], saveMinData() {
+  data: [],
+  saveMinData() {
     localStorage.setItem(data_key, JSON.stringify(this.data));
-  }, loadMinData() {
+  },
+  loadMinData() {
     let stored = localStorage.getItem(data_key);
     if (stored !== null) {
       this.data = JSON.parse(stored);
     }
-  }, removeMinData() {
+  },
+  removeMinData() {
     localStorage.removeItem(data_key);
-  }, edit(token, semester) {
+  },
+  edit(token, semester) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -29,7 +33,8 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
 
       });
-  }, getData(token, id) {
+  },
+  getData(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -41,7 +46,8 @@ export default {
 
         return json !== null && !json.hasOwnProperty('error');
       });
-  }, getDetails(token, id) {
+  },
+  getDetails(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
