@@ -3,7 +3,7 @@ import { AppError } from '../../../../shared/core/errors/AppError';
 import { Result } from '../../../../shared/core/Result';
 import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
-import { CountRestrictionsDto } from '../../dtos/count-restrictions/count-restrictions.dto';
+import { SimpleCountRestrictionsDto } from '../../dtos/count-restrictions/simple-count-restrictions.dto';
 import { SimpleCountRestrictionsRepository } from '../../../infra/repositories/simple-count-restrictions-repository.service';
 import { SimpleCountRestrictions } from '../../../domain/entities/count-restriction.entity';
 import { CountRestrictionsCreateDto } from '../../dtos/count-restrictions/count-restrictions.create.dto';
@@ -15,7 +15,7 @@ export type CreateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedEr
 
 
 @Injectable()
-export class CreateCountRestrictionUseCase implements IUseCase<CountRestrictionsDto, Promise<CreateCountRestrictionUseCaseResponse>> {
+export class CreateSimpleCountRestrictionUseCase implements IUseCase<SimpleCountRestrictionsDto, Promise<CreateCountRestrictionUseCaseResponse>> {
 
   private _logger: Logger;
 

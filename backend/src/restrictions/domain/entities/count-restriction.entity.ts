@@ -3,17 +3,17 @@ import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { AppError } from '../../../shared/core/errors/AppError';
 
-type CountRestrictionProps = BaseRestrictionProps & {
+type SimpleCountRestrictionProps = BaseRestrictionProps & {
   min?: number;
   part?: number;
   operator: string;
 }
 
-type newCountRestrictionProps = Omit<CountRestrictionProps,
+type newCountRestrictionProps = Omit<SimpleCountRestrictionProps,
   'id' | 'createdAt' | 'updatedAt'>;
 
 
-export class SimpleCountRestrictions extends BaseRestriction<CountRestrictionProps> {
+export class SimpleCountRestrictions extends BaseRestriction<SimpleCountRestrictionProps> {
 
   get min(): number {
     return this.props.min;
@@ -47,7 +47,7 @@ export class SimpleCountRestrictions extends BaseRestriction<CountRestrictionPro
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: CountRestrictionProps, id: string = null): Result<SimpleCountRestrictions> {
+  public static Create(props: SimpleCountRestrictionProps, id: string = null): Result<SimpleCountRestrictions> {
 
     if (props.interval == 0)
       return Result.Fail(new AppError.ValidationError('Interval cannot be 0'));

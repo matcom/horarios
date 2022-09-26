@@ -4,13 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
 import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
-import { CountRestrictionsMappers } from '../mappers/count-restrictions.mappers';
+import { SimpleCountRestrictionsMappers } from '../mappers/simple-count-restrictions.mappers';
 import { ICountRestrictionsRepository } from '../../domain/interfaces/ICountRestrictionsRepository';
 
 @Injectable()
 export class SimpleCountRestrictionsRepository extends BaseRepository<SimpleCountRestrictions, SimpleCountRestrictionsPersistence> implements ICountRestrictionsRepository {
   constructor(@InjectRepository(SimpleCountRestrictionsPersistence) _repository: Repository<SimpleCountRestrictionsPersistence>) {
-    super(_repository, CountRestrictionsMappers.DomainToPersist, CountRestrictionsMappers.PersistToDomain, 'CountRestrictionsRepository');
+    super(_repository, SimpleCountRestrictionsMappers.DomainToPersist, SimpleCountRestrictionsMappers.PersistToDomain, 'CountRestrictionsRepository');
   }
 
   async findDetails(id: string): Promise<SimpleCountRestrictions> {
@@ -24,6 +24,6 @@ export class SimpleCountRestrictionsRepository extends BaseRepository<SimpleCoun
         // ],
       });
 
-    return CountRestrictionsMappers.PersistToDomain(countRestrictions);
+    return SimpleCountRestrictionsMappers.PersistToDomain(countRestrictions);
   }
 }

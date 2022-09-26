@@ -3,10 +3,10 @@ import { DataAccessModule } from '../shared/modules/data-access/data-access.modu
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SimpleCountRestrictionsPersistence } from './infra/entities/simple-count-restrictions.persistence';
 import { RestrictionsUseCases } from './application/useCases';
-import { RestrictionsController } from './presentation/controllers/restrictions.controller';
 import { ClassModule } from '../class/class.module';
 import { CountConditionsRestrictionsPersistence } from './infra/entities/count-conditions.restrictions.persistence';
 import { RestrictionsRepositories } from './infra/repositories';
+import { Controllers } from './presentation/controllers';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { RestrictionsRepositories } from './infra/repositories';
     ...RestrictionsRepositories,
   ],
   exports: [],
-  controllers: [RestrictionsController],
+  controllers: [...Controllers],
 })
 export class RestrictionsModule {
 }

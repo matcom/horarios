@@ -1,5 +1,5 @@
-import { CountRestrictionsDto } from './count-restrictions.dto';
+import { SimpleCountRestrictionsDto } from './simple-count-restrictions.dto';
 
-export type CountRestrictionsCreateDto = CountRestrictionsDto & {
+export type CountRestrictionsCreateDto = SimpleCountRestrictionsDto & {
   conditions: string;
 };

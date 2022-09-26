@@ -1,9 +1,10 @@
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
 import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
-import { CountRestrictionsDto } from '../../application/dtos/count-restrictions/count-restrictions.dto';
+import { SimpleCountRestrictionsDto } from '../../application/dtos/count-restrictions/simple-count-restrictions.dto';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 
-export class CountRestrictionsMappers {
+export class SimpleCountRestrictionsMappers {
   public static PersistToDomain(persist: SimpleCountRestrictionsPersistence): SimpleCountRestrictions {
     const domain = SimpleCountRestrictions.Create({
       ...persist,
@@ -34,7 +35,7 @@ export class CountRestrictionsMappers {
     };
   }
 
-  public static DomainToDto(domain: SimpleCountRestrictions): CountRestrictionsDto {
+  public static DomainToDto(domain: SimpleCountRestrictions): SimpleCountRestrictionsDto {
     return {
       id: domain._id.toString(),
       priority: domain.priority,
@@ -49,20 +50,26 @@ export class CountRestrictionsMappers {
     };
   }
 
-  public static PaginatedToDto(pag: PaginatedFindResult<SimpleCountRestrictions>): PaginatedFindResult<CountRestrictionsDto> {
+  public static PaginatedToDto(pag: PaginatedFindResult<SimpleCountRestrictions>): PaginatedFindResult<SimpleCountRestrictionsDto> {
     return {
-      items: pag.items.length > 0 ? pag.items.map(CountRestrictionsMappers.DomainToDto) : [],
+      items: pag.items.length > 0 ? pag.items.map(SimpleCountRestrictionsMappers.DomainToDto) : [],
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,
     };
   }
 
-  public static DomainToDetails(domain: SimpleCountRestrictions): CountRestrictionsDto {
-    let base = CountRestrictionsMappers.DomainToDto(domain);
+  public static DomainToDetails(domain: SimpleCountRestrictions): SimpleCountRestrictionsDto {
+    let base = SimpleCountRestrictionsMappers.DomainToDto(domain);
 
     return {
       ...base,
+    };
+  }
+
+  public static AllToDto(all: FindAllResult<SimpleCountRestrictions>): FindAllResult<SimpleCountRestrictionsDto> {
+    return {
+      items: all.items.map(SimpleCountRestrictionsMappers.DomainToDto),
     };
   }
 }

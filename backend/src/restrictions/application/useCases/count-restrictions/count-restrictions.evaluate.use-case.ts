@@ -19,7 +19,7 @@ export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.Unexpected
 
 
 @Injectable()
-export class EvaluateCountRestrictionUseCase implements IUseCase<{}, Promise<EvaluateCountRestrictionUseCaseResponse>> {
+export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promise<EvaluateCountRestrictionUseCaseResponse>> {
 
   private _logger: Logger;
 

@@ -4,6 +4,7 @@ import { CountConditionsRestrictionsPersistence } from '../entities/count-condit
 import {
   CountConditionsRestrictionsDto,
 } from '../../application/dtos/count-conditions-restrictions/count-conditions-restrictions.dto';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 
 export class CountConditionsRestrictionsMappers {
   public static PersistToDomain(persist: CountConditionsRestrictionsPersistence): CountConditionsRestrictions {
@@ -68,4 +69,11 @@ export class CountConditionsRestrictionsMappers {
       ...base,
     };
   }
+
+  public static AllToDto(all: FindAllResult<CountConditionsRestrictions>): FindAllResult<CountConditionsRestrictionsDto> {
+    return {
+      items: all.items.map(CountConditionsRestrictionsMappers.DomainToDto),
+    };
+  }
+
 }
