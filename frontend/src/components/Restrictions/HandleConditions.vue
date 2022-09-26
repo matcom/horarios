@@ -5,24 +5,28 @@
       <!--      <button type='button' class='btn btn-secondary' data-dismiss='modal' @click.prevent='cancel()'>-->
       <!--        Cancelar-->
       <!--      </button>-->
-      <button type='button' :disabled='!query || !query.children || query.children.length  === 0'
-              class='btn btn-primary'
-              data-dismiss='modal'
-              @click.prevent='saveCondition()'>
-        Siguiente
-      </button>
+      <div v-if='show'>
+        <button type='button' :disabled='!query || !query.children || query.children.length  === 0'
+                class='btn btn-primary'
+                data-dismiss='modal'
+                @click.prevent='saveCondition()'>
+          Siguiente
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import VueQueryBuilder from 'vue-query-builder';
+import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
 
 export default {
   name: 'HandleConditions',
   components: {
     VueQueryBuilder,
   },
+  props: ['show'],
   data() {
     return {
       query: {},
@@ -60,7 +64,7 @@ export default {
     },
 
     saveCondition() {
-      this.$store.state.restrictions.updateDataValue(this.query);
+      this.$store.state.restrictions.updateDataValue(this.query, Restrictions_type.BASE_CONDITION);
 
       this.$router.push({ name: 'chooseRestrictionsTypePage' });
     },
@@ -244,6 +248,11 @@ export default {
   created() {
     this.addInitialRules();
     this.loadData();
+  },
+  watch: {
+    query: function(val) {
+      this.$emit('input', val);
+    },
   },
 };
 </script>

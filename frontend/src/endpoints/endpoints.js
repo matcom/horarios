@@ -59,5 +59,5 @@ export default {
 
   excelReport: baseUrl + 'reports/excel',
 
-  simpleCountRestrictions: baseUrl + 'countrestrictions',
+  restrictions: baseUrl + 'restrictions',
 };

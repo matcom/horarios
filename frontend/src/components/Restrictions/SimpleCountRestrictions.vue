@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
+
 export default {
   name: 'HandleRestrictionsSimpleCount',
   data() {
@@ -80,7 +82,7 @@ export default {
   methods: {
     saveRestriction() {
       this.$store.state.restrictions.loadMinData();
-      let conditions = this.$store.state.restrictions.data;
+      let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
 
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;

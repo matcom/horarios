@@ -52,6 +52,7 @@ import Semesters from '@/components/Semester/Semesters';
 import HandleConditions from '@/components/Restrictions/HandleConditions';
 import HandleRestrictionsSimpleCount from '@/components/Restrictions/SimpleCountRestrictions';
 import ChooseRestrictionType from '@/components/Restrictions/ChooseRestrictionType';
+import CountConditionsRestrictions from '@/components/Restrictions/CountConditionsRestrictions';
 
 Vue.use(Router);
 
@@ -356,6 +357,9 @@ const router = new Router({
           path: '/restrictions/conditions',
           name: 'restrictionsConditionsPage',
           component: HandleConditions,
+          props: {
+            show: true,
+          },
           meta: {
             requiresAuth: true,
             // requireRoles: [
@@ -367,6 +371,14 @@ const router = new Router({
           path: '/restrictions/simple_count',
           name: 'simpleCountRestrictionsPage',
           component: HandleRestrictionsSimpleCount,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/restrictions/count_conditions',
+          name: 'countConditionsRestrictionsPage',
+          component: CountConditionsRestrictions,
           meta: {
             requiresAuth: true,
           },

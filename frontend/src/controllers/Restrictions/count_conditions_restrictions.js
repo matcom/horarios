@@ -1,7 +1,7 @@
 import Petitions from '../petitions';
 import Endpoints from '../../endpoints/endpoints';
 
-const data_key_conditions = 'calendario-matcom-simple-count-restrictions';
+const data_key_conditions = 'calendario-matcom-count-conditions-restrictions';
 
 export default {
   data: {},
@@ -20,8 +20,8 @@ export default {
   create(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-
-    return Petitions.post(`${Endpoints.restrictions}/create/simple_count_restriction`, body)
+    
+    return Petitions.post(`${Endpoints.restrictions}/create/count_conditions_restriction`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {

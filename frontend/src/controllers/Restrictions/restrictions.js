@@ -14,8 +14,9 @@ export default {
   removeMinData() {
     localStorage.removeItem(data_key_conditions);
   },
-  updateDataValue(data) {
-    this.data = data;
+  updateDataValue(data, key) {
+    this.data[key] = data;
+
     this.saveMinData();
   },
 };
