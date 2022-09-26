@@ -19,7 +19,7 @@
 
 <script>
 import VueQueryBuilder from 'vue-query-builder';
-import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
+import Restrictions_type from '@/controllers/Restrictions/condition_types';
 
 export default {
   name: 'HandleConditions',

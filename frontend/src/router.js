@@ -53,6 +53,7 @@ import HandleConditions from '@/components/Restrictions/HandleConditions';
 import HandleRestrictionsSimpleCount from '@/components/Restrictions/SimpleCountRestrictions';
 import ChooseRestrictionType from '@/components/Restrictions/ChooseRestrictionType';
 import CountConditionsRestrictions from '@/components/Restrictions/CountConditionsRestrictions';
+import Restrictions from '@/components/Restrictions/Restrictions';
 
 Vue.use(Router);
 
@@ -349,6 +350,14 @@ const router = new Router({
           path: '/courses',
           name: 'coursesPage',
           component: Courses,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/restrictions/',
+          name: 'restrictionsPage',
+          component: Restrictions,
           meta: {
             requiresAuth: true,
           },

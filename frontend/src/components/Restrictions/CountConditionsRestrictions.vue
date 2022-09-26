@@ -67,7 +67,7 @@
 
 <script>
 import HandleConditions from '@/components/Restrictions/HandleConditions';
-import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
+import Restrictions_type from '@/controllers/Restrictions/condition_types';
 
 export default {
   name: 'CountConditionsRestrictions',

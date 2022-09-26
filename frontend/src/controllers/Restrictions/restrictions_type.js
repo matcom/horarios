@@ -1,4 +1,5 @@
 export default {
-  BASE_CONDITION: 'base_condition',
-  COUNT_CONDITIONS: 'count_conditions',
+  Unknown: 0,
+  CountRestriction: 1,
+  CountConditionsRestriction: 2,
 };

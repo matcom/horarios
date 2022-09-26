@@ -4,7 +4,7 @@ import Endpoints from '../../endpoints/endpoints';
 const data_key_conditions = 'calendario-matcom-count-conditions-restrictions';
 
 export default {
-  data: {},
+  data: {} | [],
   saveMinData() {
     localStorage.setItem(data_key_conditions, JSON.stringify(this.data));
   },
@@ -20,8 +20,8 @@ export default {
   create(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
-    
-    return Petitions.post(`${Endpoints.restrictions}/create/count_conditions_restriction`, body)
+
+    return Petitions.post(`${Endpoints.count_conditions_restrictions}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {
@@ -31,6 +31,39 @@ export default {
         }
         return false;
       });
+  },
+  getAll(token, filter = {}) {
 
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.post(`${Endpoints.count_conditions_restrictions}/all`, {
+      'filter': filter,
+    })
+      .then(response => response.json())
+      .then(json => {
+        json = json.items;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
+      });
+
+  },
+  delete(token, id) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.delete(`${Endpoints.count_conditions_restrictions}`, { id: id })
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+
+      })
+      .catch(err => console.log(err));
   },
 };
