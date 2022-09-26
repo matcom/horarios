@@ -1,6 +1,6 @@
 import { IRepository } from '../../../shared/core/interfaces/IRepository';
-import { CountRestrictions } from '../entities/count-restriction.entity';
+import { SimpleCountRestrictions } from '../entities/count-restriction.entity';
 
-export interface ICountRestrictionsRepository extends IRepository<CountRestrictions> {
-  findDetails(id: string): Promise<CountRestrictions>;
+export interface ICountRestrictionsRepository extends IRepository<SimpleCountRestrictions> {
+  findDetails(id: string): Promise<SimpleCountRestrictions>;
 };

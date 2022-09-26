@@ -2,18 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../../shared/modules/data-access/typeorm/base.respository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CountRestrictionsPersistence } from '../entities/count-restrictions.persistence';
-import { CountRestrictions } from '../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
+import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
 import { CountRestrictionsMappers } from '../mappers/count-restrictions.mappers';
 import { ICountRestrictionsRepository } from '../../domain/interfaces/ICountRestrictionsRepository';
 
 @Injectable()
-export class CountRestrictionsRepository extends BaseRepository<CountRestrictions, CountRestrictionsPersistence> implements ICountRestrictionsRepository {
-  constructor(@InjectRepository(CountRestrictionsPersistence) _repository: Repository<CountRestrictionsPersistence>) {
+export class SimpleCountRestrictionsRepository extends BaseRepository<SimpleCountRestrictions, SimpleCountRestrictionsPersistence> implements ICountRestrictionsRepository {
+  constructor(@InjectRepository(SimpleCountRestrictionsPersistence) _repository: Repository<SimpleCountRestrictionsPersistence>) {
     super(_repository, CountRestrictionsMappers.DomainToPersist, CountRestrictionsMappers.PersistToDomain, 'CountRestrictionsRepository');
   }
 
-  async findDetails(id: string): Promise<CountRestrictions> {
+  async findDetails(id: string): Promise<SimpleCountRestrictions> {
     const countRestrictions = await this
       ._entityRepository
       .findOne(id, {

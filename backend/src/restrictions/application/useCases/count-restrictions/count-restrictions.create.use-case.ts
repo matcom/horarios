@@ -4,14 +4,14 @@ import { Result } from '../../../../shared/core/Result';
 import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { CountRestrictionsDto } from '../../dtos/count-restrictions/count-restrictions.dto';
-import { CountRestrictionsRepository } from '../../../infra/repositories/count-restrictions.repository';
-import { CountRestrictions } from '../../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictionsRepository } from '../../../infra/repositories/simple-count-restrictions-repository.service';
+import { SimpleCountRestrictions } from '../../../domain/entities/count-restriction.entity';
 import { CountRestrictionsCreateDto } from '../../dtos/count-restrictions/count-restrictions.create.dto';
 import { RestrictionType } from '../../../domain/enums/restriction-type';
 
-export type CreateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<CountRestrictions>
-  | AppError.ValidationErrorResult<CountRestrictions>,
-  Result<CountRestrictions>>;
+export type CreateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<SimpleCountRestrictions>
+  | AppError.ValidationErrorResult<SimpleCountRestrictions>,
+  Result<SimpleCountRestrictions>>;
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class CreateCountRestrictionUseCase implements IUseCase<CountRestrictions
   private _logger: Logger;
 
   constructor(
-    private readonly countRestrictionsRepository: CountRestrictionsRepository,
+    private readonly countRestrictionsRepository: SimpleCountRestrictionsRepository,
   ) {
     this._logger = new Logger('CreateCountRestrictionsUseCase');
   }
@@ -28,15 +28,16 @@ export class CreateCountRestrictionUseCase implements IUseCase<CountRestrictions
   async execute(request: CountRestrictionsCreateDto): Promise<CreateCountRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
-    const countRestrictionsOrError: Result<CountRestrictions> = CountRestrictions.New({
+    const countRestrictionsOrError: Result<SimpleCountRestrictions> = SimpleCountRestrictions.New({
       ...request,
+      conditions: JSON.parse(request.conditions),
       restrictionType: RestrictionType.CountRestriction,
     });
 
     if (countRestrictionsOrError.isFailure)
       return left(countRestrictionsOrError);
 
-    const countRestrictions: CountRestrictions = countRestrictionsOrError.unwrap();
+    const countRestrictions: SimpleCountRestrictions = countRestrictionsOrError.unwrap();
 
     try {
       await this.countRestrictionsRepository.save(countRestrictions);

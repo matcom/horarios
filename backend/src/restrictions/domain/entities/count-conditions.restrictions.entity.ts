@@ -3,24 +3,24 @@ import { Result } from '../../../shared/core/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { AppError } from '../../../shared/core/errors/AppError';
 
-type CountRestrictionProps = BaseRestrictionProps & {
-  min?: number;
-  part?: number;
+type CountConditionsRestrictionProps = BaseRestrictionProps & {
+  part: number;
+  subConditions: {};
   operator: string;
 }
 
-type newCountRestrictionProps = Omit<CountRestrictionProps,
+type newCountRestrictionProps = Omit<CountConditionsRestrictionProps,
   'id' | 'createdAt' | 'updatedAt'>;
 
 
-export class SimpleCountRestrictions extends BaseRestriction<CountRestrictionProps> {
-
-  get min(): number {
-    return this.props.min;
-  }
+export class CountConditionsRestrictions extends BaseRestriction<CountConditionsRestrictionProps> {
 
   get part(): number {
     return this.props.part;
+  }
+
+  get subConditions(): {} {
+    return this.props.subConditions;
   }
 
   get operator(): string {
@@ -35,8 +35,8 @@ export class SimpleCountRestrictions extends BaseRestriction<CountRestrictionPro
     return this.props.updatedAt;
   }
 
-  public static New(props: newCountRestrictionProps): Result<SimpleCountRestrictions> {
-    const ans: Result<SimpleCountRestrictions> = this.Create({
+  public static New(props: newCountRestrictionProps): Result<CountConditionsRestrictions> {
+    const ans: Result<CountConditionsRestrictions> = this.Create({
       ...props,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -47,15 +47,12 @@ export class SimpleCountRestrictions extends BaseRestriction<CountRestrictionPro
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: CountRestrictionProps, id: string = null): Result<SimpleCountRestrictions> {
+  public static Create(props: CountConditionsRestrictionProps, id: string = null): Result<CountConditionsRestrictions> {
 
     if (props.interval == 0)
       return Result.Fail(new AppError.ValidationError('Interval cannot be 0'));
 
-    if (props.min == null && props.part == null)
-      return Result.Fail(new AppError.ValidationError('Min or part must be defined'));
-
-    return Result.Ok(new SimpleCountRestrictions(props, new UniqueEntityID(id)));
+    return Result.Ok(new CountConditionsRestrictions(props, new UniqueEntityID(id)));
   }
 
   public evaluate(): any {

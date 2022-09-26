@@ -3,17 +3,19 @@ import { AppError } from '../../../../shared/core/errors/AppError';
 import { Result } from '../../../../shared/core/Result';
 import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
-import { CountRestrictionsRepository } from '../../../infra/repositories/count-restrictions.repository';
-import { CountRestrictions } from '../../../domain/entities/count-restriction.entity';
+import {
+  SimpleCountRestrictionsRepository,
+} from '../../../infra/repositories/simple-count-restrictions-repository.service';
+import { SimpleCountRestrictions } from '../../../domain/entities/count-restriction.entity';
 import { BuildWhereUseCase } from '../build-where.use-case';
-import { RestrictionType } from '../../../domain/enums/restriction-type';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
 import { BodyQuery, Opera } from '../../utils/utils';
-import { EvaluateCountRestrictionsResponseDto } from '../../dtos/count-restrictions/evaluate-restrictions.response.dto';
+import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
+import { Tree } from '../../dtos/tree.dto';
 
-export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateCountRestrictionsResponseDto[]>
-  | AppError.ValidationErrorResult<EvaluateCountRestrictionsResponseDto[]>,
-  Result<EvaluateCountRestrictionsResponseDto[]>>;
+export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto[]>
+  | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto[]>,
+  Result<EvaluateRestrictionsResponseDto[]>>;
 
 
 @Injectable()
@@ -22,7 +24,7 @@ export class EvaluateCountRestrictionUseCase implements IUseCase<{}, Promise<Eva
   private _logger: Logger;
 
   constructor(
-    private readonly countRestrictionsRepository: CountRestrictionsRepository,
+    private readonly countRestrictionsRepository: SimpleCountRestrictionsRepository,
     private readonly buildWhere: BuildWhereUseCase,
     private readonly classRepository: ClassRepository,
   ) {
@@ -34,16 +36,16 @@ export class EvaluateCountRestrictionUseCase implements IUseCase<{}, Promise<Eva
 
     const bodyQuery = BodyQuery;
 
-    const restrictions: CountRestrictions[] = (await this.countRestrictionsRepository
-      .findAll({ restrictionType: RestrictionType.CountRestriction }))
+    const restrictions: SimpleCountRestrictions[] = (await this.countRestrictionsRepository
+      .findAll({}))
       .items;
 
     try {
-      let ans: EvaluateCountRestrictionsResponseDto[] = [];
+      let ans: EvaluateRestrictionsResponseDto[] = [];
       for (let t = 0; t < restrictions.length; ++t) {
         const r = restrictions[t];
-        const condition = JSON.parse(r.condition);
-        const where = this.buildWhere.build(condition);
+        const condition = r.condition;
+        const where = this.buildWhere.build(condition as Tree);
 
         const rawQuery = `${bodyQuery} WHERE ${where} ORDER BY "class"."start" ASC`;
         const evaluation = await this.classRepository.executeRawQuery(rawQuery, []);

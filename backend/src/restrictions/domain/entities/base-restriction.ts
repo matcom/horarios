@@ -4,7 +4,7 @@ import { Teacher } from '../../../teacher/domain/entities/teacher.entity';
 import { RestrictionType } from '../enums/restriction-type';
 
 export type BaseRestrictionProps = DomainTimestamp & {
-  conditions: string,
+  conditions: {},
   interval: number,
   priority: number,
   teacherId: { id: string },
@@ -16,7 +16,7 @@ type newBaseRestrictionProps = Omit<BaseRestrictionProps,
   'id' | 'createdAt' | 'updatedAt'>;
 
 export abstract class BaseRestriction<T> extends DomainEntity<T & BaseRestrictionProps> {
-  get condition(): string {
+  get condition(): {} {
     return this.props.conditions;
   }
 

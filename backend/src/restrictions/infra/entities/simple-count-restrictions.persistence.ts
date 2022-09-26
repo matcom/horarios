@@ -1,9 +1,9 @@
 import { Column, Entity, Index } from 'typeorm';
 import { BaseRestrictionPersistence } from './base-restriction.base-persistence';
 
-@Entity('count_restrictions_persistence')
+@Entity('count_simple_restrictions')
 @Index(['id'], { unique: true })
-export class CountRestrictionsPersistence extends BaseRestrictionPersistence {
+export class SimpleCountRestrictionsPersistence extends BaseRestrictionPersistence {
 
   @Column({ type: 'int', nullable: true })
   min?: number;

@@ -1,11 +1,11 @@
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
-import { CountRestrictionsPersistence } from '../entities/count-restrictions.persistence';
-import { CountRestrictions } from '../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
+import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
 import { CountRestrictionsDto } from '../../application/dtos/count-restrictions/count-restrictions.dto';
 
 export class CountRestrictionsMappers {
-  public static PersistToDomain(persist: CountRestrictionsPersistence): CountRestrictions {
-    const domain = CountRestrictions.Create({
+  public static PersistToDomain(persist: SimpleCountRestrictionsPersistence): SimpleCountRestrictions {
+    const domain = SimpleCountRestrictions.Create({
       ...persist,
       conditions: JSON.parse(persist.conditions),
       teacherId: { id: persist.teacherId },
@@ -18,7 +18,7 @@ export class CountRestrictionsMappers {
   }
 
 
-  public static DomainToPersist(domain: CountRestrictions): Partial<CountRestrictionsPersistence> {
+  public static DomainToPersist(domain: SimpleCountRestrictions): Partial<SimpleCountRestrictionsPersistence> {
     return {
       id: domain._id.toString(),
       priority: domain.priority,
@@ -34,13 +34,13 @@ export class CountRestrictionsMappers {
     };
   }
 
-  public static DomainToDto(domain: CountRestrictions): CountRestrictionsDto {
+  public static DomainToDto(domain: SimpleCountRestrictions): CountRestrictionsDto {
     return {
       id: domain._id.toString(),
       priority: domain.priority,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-      conditions: JSON.stringify(domain.condition),
+      conditions: domain.condition,
       min: domain.min,
       interval: domain.interval,
       part: domain.part,
@@ -49,7 +49,7 @@ export class CountRestrictionsMappers {
     };
   }
 
-  public static PaginatedToDto(pag: PaginatedFindResult<CountRestrictions>): PaginatedFindResult<CountRestrictionsDto> {
+  public static PaginatedToDto(pag: PaginatedFindResult<SimpleCountRestrictions>): PaginatedFindResult<CountRestrictionsDto> {
     return {
       items: pag.items.length > 0 ? pag.items.map(CountRestrictionsMappers.DomainToDto) : [],
       limit: pag.limit,
@@ -58,7 +58,7 @@ export class CountRestrictionsMappers {
     };
   }
 
-  public static DomainToDetails(domain: CountRestrictions): CountRestrictionsDto {
+  public static DomainToDetails(domain: SimpleCountRestrictions): CountRestrictionsDto {
     let base = CountRestrictionsMappers.DomainToDto(domain);
 
     return {

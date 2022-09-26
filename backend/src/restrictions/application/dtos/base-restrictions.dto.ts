@@ -1,6 +1,6 @@
 export type BaseRestrictionsDto = {
   id: string;
-  conditions: string;
+  conditions: {};
   teacherId: { id: string };
   interval: number;
   priority: number;

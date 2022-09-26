@@ -1,21 +1,27 @@
 import { Module } from '@nestjs/common';
 import { DataAccessModule } from '../shared/modules/data-access/data-access.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CountRestrictionsPersistence } from './infra/entities/count-restrictions.persistence';
-import { CountRestrictionsUseCases } from './application/useCases';
-import { CountRestrictionsRepository } from './infra/repositories/count-restrictions.repository';
-import { CountRestrictionsController } from './presentation/controllers/count-restrictions.controller';
+import { SimpleCountRestrictionsPersistence } from './infra/entities/simple-count-restrictions.persistence';
+import { RestrictionsUseCases } from './application/useCases';
+import { RestrictionsController } from './presentation/controllers/restrictions.controller';
 import { ClassModule } from '../class/class.module';
+import { CountConditionsRestrictionsPersistence } from './infra/entities/count-conditions.restrictions.persistence';
+import { RestrictionsRepositories } from './infra/repositories';
 
 @Module({
   imports: [
     DataAccessModule,
-    TypeOrmModule.forFeature([CountRestrictionsPersistence]),
-    ClassModule
+    TypeOrmModule.forFeature([
+      SimpleCountRestrictionsPersistence,
+      CountConditionsRestrictionsPersistence]),
+    ClassModule,
   ],
-  providers: [...CountRestrictionsUseCases, CountRestrictionsRepository],
+  providers: [
+    ...RestrictionsUseCases,
+    ...RestrictionsRepositories,
+  ],
   exports: [],
-  controllers: [CountRestrictionsController],
+  controllers: [RestrictionsController],
 })
 export class RestrictionsModule {
 }
