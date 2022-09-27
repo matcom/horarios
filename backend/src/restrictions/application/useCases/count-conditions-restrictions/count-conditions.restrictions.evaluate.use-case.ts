@@ -13,9 +13,9 @@ import {
 } from '../../../infra/repositories/count-conditions.restrictions.repository';
 import { CountConditionsRestrictions } from '../../../domain/entities/count-conditions.restrictions.entity';
 
-export type EvaluateCountConditionsRestrictionsUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto[]>
-  | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto[]>,
-  Result<EvaluateRestrictionsResponseDto[]>>;
+export type EvaluateCountConditionsRestrictionsUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto>
+  | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto>,
+  Result<EvaluateRestrictionsResponseDto>>;
 
 
 @Injectable()
@@ -31,19 +31,21 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
     this._logger = new Logger('EvaluateCountConditionsRestrictionsUseCase');
   }
 
-  async execute(request: {}): Promise<EvaluateCountConditionsRestrictionsUseCaseResponse> {
+  async execute(request: { teacherId: string }): Promise<EvaluateCountConditionsRestrictionsUseCaseResponse> {
     this._logger.log('Executing...');
 
     const bodyQuery = BodyQuery;
 
     const restrictions: CountConditionsRestrictions[] = (await this.countConditionsRestrictionsRepository
-      .findAll({}))
+      .findAll({ teacherId: request.teacherId }))
       .items;
 
     const classes = (await this.classRepository.findAll({}, { start: 'ASC' })).items;
 
     try {
-      let ans: EvaluateRestrictionsResponseDto[] = [];
+      let ans: string[] = [];
+      let amountEvaluation = 0;
+      let priorityAmounts = 0;
 
       for (let t = 0; t < restrictions.length; ++t) {
 
@@ -92,7 +94,10 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         for (let i = 0; i < intervalBoth.length; ++i)
           count += (Opera(intervalBoth[i].length, r.part * interval[i].length, r.operator)) ? 1 : 0;
 
-        const final = count / intervalBoth.length;
+        const final = count / intervalBoth.length * r.priority;
+        amountEvaluation += final;
+        priorityAmounts += r.priority;
+
         console.log(count, temporalInterval.length, final, evaluation.length);
 
         // TODO: add r.id if restriction isn't passed. i don't know how handle that
@@ -100,7 +105,11 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         //   restrictionId: r._id.toString(),
         // });
       }
-      return right(Result.Ok(ans));
+      return right(Result.Ok({
+        restrictionId: ans,
+        evaluation: amountEvaluation,
+        priorityAmounts,
+      }));
     } catch (error) {
       return left(Result.Fail(new AppError.UnexpectedError(error)));
     }

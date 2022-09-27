@@ -1,3 +1,5 @@
 export type EvaluateRestrictionsResponseDto = {
-  restrictionId: string;
+  restrictionId: string[];
+  evaluation: number;
+  priorityAmounts: number;
 }

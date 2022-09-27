@@ -1,3 +1,7 @@
+import Petitions from '@/controllers/petitions';
+import Endpoints from '@/endpoints/endpoints';
+import Condition_types from '@/controllers/Restrictions/condition_types';
+
 const data_key_conditions = 'calendario-matcom-restrictions-conditions';
 
 export default {
@@ -18,5 +22,21 @@ export default {
     this.data[key] = data;
 
     this.saveMinData();
+  },
+  getHappiness(body = {}) {
+
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, null);
+
+    return Petitions.get(`${Endpoints.happiness}`, body)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        if (json !== null && !json.hasOwnProperty('error')) {
+          // this.data = json;
+          this.updateDataValue(json, Condition_types.HAPPINESS);
+          return true;
+        }
+        return false;
+      });
   },
 };

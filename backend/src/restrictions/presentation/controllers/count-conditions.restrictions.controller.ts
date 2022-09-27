@@ -35,7 +35,7 @@ export class CountConditionsRestrictionsController {
   async conditionsRestrictions(@Request() req, @Response() res) {
     this._logger.log('Evaluate');
 
-    let count = await this.evaluate.execute({});
+    let count = await this.evaluate.execute({ teacherId: req.user.props.id });
 
     return ProcessResponse.setResponse(res, count);
   }

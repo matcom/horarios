@@ -7,6 +7,7 @@ import { ClassModule } from '../class/class.module';
 import { CountConditionsRestrictionsPersistence } from './infra/entities/count-conditions.restrictions.persistence';
 import { RestrictionsRepositories } from './infra/repositories';
 import { Controllers } from './presentation/controllers';
+import { TeacherModule } from '../teacher/teacher.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Controllers } from './presentation/controllers';
       SimpleCountRestrictionsPersistence,
       CountConditionsRestrictionsPersistence]),
     ClassModule,
+    TeacherModule,
   ],
   providers: [
     ...RestrictionsUseCases,

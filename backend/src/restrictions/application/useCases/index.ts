@@ -16,6 +16,7 @@ import { RemoveSimpleCountRestrictionsUseCase } from './count-restrictions/count
 import {
   RemoveCountConditionsRestrictionsUseCase,
 } from './count-conditions-restrictions/count-condition.restrictions.remove.use-case';
+import { RestrictionsEvaluationUseCase } from './restrictions.evaluation.use-case';
 
 export * from './get-class-by-conditions.use-case';
 export * from './build-where.use-case';
@@ -30,9 +31,12 @@ export * from './count-conditions-restrictions/count-conditions.restrictions.cre
 export * from './count-conditions-restrictions/count-condition.restrictions.remove.use-case';
 export * from './count-conditions-restrictions/count-conditions.restrictions.find-all.use-case';
 
+export * from './restrictions.evaluation.use-case';
+
 export const RestrictionsUseCases = [
   BuildWhereUseCase,
   GetClassesByConditions,
+  RestrictionsEvaluationUseCase,
 
   CreateSimpleCountRestrictionUseCase,
   EvaluateSimpleCountRestrictionUseCase,

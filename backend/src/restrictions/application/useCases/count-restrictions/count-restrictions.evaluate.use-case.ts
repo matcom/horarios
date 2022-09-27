@@ -13,9 +13,9 @@ import { BodyQuery, Opera } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
 
-export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto[]>
-  | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto[]>,
-  Result<EvaluateRestrictionsResponseDto[]>>;
+export type EvaluateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto>
+  | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto>,
+  Result<EvaluateRestrictionsResponseDto>>;
 
 
 @Injectable()
@@ -31,17 +31,20 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
     this._logger = new Logger('EvaluateCountRestrictionsUseCase');
   }
 
-  async execute(request: {}): Promise<EvaluateCountRestrictionUseCaseResponse> {
+  async execute(request: { teacherId: string }): Promise<EvaluateCountRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
     const bodyQuery = BodyQuery;
 
     const restrictions: SimpleCountRestrictions[] = (await this.countRestrictionsRepository
-      .findAll({}))
+      .findAll({ teacherId: request.teacherId }))
       .items;
 
     try {
-      let ans: EvaluateRestrictionsResponseDto[] = [];
+      let ans: string[] = [];
+      let amountEvaluation = 0;
+      let priorityAmounts = 0;
+
       for (let t = 0; t < restrictions.length; ++t) {
         const r = restrictions[t];
         const condition = r.condition;
@@ -66,7 +69,10 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
           for (let i = 1; i < intervals.length; ++i)
             count += (Opera(intervals[i].length, r.part * intervals[i - 1].length, r.operator)) ? 1 : 0;
         }
-        const final = count / intervals.length;
+        const final = count / intervals.length * r.priority;
+        amountEvaluation += final;
+        priorityAmounts += r.priority;
+
         console.log(count, intervals.length, final, evaluation.length);
 
         // TODO: add r.id if restriction isn't passed. i don't know how handle that
@@ -74,7 +80,12 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
         //   restrictionId: r._id.toString(),
         // });
       }
-      return right(Result.Ok(ans));
+      return right(Result.Ok({
+        restrictionId: ans,
+        evaluation: amountEvaluation,
+        priorityAmounts,
+      }));
+
     } catch (error) {
       return left(Result.Fail(new AppError.UnexpectedError(error)));
     }

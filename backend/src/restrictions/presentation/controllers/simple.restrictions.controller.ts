@@ -34,7 +34,7 @@ export class SimpleRestrictionsController {
   async simpleConditions(@Request() req, @Response() res) {
     this._logger.log('EvaluateSimpleCountRestrictions');
 
-    let count = await this.evaluate.execute({});
+    let count = await this.evaluate.execute({ teacherId: req.user.props.id });
 
     return ProcessResponse.setResponse(res, count);
   }

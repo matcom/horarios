@@ -62,4 +62,6 @@ export default {
   restrictions: baseUrl + 'restrictions',
   simple_count_restrictions: baseUrl + 'restrictions/simple_count_restrictions',
   count_conditions_restrictions: baseUrl + 'restrictions/count_conditions_restrictions',
+
+  happiness: baseUrl + 'restrictions/happiness',
 };
