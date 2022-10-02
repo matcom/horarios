@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Either, left, right } from '../../../../shared/core/Either';
 import { FindAllResult } from '../../../../shared/core/FindAllResult';
 import { AppError } from '../../../../shared/core/errors/AppError';
-import { SimpleCountRestrictions } from '../../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictions } from '../../../domain/entities/simple-count-restriction.entity';
 import { Result } from '../../../../shared/core/Result';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { SimpleCountRestrictionsFindAllDto } from '../../dtos/count-restrictions/count-restriction.find-all.dto';

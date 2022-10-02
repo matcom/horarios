@@ -158,24 +158,10 @@
           </div>
           <div class='modal-body'>
             <form>
-
-              <div class='form-group'>
-                <label for='input-view' class='col-form-label'>Visualizar en el horario:</label>
-                <input type='text'
-                       :class="{'form-control': true, 'border-danger': errors & 1}"
-                       id='input-view'
-                       v-model='newClass.viewInCard' />
-              </div>
-
-              <div class='form-group'>
-                <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newClass.description'></textarea>
-              </div>
-
               <div class='row'>
 
                 <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir Profesores:</label>
+                  <label class='col-form-label'> Elegir Profesores Extras:</label>
                 </div>
 
                 <div class='col-sm-6'>
@@ -354,6 +340,11 @@
                   </div>
 
                 </div>
+              </div>
+
+              <div class='form-group'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='newClass.description'></textarea>
               </div>
 
             </form>
@@ -589,7 +580,6 @@ export default {
       detailsClickedEvent: {
         id: '',
         description: '',
-        viewInCard: '',
         localId: {},
         resourceId: '',
         lessonId: {},
@@ -613,7 +603,6 @@ export default {
       newClass: {
         serieId: '',
         description: '',
-        viewInCard: '',
         localId: {},
         lessonId: {},
         typeClassId: {},
@@ -926,7 +915,6 @@ export default {
     },
 
     checkErrors() {
-      this.errors |= (this.newClass.viewInCard === '') ? 1 : this.errors;
       this.errors |= (!this.teachers.some(x => x.selected === true)) ? (1 << 1) : this.errors;
       this.errors |= (Object.keys(this.newClass.lessonId).length === 0) ? (1 << 2) : this.errors;
       this.errors |= (Object.keys(this.newClass.localId).length === 0) ? (1 << 3) : this.errors;
@@ -946,7 +934,7 @@ export default {
 
       $('#modalCreate').modal('hide');
 
-      const title = this.newClass.viewInCard;
+      const title = this.lessons.find(x => x.id === this.newClass.lessonId.id).fullName;
       let selectInfo = this.actualSelectInfo;
 
       const startDate = selectInfo.startStr;
@@ -955,8 +943,8 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.newClass.fullName = this.newClass.viewInCard;
-      this.newClass.shortName = this.newClass.fullName;
+      this.newClass.fullName = title;
+      this.newClass.shortName = title;
       this.newClass.priority = 1; // TODO: check this
       this.newClass.start = startDate;
       this.newClass.end = endDate;
@@ -1030,7 +1018,6 @@ export default {
 
       this.newClass = {
         description: '',
-        viewInCard: '',
         localId: {},
         lessonId: {},
         typeClassId: {},

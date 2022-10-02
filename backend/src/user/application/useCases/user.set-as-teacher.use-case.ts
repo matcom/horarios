@@ -8,6 +8,7 @@ import { TeacherRepository } from '../../../teacher/infra/repositories/teacher.r
 import { UserSetAsTeacherDto } from '../dtos/user.set-as-teacher.dto';
 import { UserRepository } from 'src/user/infra/repositories/user.repository';
 import { Teacher } from '../../../teacher/domain/entities/teacher.entity';
+import { UserPermissions } from '../../domain/enums/user.permissions';
 
 export type SetUserAsTeacherUseCaseResponse = Either<AppError.UnexpectedErrorResult<User>
   | AppError.ValidationErrorResult<User>,
@@ -38,7 +39,10 @@ export class SetUserAsTeacherUseCase implements IUseCase<UserSetAsTeacherDto, Pr
       return left(Result.Fail(new AppError.ValidationError('User not found')));
 
     teacher.SetUser({ id: user._id.toString() });
+    user.SetNewPermission(UserPermissions.HANDLE_RESTRICTIONS);
+
     await this.teacherRepository.save(teacher);
+    await this.userRepository.save(user);
 
     return right(Result.Ok(user));
   }

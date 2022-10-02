@@ -44,6 +44,8 @@ import LocationController from './controllers/Location/location';
 import RestrictionsControllers from './controllers/Restrictions/restrictions';
 import SimpleCountRestrictionsController from './controllers/Restrictions/simple_count_restrictions';
 import CountConditionsRestrictionsController from './controllers/Restrictions/count_conditions_restrictions';
+import SimpleCountRestrictionsDetails from './controllers/Restrictions/simple_count_restriction.details';
+import CountCondtionalsRestrictinsDetails from './controllers/Restrictions/count_conditions_restriction.details';
 
 Vue.use(Vuex);
 
@@ -92,7 +94,10 @@ const store = new Vuex.Store({
     location: LocationController,
     restrictions: RestrictionsControllers,
     simpleCountRestrictions: SimpleCountRestrictionsController,
+    simpleCountRestrictionsDetails: SimpleCountRestrictionsDetails,
     countConditionsRestrictions: CountConditionsRestrictionsController,
+    countConditionsRestrictionsDetails: CountCondtionalsRestrictinsDetails,
+
   }, mutations: {}, actions: {},
 });
 

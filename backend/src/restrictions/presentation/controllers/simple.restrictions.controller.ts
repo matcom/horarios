@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Logger, Post, Request, Response, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Request, Response, UseGuards } from '@nestjs/common';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import {
   BuildWhereUseCase,
   CreateSimpleCountRestrictionUseCase,
   EvaluateSimpleCountRestrictionUseCase,
   FindAllSimpleCountRestrictionsUseCase,
+  FindByIdSimpleCountRestrictionUseCase,
   RemoveSimpleCountRestrictionsUseCase,
 } from '../../application/useCases';
 import { SimpleCountRestrictionsMappers } from '../../infra/mappers/simple-count-restrictions.mappers';
@@ -13,6 +14,8 @@ import { CountRestrictionsCreateDto } from '../../application/dtos/count-restric
 import {
   SimpleCountRestrictionsFindAllDto,
 } from '../../application/dtos/count-restrictions/count-restriction.find-all.dto';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 
 @Controller('restrictions/simple_count_restrictions')
 export class SimpleRestrictionsController {
@@ -25,6 +28,7 @@ export class SimpleRestrictionsController {
     private readonly evaluate: EvaluateSimpleCountRestrictionUseCase,
     private readonly remove: RemoveSimpleCountRestrictionsUseCase,
     private readonly findAll: FindAllSimpleCountRestrictionsUseCase,
+    private readonly findOne: FindByIdSimpleCountRestrictionUseCase,
   ) {
     this._logger = new Logger('SimpleRestrictionsController');
   }
@@ -40,7 +44,20 @@ export class SimpleRestrictionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @PermissionsDecorator(UserPermissions.HANDLE_WEEK)
+  @Get('find_one/:id')
+  async findOneSimpleCountRestrictions(@Param() params, @Request() req, @Response() res) {
+
+    this._logger.log('Find One');
+
+    const cr = await this.findOne.execute({
+      id: params.id,
+    });
+
+    return ProcessResponse.setResponse(res, cr, SimpleCountRestrictionsMappers.DomainToDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_RESTRICTIONS)
   @Post('create')
   async createSimpleCountRestrictions(@Body() body: CountRestrictionsCreateDto, @Request() req, @Response() res) {
 
@@ -62,7 +79,7 @@ export class SimpleRestrictionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @PermissionsDecorator(UserPermissions.HANDLE_STUDENT)
+  @PermissionsDecorator(UserPermissions.HANDLE_RESTRICTIONS)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

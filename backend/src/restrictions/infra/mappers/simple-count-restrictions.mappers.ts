@@ -1,6 +1,6 @@
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
 import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
-import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictions } from '../../domain/entities/simple-count-restriction.entity';
 import { SimpleCountRestrictionsDto } from '../../application/dtos/count-restrictions/simple-count-restrictions.dto';
 import { FindAllResult } from '../../../shared/core/FindAllResult';
 

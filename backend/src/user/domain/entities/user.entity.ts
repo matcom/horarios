@@ -65,6 +65,18 @@ export class User extends DomainEntity<UserProps> {
     return this.props.status;
   }
 
+  public SetNewPermission(permission): void {
+    let permissions = (this.permissions ?? 0) | permission;
+
+    this.props.permissions = permissions;
+  }
+
+  public RemovePermission(permission): void {
+    const pos = Math.log2(permission & -permission) + 1;
+    this.props.permissions = this.permissions & ~(1 << (pos - 1));
+  }
+
+
   public static New(props: newUserProps): Result<User> {
     const ans: Result<User> = this.Create({
       ...props,

@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Logger, Post, Request, Response, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Request, Response, UseGuards } from '@nestjs/common';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import {
   BuildWhereUseCase,
   CreateCountConditionsRestrictionsUseCase,
   EvaluateCountConditionsRestrictionsUseCase,
   FindAllCountConditionsRestrictionsUseCase,
+  FindByIdCountConditionRestrictionUseCase,
   RemoveCountConditionsRestrictionsUseCase,
 } from '../../application/useCases';
 import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
@@ -15,6 +16,8 @@ import { CountConditionsRestrictionsMappers } from '../../infra/mappers/count-co
 import {
   CountConditionsRestrictionsFindAllDto,
 } from '../../application/dtos/count-conditions-restrictions/count-conditions.restrictions.find-all.dto';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
+import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
 
 @Controller('restrictions/count_conditions_restrictions')
 export class CountConditionsRestrictionsController {
@@ -27,6 +30,7 @@ export class CountConditionsRestrictionsController {
     private readonly evaluate: EvaluateCountConditionsRestrictionsUseCase,
     private readonly findAll: FindAllCountConditionsRestrictionsUseCase,
     private readonly remove: RemoveCountConditionsRestrictionsUseCase,
+    private readonly findOne: FindByIdCountConditionRestrictionUseCase,
   ) {
     this._logger = new Logger('CountConditionsRestrictionsController');
   }
@@ -41,7 +45,21 @@ export class CountConditionsRestrictionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @PermissionsDecorator(UserPermissions.HANDLE_WEEK)
+  @Get('find_one/:id')
+  async findOneSimpleCountRestrictions(@Param() params, @Request() req, @Response() res) {
+
+    this._logger.log('Find One');
+
+    const cr = await this.findOne.execute({
+      id: params.id,
+    });
+
+    return ProcessResponse.setResponse(res, cr, CountConditionsRestrictionsMappers.DomainToDto);
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_RESTRICTIONS)
   @Post('create')
   async createCountConditionRestrictions(@Body() body: CountConditionsRestrictionsCreateDto, @Request() req, @Response() res) {
 
@@ -63,7 +81,7 @@ export class CountConditionsRestrictionsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  // @PermissionsDecorator(UserPermissions.HANDLE_STUDENT)
+  @PermissionsDecorator(UserPermissions.HANDLE_RESTRICTIONS)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

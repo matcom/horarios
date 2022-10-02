@@ -54,6 +54,8 @@ import HandleRestrictionsSimpleCount from '@/components/Restrictions/SimpleCount
 import ChooseRestrictionType from '@/components/Restrictions/ChooseRestrictionType';
 import CountConditionsRestrictions from '@/components/Restrictions/CountConditionsRestrictions';
 import Restrictions from '@/components/Restrictions/Restrictions';
+import BreachedRestrictions from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictions';
+import BreachedRestrictionsDetails from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictionsDetails';
 
 Vue.use(Router);
 
@@ -358,6 +360,22 @@ const router = new Router({
           path: '/restrictions/',
           name: 'restrictionsPage',
           component: Restrictions,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/breached_restrictions/details/:restrictionId/:restrictionType',
+          name: 'breachedRestrictionsDetailsPage',
+          component: BreachedRestrictionsDetails,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/breached_restrictions/',
+          name: 'breachedRestrictionsPage',
+          component: BreachedRestrictions,
           meta: {
             requiresAuth: true,
           },

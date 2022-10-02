@@ -6,7 +6,7 @@ import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import {
   SimpleCountRestrictionsRepository,
 } from '../../../infra/repositories/simple-count-restrictions-repository.service';
-import { SimpleCountRestrictions } from '../../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictions } from '../../../domain/entities/simple-count-restriction.entity';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
 import { BodyQuery, Opera } from '../../utils/utils';
@@ -82,7 +82,8 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
             count += evaluation;
           }
         }
-        const final = count / intervals.length * r.priority;
+
+        const final = count / (intervals.length === 0 ? 1 : intervals.length) * r.priority;
         amountEvaluation += final;
         priorityAmounts += r.priority;
 
