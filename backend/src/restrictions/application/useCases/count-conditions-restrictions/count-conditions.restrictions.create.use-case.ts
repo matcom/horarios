@@ -14,6 +14,7 @@ import {
 import {
   CountConditionsRestrictionsCreateDto,
 } from '../../dtos/count-conditions-restrictions/count-conditions.create.dto';
+import { FindByIdUserUseCase } from '../../../../user/application/useCases/user.findById.use-case';
 
 export type CreateCountConditionsRestrictionsUseCaseResponse = Either<AppError.UnexpectedErrorResult<CountConditionsRestrictions>
   | AppError.ValidationErrorResult<CountConditionsRestrictions>,
@@ -27,12 +28,17 @@ export class CreateCountConditionsRestrictionsUseCase implements IUseCase<CountC
 
   constructor(
     private readonly countConditionsRestrictionsRepository: CountConditionsRestrictionsRepository,
+    private readonly userFindById: FindByIdUserUseCase,
   ) {
     this._logger = new Logger('CreateCountConditionsRestrictionsUseCase');
   }
 
   async execute(request: CountConditionsRestrictionsCreateDto): Promise<CreateCountConditionsRestrictionsUseCaseResponse> {
     this._logger.log('Executing...');
+
+    const user = await this.userFindById.execute({ id: request.teacherId.id });
+
+    request.teacherId = user.value.unwrap().teacherId;
 
     const countConditionsRestrictionsOrError: Result<CountConditionsRestrictions> = CountConditionsRestrictions.New({
       ...request,

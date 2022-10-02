@@ -8,6 +8,7 @@ import { CountConditionsRestrictionsPersistence } from './infra/entities/count-c
 import { RestrictionsRepositories } from './infra/repositories';
 import { Controllers } from './presentation/controllers';
 import { TeacherModule } from '../teacher/teacher.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TeacherModule } from '../teacher/teacher.module';
       CountConditionsRestrictionsPersistence]),
     ClassModule,
     TeacherModule,
+    UserModule,
   ],
   providers: [
     ...RestrictionsUseCases,

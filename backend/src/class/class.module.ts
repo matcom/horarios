@@ -11,6 +11,7 @@ import { WeekModule } from '../week/week.module';
 import { SemesterModule } from '../semester/semester.module';
 import { TypeOrmUnitOfWorkFactory } from '../shared/modules/data-access/typeorm/unitwork.factory';
 import { ClassRepositoryFact } from './infra/repositories/class.repository.fact';
+import { LessonModule } from '../lesson/lesson.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ClassRepositoryFact } from './infra/repositories/class.repository.fact'
     GroupModule,
     WeekModule,
     SemesterModule,
+    LessonModule
   ],
   providers: [
     ...ClassUseCases,

@@ -3,7 +3,7 @@ import { BaseRepository } from '../../../shared/modules/data-access/typeorm/base
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SimpleCountRestrictionsPersistence } from '../entities/simple-count-restrictions.persistence';
-import { SimpleCountRestrictions } from '../../domain/entities/count-restriction.entity';
+import { SimpleCountRestrictions } from '../../domain/entities/simple-count-restriction.entity';
 import { SimpleCountRestrictionsMappers } from '../mappers/simple-count-restrictions.mappers';
 import { ICountRestrictionsRepository } from '../../domain/interfaces/ICountRestrictionsRepository';
 
