@@ -107,7 +107,7 @@ export default {
       const r = this.restrictions.find(x => x.id === restrictionId);
 
       switch (r.restrictionType) {
-        case Restrictions_type.CountRestriction:
+        case Restrictions_type.SimpleCountRestriction:
 
           this.$store.state.simpleCountRestrictions.delete(token, restrictionId).then(result => {
             if (result === true) {

@@ -10,6 +10,7 @@ import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 import { FindByIdGroupUseCase } from '../../../group/application/useCases';
 import { FindAllWeekUseCase } from '../../../week/application/useCases';
 import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
+import { FindByIdLessonUseCase } from '../../../lesson/application/useCases';
 
 export type CreateClassUseCaseResponse = Either<AppError.UnexpectedErrorResult<Class>
   | AppError.ValidationErrorResult<Class>,
@@ -25,6 +26,7 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
     private readonly checkClass: CheckClassUseCase,
     private readonly groupFindOne: FindByIdGroupUseCase,
     private readonly weekFindAll: FindAllWeekUseCase,
+    private readonly findLesson: FindByIdLessonUseCase,
   ) {
     this._logger = new Logger('CreateClassUseCase');
   }
@@ -47,6 +49,11 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
     let weekId = undefined;
     if (week.isRight() && week.value.unwrap().items.length > 0)
       weekId = { id: week.value.unwrap().items[0]._id.toString() };
+
+    const lesson = await this.findLesson.execute({ id: request.lessonId.id });
+
+    if (lesson.isRight() && lesson.value.unwrap().teacherId.id)
+      request.teacherIds.push(lesson.value.unwrap().teacherId);
 
     const classOrError: Result<Class> = Class.New({ ...request, weekId });
 

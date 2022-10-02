@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Response, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Request, Response, UseGuards } from '@nestjs/common';
 import {
   CreateTeacherUseCase,
   FindAllTeacherUseCase,
@@ -75,10 +75,13 @@ export class TeacherController {
   @UseGuards(JwtAuthGuard)
   @PermissionsDecorator(UserPermissions.HANDLE_USER)
   @Post('unlink_user')
-  async unlinkTeacher(@Body() body: { teacherId: string }, @Response() res) {
+  async unlinkTeacher(@Body() body: { teacherId: string }, @Response() res, @Request() req) {
     this._logger.log('UnLink User');
 
-    const u = await this.breakUserLink.execute(body);
+    const u = await this.breakUserLink.execute({
+      ...body,
+      userId: req.user.props.id,
+    });
 
     return ProcessResponse.setResponse(res, u);
   }

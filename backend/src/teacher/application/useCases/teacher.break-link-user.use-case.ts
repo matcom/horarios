@@ -5,27 +5,28 @@ import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
 import { Injectable, Logger } from '@nestjs/common';
 import { TeacherRepository } from '../../../teacher/infra/repositories/teacher.repository';
 import { Teacher } from '../../../teacher/domain/entities/teacher.entity';
+import { UserRemovePermissionUseCase } from '../../../user/application/useCases/user.remove-permission.use-case';
+import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 
-export type TeacherBreackUserLinkUseCaseResponse = Either<AppError.UnexpectedErrorResult<Teacher>
+export type TeacherBreakUserLinkUseCaseResponse = Either<AppError.UnexpectedErrorResult<Teacher>
   | AppError.ValidationErrorResult<Teacher>,
   Result<Teacher>>;
 
 @Injectable()
-export class TeacherBreakUserLinkUseCase implements IUseCase<{ teacherId: string }, Promise<TeacherBreackUserLinkUseCaseResponse>> {
+export class TeacherBreakUserLinkUseCase implements IUseCase<{ teacherId: string }, Promise<TeacherBreakUserLinkUseCaseResponse>> {
 
   private _logger: Logger;
 
   constructor(
     private readonly teacherRepository: TeacherRepository,
+    private readonly userRemovePermission: UserRemovePermissionUseCase,
   ) {
     this._logger = new Logger('SetUserAsTeacherUseCase');
   }
 
-  async execute(request: { teacherId: string }): Promise<TeacherBreackUserLinkUseCaseResponse> {
+  async execute(request: { teacherId: string, userId: string }): Promise<TeacherBreakUserLinkUseCaseResponse> {
 
     this._logger.log('Executing...');
-
-    console.log(request);
 
     const teacher: Teacher = await this.teacherRepository.findById(request.teacherId);
 
@@ -33,7 +34,13 @@ export class TeacherBreakUserLinkUseCase implements IUseCase<{ teacherId: string
       return left(Result.Fail(new AppError.ValidationError('Teacher not found')));
 
     teacher.SetUser({ id: null });
+
     await this.teacherRepository.save(teacher);
+
+    await this.userRemovePermission.execute({
+      userId: request.userId,
+      permission: UserPermissions.HANDLE_RESTRICTIONS,
+    });
 
     return right(Result.Ok(teacher));
   }

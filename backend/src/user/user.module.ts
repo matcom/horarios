@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ValidateUserUseCase } from 'src/auth/application/useCase';
 import { DataAccessModule } from 'src/shared/modules/data-access/data-access.module';
@@ -13,9 +13,14 @@ import { PaginatedUserUseCase } from './application/useCases/user.paginate.use-c
 import { TeacherModule } from '../teacher/teacher.module';
 import { SetUserAsTeacherUseCase } from './application/useCases/user.set-as-teacher.use-case';
 import { FindAllUserUseCase } from './application/useCases/user.get-all.use-case';
+import { UserRemovePermissionUseCase } from './application/useCases/user.remove-permission.use-case';
 
 @Module({
-  imports: [DataAccessModule, TypeOrmModule.forFeature([UserPersistence]), TeacherModule],
+  imports: [
+    DataAccessModule,
+    TypeOrmModule.forFeature([UserPersistence]),
+    forwardRef(() => TeacherModule),
+  ],
   providers: [
     ValidateUserUseCase,
     CreateUserUseCase,
@@ -25,9 +30,19 @@ import { FindAllUserUseCase } from './application/useCases/user.get-all.use-case
     UpdateUserUseCase,
     PaginatedUserUseCase,
     SetUserAsTeacherUseCase,
-    FindAllUserUseCase],
+    FindAllUserUseCase,
+    UserRemovePermissionUseCase,
+  ],
   controllers: [UserController],
-  exports: [UserRepository, ValidateUserUseCase, FindByEmailUserUseCase, CreateUserUseCase, UpdateUserUseCase],
+  exports: [
+    UserRepository,
+    ValidateUserUseCase,
+    FindByEmailUserUseCase,
+    CreateUserUseCase,
+    UpdateUserUseCase,
+    FindByIdUserUseCase,
+    UserRemovePermissionUseCase,
+  ],
 })
 export class UserModule {
 }

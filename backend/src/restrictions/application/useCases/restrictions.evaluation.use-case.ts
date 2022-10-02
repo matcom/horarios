@@ -1,7 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ClassRepository } from '../../../class/infra/repositories/class.repository';
 import { TeacherRepository } from '../../../teacher/infra/repositories/teacher.repository';
-import { EvaluateSimpleCountRestrictionUseCase } from './count-restrictions/count-restrictions.evaluate.use-case';
+import {
+  EvaluateSimpleCountRestrictionUseCase,
+} from './simple-count-restrictions/simple.count-restrictions.evaluate.use-case';
 import {
   EvaluateCountConditionsRestrictionsUseCase,
 } from './count-conditions-restrictions/count-conditions.restrictions.evaluate.use-case';
@@ -10,6 +12,7 @@ import { AppError } from '../../../shared/core/errors/AppError';
 import { Result } from '../../../shared/core/Result';
 import { HappinessDto } from '../dtos/happiness.dto';
 import { IUseCase } from '../../../shared/core/interfaces/IUseCase';
+import { RestrictionType } from '../../domain/enums/restriction-type';
 
 export type EvaluateRestrictionsUseCaseResponse = Either<AppError.UnexpectedErrorResult<HappinessDto>
   | AppError.ValidationErrorResult<HappinessDto>,
@@ -34,6 +37,8 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
 
     let priorityCount = 0;
     let accomplishCount = 0;
+    let breachedRestrictions: Set<[string, string, RestrictionType]> = new Set<[string, string, RestrictionType]>();
+
 
     // const classes = (await this.classRepository.findAll({})).items;
     const teachers = (await this.teacherRepository.findAll({})).items;
@@ -58,6 +63,9 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
         teacherAccomplishCount += (u1.evaluation + u2.evaluation);
         teacherPriorityCount += (u1.priorityAmounts + u2.priorityAmounts);
 
+        u1.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.SimpleCountRestriction]));
+        u2.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.CountConditionsRestriction]));
+
         priorityCount += t.priority;
 
         accomplishCount += teacherAccomplishCount / (teacherPriorityCount == 0 ? 1 : teacherPriorityCount) * t.priority;
@@ -70,6 +78,13 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
 
     return right(Result.Ok<HappinessDto>({
       happiness: accomplishCount / (priorityCount == 0 ? 1 : priorityCount),
+      breachedRestrictions: Array.from(breachedRestrictions).map(r => {
+        return {
+          id: r[0],
+          teacherId: r[1],
+          restrictionType: r[2],
+        };
+      }),
     }));
   }
 }

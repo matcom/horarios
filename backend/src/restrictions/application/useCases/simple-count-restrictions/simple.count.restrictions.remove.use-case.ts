@@ -1,4 +1,4 @@
-import { SimpleCountRestrictions } from 'src/restrictions/domain/entities/count-restriction.entity';
+import { SimpleCountRestrictions } from 'src/restrictions/domain/entities/simple-count-restriction.entity';
 import { Either, left, right } from 'src/shared/core/Either';
 import { AppError } from 'src/shared/core/errors/AppError';
 import { Result } from '../../../../shared/core/Result';
