@@ -12,8 +12,8 @@ import NotificationsController from './controllers/notifications';
 import RoutesController from './controllers/routes';
 import TagController from './controllers/tag';
 import TagsController from './controllers/tags';
-import UserController from './controllers/user';
-import UsersController from './controllers/users';
+import UserController from './controllers/Users/user';
+import UsersController from './controllers/Users/users';
 import IntervalsController from './controllers/intervals';
 import FreeLocalsController from './controllers/free_locals';
 import FreeResourcesController from './controllers/free_resources';
@@ -41,6 +41,9 @@ import ClassController from './controllers/Class/class';
 import ClassesController from './controllers/Class/classes';
 import ReportsController from './controllers/Reports/report';
 import LocationController from './controllers/Location/location';
+import RestrictionsControllers from './controllers/Restrictions/restrictions';
+import SimpleCountRestrictionsController from './controllers/Restrictions/simple_count_restrictions';
+import CountConditionsRestrictionsController from './controllers/Restrictions/count_conditions_restrictions';
 
 Vue.use(Vuex);
 
@@ -87,6 +90,9 @@ const store = new Vuex.Store({
     classes: ClassesController,
     reports: ReportsController,
     location: LocationController,
+    restrictions: RestrictionsControllers,
+    simpleCountRestrictions: SimpleCountRestrictionsController,
+    countConditionsRestrictions: CountConditionsRestrictionsController,
   }, mutations: {}, actions: {},
 });
 

@@ -149,7 +149,7 @@ export class Class extends DomainEntity<ClassProps> {
     return Result.Ok(ans.unwrap());
   }
 
-  public static Create(props: ClassProps, id: string = null): Result<Class> {
+  public static Create(props: any, id: string = null): Result<Class> {
     return Result.Ok(new Class(props, new UniqueEntityID(id)));
   }
 

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
@@ -21,6 +21,9 @@ export class LocalPersistence extends PersistentEntity {
 
   @Column({ type: 'text', name: 'faculty_id' })
   facultyId: string;
+
+  @Column({ type: 'int', default: 30 })
+  capacity: number;
 
   @ManyToOne(
     () => FacultyPersistence,

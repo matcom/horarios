@@ -2,6 +2,7 @@ import { User } from 'src/user/domain/entities/user.entity';
 import { UserPersistence } from '../entities/user.persistence';
 import { UserDto } from '../../application/dtos/user.dto';
 import { PaginatedFindResult } from '../../../shared/core/PaginatedFindResult';
+import { FindAllResult } from '../../../shared/core/FindAllResult';
 
 
 export class UserMapper {
@@ -51,6 +52,12 @@ export class UserMapper {
       limit: pag.limit,
       totalPages: pag.totalPages,
       currentPage: pag.currentPage,
+    };
+  }
+
+  public static AllToDto(all: FindAllResult<User>): FindAllResult<UserDto> {
+    return {
+      items: all.items.map(UserMapper.DomainToDto),
     };
   }
 

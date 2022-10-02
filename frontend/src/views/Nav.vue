@@ -75,6 +75,14 @@
           </li>
 
           <li class='nav-item form-inline'>
+            <router-link @click.native='scrollToTop()' :to="{name: 'restrictionsPage'}" class='nav-link'>
+              <i class='fas fa-fw fa-building'></i>
+              <span>Restricciones</span>
+              <i class='fas fa-lock px-4'></i>
+            </router-link>
+          </li>
+
+          <li class='nav-item form-inline'>
             <router-link @click.native='scrollToTop()' :to="{name: 'chooseLessonPage'}" class='nav-link'>
               <i class='fas fa-fw fa-building'></i>
               <span>Asignaturas</span>
@@ -164,6 +172,19 @@
             </h1>
             <!-- Topbar Navbar -->
             <ul class='navbar-nav ml-auto'>
+
+              <!-- Happinnes-->
+              <li class='nav-item dropdown no-arrow mx-1'>
+                <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
+                   data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                  <i class='fas fa-smile mr-2 text-gray-400'></i>
+                  <span class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ isNaN(happiness) ? 0 : happiness
+                    }}</span>
+                </a>
+              </li>
+
+              <div class='topbar-divider d-none d-sm-block'></div>
+
               <!-- Nav Item - Alerts -->
               <li class='nav-item dropdown no-arrow mx-1'>
                 <a class='nav-link dropdown-toggle' href='#' id='alertsDropdown' role='button'
@@ -219,6 +240,7 @@
                   <span v-else class='dropdown-item text-center text-dark'>No hay notificaciones para mostrar</span>
                 </div>
               </li>
+
               <div class='topbar-divider d-none d-sm-block'></div>
 
               <div v-if='isLogued()'>
@@ -324,6 +346,7 @@
 import Permission from '@/utils/permission';
 import { renderPresentation } from '../utils/render_date';
 import { convertGroupsToStr } from '../utils/utils';
+import Condition_types from '@/controllers/Restrictions/condition_types';
 
 export default {
   name: 'Home',
@@ -334,9 +357,18 @@ export default {
       username: '',
       notifications: [],
       notifications_unseened: 0,
+      happiness: 0,
     };
   },
   methods: {
+    getHappiness() {
+      this.$store.state.restrictions.getHappiness({})
+        .then(result => {
+          if (result === true) {
+            this.happiness = (this.$store.state.restrictions.data[Condition_types.HAPPINESS]).happiness;
+          }
+        });
+    },
     scrollToTop() {
       window.scrollTo(0, 0);
     },
@@ -385,6 +417,8 @@ export default {
     });
     this.$store.state.notifications.addUpdate('nav', this.loadData);
     this.$store.state.notifications.update();
+
+    this.getHappiness();
   },
 };
 </script>

@@ -8,6 +8,7 @@ import { Faculty } from '../../../faculty/domain/entities/faculty.entity';
 type LocalProps = DomainBaseProps & DomainTimestamp & {
   facultyId: string;
   faculty?: Faculty;
+  capacity: number;
 };
 
 type newLocalProps = Omit<LocalProps,
@@ -29,6 +30,10 @@ export class Local extends DomainEntity<LocalProps> {
 
   get fullName(): string {
     return this.props.fullName;
+  }
+
+  get capacity(): number {
+    return this.props.capacity;
   }
 
   get description(): string {
@@ -69,6 +74,7 @@ export class Local extends DomainEntity<LocalProps> {
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
     this.props.facultyId = props.facultyIds ?? this.props.facultyId;
+    this.props.capacity = props.capacity ?? this.props.capacity;
 
     this.props.updatedAt = new Date();
   }

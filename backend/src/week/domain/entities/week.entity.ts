@@ -70,6 +70,7 @@ export class Week extends DomainEntity<WeekProps> {
   public static New(props: newWeekProps): Result<Week> {
     const ans: Result<Week> = this.Create({
       ...props,
+      endDate: new Date(props.endDate.setHours(23, 59, 59, 999)),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

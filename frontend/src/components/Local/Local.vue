@@ -61,6 +61,19 @@
         </div>
       </div>
 
+
+      <div class='row py-4'>
+        <div class='col-sm-6'>
+          <div class='card text-center'>
+            <div class='card-body'>
+              <h5 class='card-title text-black-50'><strong> Capacidad </strong></h5>
+              <p class='card-text'>{{ local.capacity }}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
     <!--    Modal for Edit-->
 
@@ -93,6 +106,10 @@
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
                 <textarea class='form-control' id='input-description' v-model='local.description'></textarea>
               </div>
+              <div class='form-group'>
+                <label for='input-capacity' class='col-form-label'>Capacidad:</label>
+                <input type='number' class='form-control' id='input-capacity' v-model='local.capacity'></input>
+              </div>
             </form>
           </div>
           <div class='modal-footer'>
@@ -118,6 +135,7 @@ export default {
         shortName: '',
         description: '',
         priority: '',
+        capacity: '',
       },
       facultyId: '',
       local_events: '',

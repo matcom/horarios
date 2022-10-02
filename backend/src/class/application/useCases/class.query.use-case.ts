@@ -29,8 +29,6 @@ export class QueryClassUseCase implements IUseCase<ClassQueryDto, Promise<QueryC
 
     try {
 
-      // TODO: improve this sections
-
       let qb = await this
         .classRepository
         .getQueryBuilder('class');

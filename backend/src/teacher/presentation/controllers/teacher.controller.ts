@@ -6,6 +6,7 @@ import {
   FindDetailsTeacherUseCase,
   PaginatedTeacherUseCase,
   RemoveTeacherUseCase,
+  TeacherBreakUserLinkUseCase,
   UpdateTeacherUseCase,
 } from '../../application/useCases';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
@@ -31,7 +32,8 @@ export class TeacherController {
     private readonly removeTeacher: RemoveTeacherUseCase,
     private readonly paginatedTeacher: PaginatedTeacherUseCase,
     private readonly findDetailsTeacher: FindDetailsTeacherUseCase,
-    private readonly findAllTeachers: FindAllTeacherUseCase) {
+    private readonly findAllTeachers: FindAllTeacherUseCase,
+    private readonly breakUserLink: TeacherBreakUserLinkUseCase) {
 
     this._logger = new Logger('TeacherController');
   }
@@ -68,6 +70,17 @@ export class TeacherController {
 
     const pag = await this.paginatedTeacher.execute(body);
     return ProcessResponse.setResponse(res, pag, TeacherMappers.PaginatedToDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.HANDLE_USER)
+  @Post('unlink_user')
+  async unlinkTeacher(@Body() body: { teacherId: string }, @Response() res) {
+    this._logger.log('UnLink User');
+
+    const u = await this.breakUserLink.execute(body);
+
+    return ProcessResponse.setResponse(res, u);
   }
 
   @UseGuards(JwtAuthGuard)
