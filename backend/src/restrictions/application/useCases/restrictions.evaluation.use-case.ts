@@ -40,6 +40,7 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
 
     for (let i = 0; i < teachers.length; ++i) {
       const t = teachers[i];
+      this._logger.debug(`Teacher: ${t.shortName} --  ${t._id.toString()}`);
 
       let teacherPriorityCount = 0;
       let teacherAccomplishCount = 0;
@@ -51,18 +52,24 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
         let u1 = val1.value.unwrap();
         let u2 = val2.value.unwrap();
 
+        this._logger.debug(`Simple Count Restrictions: ${JSON.stringify(u1)}`);
+        this._logger.debug(`Count Conditional Restrictions: ${JSON.stringify(u2)}`);
+
         teacherAccomplishCount += (u1.evaluation + u2.evaluation);
         teacherPriorityCount += (u1.priorityAmounts + u2.priorityAmounts);
 
         priorityCount += t.priority;
-        accomplishCount += teacherAccomplishCount / teacherPriorityCount * t.priority;
 
-        this._logger.verbose(`Teacher ${t.shortName} -- SimpleCount: ${u1.evaluation} -- CountConditions: ${u2.evaluation}`);
+        accomplishCount += teacherAccomplishCount / (teacherPriorityCount == 0 ? 1 : teacherPriorityCount) * t.priority;
+
+        this._logger.verbose(`Teacher ${t.shortName} Results: -- SimpleCount: ${u1.evaluation} -- CountConditions: ${u2.evaluation}`);
       }
     }
 
+    this._logger.debug(`${accomplishCount} ${priorityCount} Happiness: ${accomplishCount / (priorityCount == 0 ? 1 : priorityCount)}`);
+
     return right(Result.Ok<HappinessDto>({
-      happiness: accomplishCount / priorityCount,
+      happiness: accomplishCount / (priorityCount == 0 ? 1 : priorityCount),
     }));
   }
 }

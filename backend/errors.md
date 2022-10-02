@@ -1,0 +1,7 @@
+- [ ] La vista de recursos no funcionno
+- [ ] El problema con la creacion en serie (por ejemplo cada 2 dias => lunes, miercoles, viernes // martes, jueves)
+- [ ] Los filtros no funcionan -> filtro por grupos y por tipo de clases.
+- [ ] No cargo todas las clases en la vista 
+  - Para mejorar esto cargar solo las clases que se ver
+- [ ] Visualizacion de las restricciones
+  - Las caracteristicas se repiten 

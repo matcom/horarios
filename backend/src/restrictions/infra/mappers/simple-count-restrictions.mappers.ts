@@ -47,6 +47,7 @@ export class SimpleCountRestrictionsMappers {
       part: domain.part,
       teacherId: domain.teacherId,
       operator: domain.operator,
+      restrictionType: domain.restrictionType,
     };
   }
 

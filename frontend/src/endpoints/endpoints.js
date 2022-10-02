@@ -18,6 +18,8 @@ export default {
   users: baseUrl + 'user',
   register: baseUrl + 'auth/register',
   profile: baseUrl + 'user/profile',
+  usersGetAll: baseUrl + 'user/all',
+  linkUserTeacher: baseUrl + 'user/link_teacher',
 
   local: baseUrl + 'local',
   localGetAll: baseUrl + 'local/all',
@@ -33,6 +35,7 @@ export default {
 
   teachers: baseUrl + 'teacher',
   teachersGetAll: baseUrl + 'teacher/all',
+  teachersBreakUser: baseUrl + 'teacher/unlink_user',
 
   typeClasses: baseUrl + 'typeclass',
   typeClassesGetAll: baseUrl + 'typeclass/all',

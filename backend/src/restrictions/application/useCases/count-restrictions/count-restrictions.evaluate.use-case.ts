@@ -41,7 +41,7 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
       .items;
 
     try {
-      let ans: string[] = [];
+      let ans: Set<string> = new Set<string>();
       let amountEvaluation = 0;
       let priorityAmounts = 0;
 
@@ -63,11 +63,24 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
 
         let count = 0;
         if (r.min) {
-          for (let i = 0; i < intervals.length; ++i)
-            count += (Opera(r.min, intervals[i].length, r.operator)) ? 1 : 0;
+          for (let i = 0; i < intervals.length; ++i) {
+            const evaluation = (Opera(r.min, intervals[i].length, r.operator)) ? 1 : 0;
+
+            if (evaluation == 0)
+              ans.add(r._id.toString());
+
+            count += evaluation;
+
+          }
         } else if (r.part) {
-          for (let i = 1; i < intervals.length; ++i)
-            count += (Opera(intervals[i].length, r.part * intervals[i - 1].length, r.operator)) ? 1 : 0;
+          for (let i = 1; i < intervals.length; ++i) {
+            const evaluation = (Opera(intervals[i].length, r.part * intervals[i - 1].length, r.operator)) ? 1 : 0;
+
+            if (evaluation == 0)
+              ans.add(r._id.toString());
+
+            count += evaluation;
+          }
         }
         const final = count / intervals.length * r.priority;
         amountEvaluation += final;
@@ -81,7 +94,7 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
         // });
       }
       return right(Result.Ok({
-        restrictionId: ans,
+        restrictionId: Array.from(ans),
         evaluation: amountEvaluation,
         priorityAmounts,
       }));

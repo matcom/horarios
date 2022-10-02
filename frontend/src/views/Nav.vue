@@ -178,7 +178,8 @@
                 <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
                    data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                   <i class='fas fa-smile mr-2 text-gray-400'></i>
-                  <span class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ happiness }}</span>
+                  <span class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ isNaN(happiness) ? 0 : happiness
+                    }}</span>
                 </a>
               </li>
 
@@ -364,7 +365,7 @@ export default {
       this.$store.state.restrictions.getHappiness({})
         .then(result => {
           if (result === true) {
-            this.happiness = this.$store.state.restrictions.data[Condition_types.HAPPINESS];
+            this.happiness = (this.$store.state.restrictions.data[Condition_types.HAPPINESS]).happiness;
           }
         });
     },

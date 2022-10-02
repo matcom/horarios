@@ -50,6 +50,7 @@ export class CountConditionsRestrictionsMappers {
       subConditions: domain.subConditions,
       teacherId: domain.teacherId,
       operator: domain.operator,
+      restrictionType: domain.restrictionType,
     };
   }
 

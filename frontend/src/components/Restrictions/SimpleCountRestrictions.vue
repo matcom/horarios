@@ -90,7 +90,11 @@ export default {
       this.$store.state.simpleCountRestrictions.create(token, {
         conditions: JSON.stringify(conditions),
         ...this.newRestriction,
-      });
+      })
+        .then(result => {
+          if (result === true)
+            this.$router.push({ name: 'restrictionsPage' });
+        });
     },
   },
 };

@@ -41,6 +41,7 @@ export class GenerateExcelReport {
     for (let i = 0; i < groups.length; ++i) {
 
       const g = groups[i];
+
       const classes = (await this.findClassWithDetailsUseCase.execute({ filter: { groupId: g._id.toString() } }))
         .value
         .unwrap()

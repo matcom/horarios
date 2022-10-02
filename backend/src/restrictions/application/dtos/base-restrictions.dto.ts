@@ -1,3 +1,5 @@
+import { RestrictionType } from '../../domain/enums/restriction-type';
+
 export type BaseRestrictionsDto = {
   id: string;
   conditions: {};
@@ -6,4 +8,5 @@ export type BaseRestrictionsDto = {
   priority: number;
   createdAt: Date;
   updatedAt: Date;
+  restrictionType: RestrictionType;
 }

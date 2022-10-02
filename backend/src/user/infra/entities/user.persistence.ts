@@ -1,6 +1,7 @@
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToOne } from 'typeorm';
 import { UserStatus } from 'src/user/domain/enums/user.status';
+import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
 
 @Entity('user')
 @Index(['id'], { unique: true })
@@ -23,4 +24,11 @@ export class UserPersistence extends PersistentEntity {
     default: UserStatus.Register, // TODO; handle this later
   })
   status: UserStatus;
+
+  @OneToOne(
+    () => TeacherPersistence,
+    teacher => teacher.user,
+    { nullable: true, onDelete: 'SET NULL' },
+  )
+  teacher: TeacherPersistence;
 }

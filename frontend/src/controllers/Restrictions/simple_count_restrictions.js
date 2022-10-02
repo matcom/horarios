@@ -21,7 +21,7 @@ export default {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.post(`${Endpoints.restrictions}/create/simple_count_restriction`, body)
+    return Petitions.post(`${Endpoints.simple_count_restrictions}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         if (json !== null && !json.hasOwnProperty('error')) {

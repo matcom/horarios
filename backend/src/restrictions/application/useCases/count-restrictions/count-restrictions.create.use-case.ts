@@ -9,23 +9,23 @@ import { SimpleCountRestrictions } from '../../../domain/entities/count-restrict
 import { CountRestrictionsCreateDto } from '../../dtos/count-restrictions/count-restrictions.create.dto';
 import { RestrictionType } from '../../../domain/enums/restriction-type';
 
-export type CreateCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<SimpleCountRestrictions>
+export type CreateSimpleCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<SimpleCountRestrictions>
   | AppError.ValidationErrorResult<SimpleCountRestrictions>,
   Result<SimpleCountRestrictions>>;
 
 
 @Injectable()
-export class CreateSimpleCountRestrictionUseCase implements IUseCase<SimpleCountRestrictionsDto, Promise<CreateCountRestrictionUseCaseResponse>> {
+export class CreateSimpleCountRestrictionUseCase implements IUseCase<SimpleCountRestrictionsDto, Promise<CreateSimpleCountRestrictionUseCaseResponse>> {
 
   private _logger: Logger;
 
   constructor(
     private readonly countRestrictionsRepository: SimpleCountRestrictionsRepository,
   ) {
-    this._logger = new Logger('CreateCountRestrictionsUseCase');
+    this._logger = new Logger('CreateSimpleCountRestrictionsUseCase');
   }
 
-  async execute(request: CountRestrictionsCreateDto): Promise<CreateCountRestrictionUseCaseResponse> {
+  async execute(request: CountRestrictionsCreateDto): Promise<CreateSimpleCountRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
     const countRestrictionsOrError: Result<SimpleCountRestrictions> = SimpleCountRestrictions.New({

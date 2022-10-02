@@ -111,7 +111,11 @@ export default {
         conditions: JSON.stringify(conditions),
         subConditions: JSON.stringify(this.query),
         ...this.newRestriction,
-      });
+      })
+        .then(result => {
+          if (result === true)
+            this.$router.push({ name: 'restrictionsPage' });
+        });
     },
   },
 };
