@@ -83,7 +83,7 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
     let saved = [];
     while (true) {
 
-      if (!(request.start.getDay() == 6 || request.start.getDay() == 0)) {
+      if (request.start.getDay() !== 0 && request.start.getDay() !== 6) {
 
         const ans = await this.createClass.execute({
           ...Object.assign({}, request),
@@ -93,13 +93,34 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
         if (ans.isLeft())
           return left(Result.Fail(new AppError.UnexpectedError(new Error('Fallo en la creacion multiple.\n\n' + ans.value.unwrapError().message))));
 
-        saved.push(ans.value.unwrap());
+        const unwrapped = ans.value.unwrap();
 
-        let unwrapped = ans.value.unwrap();
+        saved.push({
+          _id: unwrapped._id,
+          shortName: unwrapped.shortName,
+          fullName: unwrapped.fullName,
+          description: unwrapped.description,
+          priority: unwrapped.priority,
+          createdAt: unwrapped.createdAt,
+          updatedAt: unwrapped.updatedAt,
+          teacherIds: unwrapped.teacherIds,
+          localId: unwrapped.localId,
+          lessonId: unwrapped.lessonId,
+          typeClassId: unwrapped.typeClassId,
+          weekId: unwrapped.weekId,
+          groupId: unwrapped.groupId,
+          start: new Date(unwrapped.start.getTime()),
+          end: new Date(unwrapped.end.getTime()),
+          serieId: unwrapped.serieId,
+          color: unwrapped.color,
+          resourceId: unwrapped.resourceId,
+        });
+
         answer.push({
           id: unwrapped._id.toString(),
-          start: new Date(unwrapped.start),
-          end: new Date(unwrapped.end),
+          start: new Date(unwrapped.start).getTime(),
+          end: new Date(unwrapped.end).getTime(),
+          color: unwrapped.color,
         });
       }
 
@@ -110,8 +131,7 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
         break;
     }
 
-    for (let i = 0; i < saved.length; i++)
-      await repo.save(saved[i]);
+    await repo.saveMany(saved);
 
     return right(Result.Ok({
       items: answer,

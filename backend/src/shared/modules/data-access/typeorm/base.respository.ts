@@ -104,7 +104,7 @@ export abstract class BaseRepository<E extends IEntity,
   }
 
   async executeRawQuery(query: string, params: any[]): Promise<any> {
-    await this._entityRepository.query(query, params);
+    return await this._entityRepository.query(query, params);
   }
 
   async getPaginated(paginatorParams: PageParams, filter: {}): Promise<PaginatedFindResult<E>> {

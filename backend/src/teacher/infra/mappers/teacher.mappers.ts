@@ -16,6 +16,7 @@ export class TeacherMappers {
       department:
         persist.department ? DepartmentMappers.PersistToDomain(persist.department) : null,
       departmentId: { id: persist.departmentId },
+      userId: { id: persist.userId },
     }, persist.id);
 
     if (domain.isFailure)
@@ -37,6 +38,7 @@ export class TeacherMappers {
       email: domain.email,
       faculties: domain.facultyIds,
       department: domain.departmentId,
+      userId: domain.userId.id,
     };
   }
 
@@ -51,6 +53,7 @@ export class TeacherMappers {
       updatedAt: domain.updatedAt,
       email: domain.email,
       departmentId: domain.departmentId,
+      userId: domain.userId,
     };
   }
 

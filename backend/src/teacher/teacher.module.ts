@@ -14,7 +14,7 @@ import { FacultyModule } from '../faculty/faculty.module';
     FacultyModule,
   ],
   providers: [...TeacherUseCases, TeacherRepository],
-  exports: [],
+  exports: [TeacherRepository],
   controllers: [TeacherController],
 })
 export class TeacherModule {

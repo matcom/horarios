@@ -19,6 +19,7 @@ import { WeekModule } from './week/week.module';
 import { ClassModule } from './class/class.module';
 import { GroupModule } from './group/group.module';
 import { ReportModule } from './reports/report.module';
+import { RestrictionsModule } from './restrictions/restrictions.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ReportModule } from './reports/report.module';
     ClassModule,
     GroupModule,
     ReportModule,
+    RestrictionsModule,
   ],
   controllers: [],
   providers: [],

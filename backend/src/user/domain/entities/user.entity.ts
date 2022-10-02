@@ -14,6 +14,7 @@ type UserProps = {
   password: string;
   status: UserStatus;
   permissions: number;
+  teacherId?: { id: string; }
 };
 
 
@@ -34,6 +35,10 @@ export class User extends DomainEntity<UserProps> {
 
   get username(): string {
     return this.props.username;
+  }
+
+  get teacherId(): { id: string } {
+    return this.props.teacherId;
   }
 
   get createdAt(): Date {

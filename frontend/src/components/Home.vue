@@ -904,7 +904,7 @@ export default {
       this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
     },
 
-    addEvent(id, title, start, end, allDay, data, selectInfo) {
+    addEvent(id, title, start, end, allDay, data, selectInfo, color) {
 
       this.classes.push(data);
       this.classes = this.classes.slice().sort((a, b) => b.shortName - a.shortName);
@@ -918,11 +918,13 @@ export default {
           start,
           end,
           allDay,
+          color,
           resourceId: data.resourceId,
         });
       }
 
     },
+
     checkErrors() {
       this.errors |= (this.newClass.viewInCard === '') ? 1 : this.errors;
       this.errors |= (!this.teachers.some(x => x.selected === true)) ? (1 << 1) : this.errors;
@@ -938,6 +940,7 @@ export default {
 
       return this.errors > 0;
     },
+
     saveClass() {
       if (this.checkErrors()) return;
 
@@ -976,7 +979,8 @@ export default {
                 endDate,
                 selectInfo.allDay,
                 this.$store.state.class.data,
-                selectInfo);
+                selectInfo,
+                this.$store.state.class.data.color);
             } else {
               alert(this.$store.state.class.data.error);
             }
@@ -1003,7 +1007,8 @@ export default {
                   d.end,
                   selectInfo.allDay,
                   this.newClass,
-                  selectInfo);
+                  selectInfo,
+                  d.color);
               });
             } else {
               alert(this.$store.state.classes.data.error);
@@ -1011,8 +1016,10 @@ export default {
           });
 
       }
+
       this.restore();
 
+      this.makeQuery(); // TODO: handle this.
     },
 
     restore() {

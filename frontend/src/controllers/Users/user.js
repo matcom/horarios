@@ -1,5 +1,5 @@
-import Petitions from './petitions';
-import Endpoints from '../endpoints/endpoints';
+import Petitions from '../petitions';
+import Endpoints from '../../endpoints/endpoints';
 
 const data_key = 'calendario-matcom-user';
 

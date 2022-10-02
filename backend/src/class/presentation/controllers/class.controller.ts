@@ -75,6 +75,9 @@ export class ClassController {
   async getQuery(@Body() body: ClassQueryDto, @Response() res) {
     this._logger.log('Get with query');
 
+
+    console.log(body);
+
     const ans = await this.queryClass.execute(body);
     return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
