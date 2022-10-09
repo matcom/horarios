@@ -25,6 +25,7 @@ import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-se
 import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
 import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Controller('class')
 export class ClassController {
@@ -75,9 +76,6 @@ export class ClassController {
   async getQuery(@Body() body: ClassQueryDto, @Response() res) {
     this._logger.log('Get with query');
 
-
-    console.log(body);
-
     const ans = await this.queryClass.execute(body);
     return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
@@ -107,6 +105,8 @@ export class ClassController {
   @Post('create/multiple')
   async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
     this._logger.log('Create in serie');
+
+    console.log(body);
 
     const c = await this.createInSerie.execute(body);
     return ProcessResponse.setResponse(res, c);
