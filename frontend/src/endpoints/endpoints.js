@@ -45,6 +45,7 @@ export default {
 
   classes: baseUrl + 'class',
   multipleEditionClass: baseUrl + 'class/multiple',
+  multipleEditionByFields: baseUrl + 'class/multiple_by_fields',
   classesGetAll: baseUrl + 'class/all',
   classRemoveInSerie: baseUrl + 'class/in_serie',
   query: baseUrl + 'class/query',

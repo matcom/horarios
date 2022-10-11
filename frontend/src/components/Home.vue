@@ -378,7 +378,7 @@
         <div class='modal-content'>
           <div class='modal-header'>
             <h5 class='modal-title' id='modalDetailsTitle'>Detalles del Turno</h5>
-            <i style='cursor:pointer;' class='fa fa-pen mx-3' data-toggle='tooltip'
+            <i v-if='viewPanel()' style='cursor:pointer;' class='fa fa-pen mx-3' data-toggle='tooltip'
                title='Editar' @click.prevent='updateClass()'></i>
             <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
               <span aria-hidden='true'>&times;</span>
@@ -503,11 +503,11 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
-            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.viewPanel()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='deleteAllEventsInSerie(detailsClickedEvent.serieId, detailsClickedEvent.info)'>
               Eliminar todos los eventos de la serie
             </button>
-            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.viewPanel()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='deleteEvent(detailsClickedEvent.id, detailsClickedEvent.info)'>
               Eliminar solo este evento
             </button>
@@ -517,7 +517,7 @@
     </div>
 
     <!-- Modal Update-->
-    <div v-if='newClass.fullName' class='modal fade' id='modalEdit' tabindex='-1' role='dialog'
+    <div class='modal fade' id='modalEdit' tabindex='-1' role='dialog'
          aria-labelledby='modalEdit' aria-hidden='true' ref='modalEdit'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
@@ -534,7 +534,7 @@
                   <label class='col-form-label'> Elegir asignatura:</label>
                 </div>
 
-                <div class='col-sm-6'>
+                <div class='col-sm-6' v-if='newClass.lessonId.id'>
 
                   <div class='form-group dropright'>
                     <button
@@ -564,7 +564,7 @@
                   <label class='col-form-label'> Elegir local:</label>
                 </div>
 
-                <div class='col-sm-6'>
+                <div class='col-sm-6' v-if='newClass.localId.id'>
                   <div class='form-group dropright'>
                     <button
                       :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
@@ -593,7 +593,7 @@
                   <label class='col-form-label'> Elegir tipo de clase:</label>
                 </div>
 
-                <div class='col-sm-6'>
+                <div class='col-sm-6' v-if='newClass.typeClassId.id'>
                   <div class='form-group dropright'>
                     <button
                       :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'bg-white': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 4)}"
@@ -622,7 +622,7 @@
                   <label class='col-form-label'> Elegir grupo:</label>
                 </div>
 
-                <div class='col-sm-6'>
+                <div class='col-sm-6' v-if='newClass.groupId.id'>
                   <div class='form-group dropright'>
                     <button
                       :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'bg-white': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 5)}"
@@ -654,11 +654,11 @@
           </div>
           <div class='modal-footer'>
             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
-            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.viewPanel()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='editClass(true)'>
               Editar todos los eventos de la serie
             </button>
-            <button v-if='this.isLogued()' type='button' class='btn btn-primary' data-dismiss='modal'
+            <button v-if='this.viewPanel()' type='button' class='btn btn-primary' data-dismiss='modal'
                     @click='editClass(false)'>
               Editar solo este evento
             </button>
@@ -831,7 +831,7 @@ export default {
       // this.loadFrom('classes');
 
       setTimeout(() => {
-        let isAuthored = this.isLogued();
+        let isAuthored = this.viewPanel();
 
         this.config.selectable = isAuthored;
         this.config.editable = isAuthored;
@@ -951,9 +951,6 @@ export default {
     },
 
     updateClass() {
-      $('#modalDetails').modal('hide');
-      $('#modalEdit').modal('show');
-
       this.detailsClickedEvent.teachers.forEach(t => {
         let teacher = this.teachers.find(x => x.id === t.id);
         teacher.selected = true;
@@ -980,23 +977,32 @@ export default {
         resourceId: this.detailsClickedEvent.local.id,
         id: this.detailsClickedEvent.id,
       };
+
+      $('#modalDetails').modal('hide');
+      $('#modalEdit').modal('show');
     },
 
     editClass(updateAllEvents) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
+      this.newClass.color = this.groups.find(x => x.id === this.newClass.groupId.id).color;
+      this.newClass.fullName = this.lessons.find(x => x.id === this.newClass.lessonId.id).fullName;
+      this.newClass.shortName = this.lessons.find(x => x.id === this.newClass.lessonId.id).shortName;
+
       if (updateAllEvents) {
-        this.$store.state.class.editMultiple(token, this.detailsClickedEvent.serieId, this.newClass, this.newClass)
+        this.$store.state.class.editMultipleByFields(token, this.newClass)
           .then(result => {
             if (result === true) {
 
               this.classes
                 .filter(x => x.serieId === this.detailsClickedEvent.serieId)
                 .forEach(c => {
-                  c.color = this.groups.find(x => x.id === this.detailsClickedEvent.group.id).color;
-                  c.title = this.detailsClickedEvent.lesson.shortName;
-                  c.resourceId = this.detailsClickedEvent.local.id;
+                  c.color = this.groups.find(x => x.id === this.newClass.groupId.id).color;
+                  c.title = this.newClass.lessonId.shortName;
+                  c.resourceId = this.newClass.localId.id;
+                  c.description = this.newClass.description;
+                  c.shortName = this.lessons.find(x => x.id === this.newClass.lessonId.id).shortName;
                 });
 
               this.updateEventsInCalendar();
@@ -1007,11 +1013,6 @@ export default {
             }
           });
       } else {
-
-        this.newClass.color = this.groups.find(x => x.id === this.newClass.groupId.id).color;
-        this.newClass.fullName = this.lessons.find(x => x.id === this.newClass.lessonId.id).fullName;
-        this.newClass.shortName = this.lessons.find(x => x.id === this.newClass.lessonId.id).shortName;
-
         this.$store.state.class.edit(token, this.newClass)
           .then(result => {
             if (result === true) {

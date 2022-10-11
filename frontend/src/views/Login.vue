@@ -47,6 +47,10 @@
                       </router-link>
                     </form>
                     <hr>
+                    <div class='text-center'>
+                      <router-link :to="{name: 'registerPage'}" class='small text-dark'><strong>Registrarse</strong>
+                      </router-link>
+                    </div>
                     <!-- <div class="text-center">
                         <a class="small" href="forgot-password.html">Recuperar Contraseña</a>
                     </div> -->
