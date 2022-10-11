@@ -56,6 +56,7 @@ import CountConditionsRestrictions from '@/components/Restrictions/CountConditio
 import Restrictions from '@/components/Restrictions/Restrictions';
 import BreachedRestrictions from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictions';
 import BreachedRestrictionsDetails from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictionsDetails';
+import DistributionRestrictions from '@/components/Restrictions/DistributionRestrictions';
 
 Vue.use(Router);
 
@@ -406,6 +407,14 @@ const router = new Router({
           path: '/restrictions/count_conditions',
           name: 'countConditionsRestrictionsPage',
           component: CountConditionsRestrictions,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/restrictions/distribution_attribute',
+          name: 'distributeAttributeRestriction',
+          component: DistributionRestrictions,
           meta: {
             requiresAuth: true,
           },
