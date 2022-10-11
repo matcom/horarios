@@ -45,6 +45,7 @@ export default {
 
   classes: baseUrl + 'class',
   multipleEditionClass: baseUrl + 'class/multiple',
+  multipleEditionByFields: baseUrl + 'class/multiple_by_fields',
   classesGetAll: baseUrl + 'class/all',
   classRemoveInSerie: baseUrl + 'class/in_serie',
   query: baseUrl + 'class/query',
@@ -65,6 +66,7 @@ export default {
   restrictions: baseUrl + 'restrictions',
   simple_count_restrictions: baseUrl + 'restrictions/simple_count_restrictions',
   count_conditions_restrictions: baseUrl + 'restrictions/count_conditions_restrictions',
+  distribute_restrictions: baseUrl + 'restrictions/distribution_restrictions',
 
   happiness: baseUrl + 'restrictions/happiness',
 };

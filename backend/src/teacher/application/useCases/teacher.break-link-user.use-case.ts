@@ -21,24 +21,28 @@ export class TeacherBreakUserLinkUseCase implements IUseCase<{ teacherId: string
     private readonly teacherRepository: TeacherRepository,
     private readonly userRemovePermission: UserRemovePermissionUseCase,
   ) {
-    this._logger = new Logger('SetUserAsTeacherUseCase');
+    this._logger = new Logger('TeacherBreakUserLinkUseCase');
   }
 
-  async execute(request: { teacherId: string, userId: string }): Promise<TeacherBreakUserLinkUseCaseResponse> {
+  async execute(request: { teacherId: string }): Promise<TeacherBreakUserLinkUseCaseResponse> {
 
     this._logger.log('Executing...');
 
     const teacher: Teacher = await this.teacherRepository.findById(request.teacherId);
 
+    console.log(teacher);
+
     if (teacher === null)
       return left(Result.Fail(new AppError.ValidationError('Teacher not found')));
+
+    const userId = teacher.userId.id;
 
     teacher.SetUser({ id: null });
 
     await this.teacherRepository.save(teacher);
 
     await this.userRemovePermission.execute({
-      userId: request.userId,
+      userId,
       permission: UserPermissions.HANDLE_RESTRICTIONS,
     });
 

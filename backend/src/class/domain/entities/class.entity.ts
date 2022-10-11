@@ -150,10 +150,15 @@ export class Class extends DomainEntity<ClassProps> {
   }
 
   public static Create(props: any, id: string = null): Result<Class> {
+    if (props.teacherIds && props.teacherIds.length > 0) {
+      const cleanTeachers = new Set(props.teacherIds.map(t => t.id));
+      props.teacherIds = Array.from(cleanTeachers).map(t => ({ id: t }));
+    }
+
     return Result.Ok(new Class(props, new UniqueEntityID(id)));
   }
 
-  public Update(props: any) {
+  public Update(props: any, includeDates = true) {
     this.props.priority = props.priority ?? this.props.priority;
     this.props.teacherIds = props.teacherId ?? this.props.teacherIds;
     this.props.localId = props.localId ?? this.props.localId;
@@ -162,11 +167,15 @@ export class Class extends DomainEntity<ClassProps> {
     this.props.description = props.description ?? this.props.description;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
-    this.props.start = props.start ?? this.props.start;
-    this.props.end = props.end ?? this.props.end;
     this.props.groupId = props.groupId ?? this.props.groupId;
     this.props.weekId = props.weekId ?? this.props.weekId;
     this.props.resourceId = this.props.localId.id;
+    this.props.color = props.color ?? this.props.color;
+
+    if (includeDates) {
+      this.props.start = props.start ?? this.props.start;
+      this.props.end = props.end ?? this.props.end;
+    }
 
     this.props.updatedAt = new Date();
   }

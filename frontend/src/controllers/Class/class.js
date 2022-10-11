@@ -75,6 +75,19 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
       });
   },
+  editMultipleByFields(token, body) {
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, token);
+
+    return Petitions.put(Endpoints.multipleEditionByFields, body)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
+      });
+  },
   getDetails(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);

@@ -71,7 +71,7 @@ export class ClassMappers {
       end: domain.end,
       start: domain.start,
       serieId: domain.serieId,
-      color: domain.color,
+      color: domain.color ?? '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
       resourceId: domain.resourceId,
     };
   }
@@ -93,7 +93,7 @@ export class ClassMappers {
     };
   }
 
-  public static DomainToDetails(domain: Class): ClassDetailsDto {
+  public static DomainToDetails(domain: Class, amountInSerie = 1): ClassDetailsDto {
     let base = ClassMappers.DomainToDto(domain);
 
     return {
@@ -104,6 +104,7 @@ export class ClassMappers {
       local: domain.local ? LocalMappers.DomainToDetails(domain.local) : null,
       group: domain.group ? GroupMappers.DomainToDetails(domain.group) : null,
       week: domain.week ? WeekMapper.DomainToDetails(domain.week) : null,
+      amountInSerie,
     };
   }
 }

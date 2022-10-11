@@ -51,7 +51,6 @@ export class QueryClassUseCase implements IUseCase<ClassQueryDto, Promise<QueryC
       if (request.end)
         qb.andWhere('"end" <= :end', { end: request.end });
 
-
       const ans = await qb.getMany();
 
       return right(Result.Ok({

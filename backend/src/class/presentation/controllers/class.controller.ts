@@ -10,7 +10,8 @@ import {
   RemoveClassUseCase,
   RemoveInSerieClassUseCase,
   UpdateClassUseCase,
-  UpdateMultipleClassInSameSerieUseCase,
+  UpdateMultipleClassByFieldsUseCase,
+  UpdateMultipleClassInSameSerieByDropUseCase,
 } from '../../application/useCases';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import { Class } from '../../domain/entities/class.entity';
@@ -39,10 +40,11 @@ export class ClassController {
     private readonly paginatedClass: PaginatedClassUseCase,
     private readonly findDetailsClass: FindDetailsClassUseCase,
     private readonly findAllClass: FindAllClassUseCase,
-    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
+    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieByDropUseCase,
     private readonly removeInSerie: RemoveInSerieClassUseCase,
     private readonly queryClass: QueryClassUseCase,
-    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase) {
+    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase,
+    private readonly updateByFields: UpdateMultipleClassByFieldsUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -75,9 +77,6 @@ export class ClassController {
   async getQuery(@Body() body: ClassQueryDto, @Response() res) {
     this._logger.log('Get with query');
 
-
-    console.log(body);
-
     const ans = await this.queryClass.execute(body);
     return ProcessResponse.setResponse(res, ans, ClassMappers.AllToDto);
   }
@@ -108,6 +107,8 @@ export class ClassController {
   async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
     this._logger.log('Create in serie');
 
+    console.log(body);
+
     const c = await this.createInSerie.execute(body);
     return ProcessResponse.setResponse(res, c);
   }
@@ -130,6 +131,16 @@ export class ClassController {
     this._logger.log('Update in serie');
 
     const c = await this.updateMultipleClass.execute(body);
+    return ProcessResponse.setResponse<Class>(res, c, a => a);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.CREATE_EVENT)
+  @Put('multiple_by_fields')
+  async updateMultipleByFields(@Body() body: ClassUpdateDto, @Response() res) {
+    this._logger.log('Update in serie');
+
+    const c = await this.updateByFields.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, a => a);
   }
 

@@ -21,113 +21,120 @@
         </li>
 
 
-        <li class='nav-item' v-if='this.isLogued() && this.viewPanel()'>
-          <router-link :to="{name: 'usersPage'}" class='nav-link'>
-            <i class='fas fa-fw fa-user'></i>
-            <span>Usuarios</span></router-link>
+        <!--        <li class='nav-item' v-if='this.isLogued() && this.viewPanel()'>-->
+        <!--          <router-link :to="{name: 'usersPage'}" class='nav-link'>-->
+        <!--            <i class='fas fa-fw fa-user'></i>-->
+        <!--            <span>Usuarios</span></router-link>-->
+        <!--        </li>-->
+
+
+        <li class='nav-item'>
+          <a
+            class='nav-link' href='#' data-toggle='collapse' data-target='#collapse_horarios' aria-expanded='true'
+            aria-controls='collapse_horarios'>
+            <i class='fas fa-fw fa-folder'></i>
+            <span>Horario Utilidades</span>
+          </a>
         </li>
 
-        <button class='btn btn-primary collapse-header' data-toggle='collapse' data-target='#collapse_horarios'
-                aria-expanded='false' aria-controls='collapse_horarios' v-if='this.isLogued()'>
-          Horario Utilidades
-        </button>
+        <div class='mx-4'>
+          <div class='collapse' id='collapse_horarios' v-if='this.isLogued()'>
 
-        <div class='collapse' id='collapse_horarios' v-if='this.isLogued()'>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'universitiesPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Universidades</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'universitiesPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Universidades</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseFacultyPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Facultades</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseFacultyPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Facultades</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseMajorPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Carreras</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseMajorPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Carreras</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseLocalPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Locales</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseLocalPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Locales</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseTeacherPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-people-carry'></i>
+                <span>Profesores</span>
+              </router-link>
+            </li>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseTeacherPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-people-carry'></i>
-              <span>Profesores</span>
-            </router-link>
-          </li>
+            <li v-if='this.handleRestrictions() || this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'restrictionsPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Restricciones</span>
+              </router-link>
+            </li>
 
-          <li v-if='this.handleRestrictions() || this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'restrictionsPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Restricciones</span>
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'breachedRestrictionsPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Restr. Incumplidas</span>
+              </router-link>
+            </li>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'breachedRestrictionsPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Restr. Incumplidas</span>
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseLessonPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-building'></i>
+                <span>Asignaturas</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseLessonPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-building'></i>
-              <span>Asignaturas</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'typeClassesPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-th-list'></i>
+                <span>Tipos de clase</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'typeClassesPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-th-list'></i>
-              <span>Tipos de clase</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseGroupPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-people-carry'></i>
+                <span>Grupos</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseGroupPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-people-carry'></i>
-              <span>Grupos</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-people-carry'></i>
+                <span>Departamentos</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'chooseDepartmentPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-people-carry'></i>
-              <span>Departamentos</span>
+              </router-link>
+            </li>
 
-            </router-link>
-          </li>
+            <li v-if='this.viewPanel()' class='nav-item form-inline'>
+              <router-link @click.native='scrollToTop()' :to="{name: 'semestersPage'}" class='nav-link'>
+                <i class='fas fa-fw fa-people-carry'></i>
+                <span>Semestres</span>
 
-          <li v-if='this.viewPanel()' class='nav-item form-inline'>
-            <router-link @click.native='scrollToTop()' :to="{name: 'semestersPage'}" class='nav-link'>
-              <i class='fas fa-fw fa-people-carry'></i>
-              <span>Semestres</span>
+              </router-link>
+            </li>
+          </div>
 
-            </router-link>
-          </li>
         </div>
-
         <!-- Divider -->
         <hr class='sidebar-divider'>
         <!-- Heading -->

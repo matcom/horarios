@@ -13,4 +13,5 @@ export type ClassDetailsDto = ClassDto & {
   typeClass?: TypeClassDetailsDto,
   group?: GroupDetailsDto;
   week?: WeekDetailsDto;
+  amountInSerie: number;
 }
