@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, Opera } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
 import { DistributionRestrictionsRepository } from '../../../infra/repositories/distribution-restrictions.repository';
@@ -61,7 +61,6 @@ export class EvaluateDistributionRestrictionUseCase implements IUseCase<{}, Prom
 
         let count = 0;
         for (let i = 0; i < intervals.length; ++i) {
-
           const diffValues = new Set(intervals[i].map(x => x[r.attribute]));
 
           const evaluation = (Opera(r.min, diffValues.size, r.operator)) ? 1 : 0;

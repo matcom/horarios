@@ -40,7 +40,7 @@ export class DistributionRestrictionsController {
   async distributionConditions(@Request() req, @Response() res) {
     this._logger.log('EvaluateDistributionRestrictions');
 
-    let count = await this.evaluate.execute({ teacherId: req.user.props.id });
+    let count = await this.evaluate.execute({ teacherId: req.user.id });
 
     return ProcessResponse.setResponse(res, count);
   }
@@ -67,16 +67,20 @@ export class DistributionRestrictionsController {
 
     const cr = await this.create.execute({
       ...body,
-      teacherId: { id: req.user.props.id },
+      teacherId: { id: req.user.id },
     });
     return ProcessResponse.setResponse(res, cr, DistributionRestrictionsMappers.DomainToDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('all')
-  async getAll(@Body() body: DistributionRestrictionsFindAllDto, @Response() res) {
+  async getAll(@Body() body: DistributionRestrictionsFindAllDto, @Response() res, @Request() req) {
     this._logger.log('Get All');
 
-    const ans = await this.findAll.execute(body);
+    const ans = await this.findAll.execute({
+      ...body,
+      user: req.user,
+    });
     return ProcessResponse.setResponse(res, ans, DistributionRestrictionsMappers.AllToDto);
   }
 

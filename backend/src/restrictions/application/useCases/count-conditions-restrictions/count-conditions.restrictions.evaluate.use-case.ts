@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, Opera } from '../../utils/utils';
 import { Tree } from '../../dtos/tree.dto';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import {

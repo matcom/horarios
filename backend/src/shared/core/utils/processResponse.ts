@@ -33,9 +33,18 @@ export class ProcessResponse {
         code: 400,
         error: error.message,
       });
-
     }
 
-    return res.status(400);
+    if (error.name === AppError.ObjectNotExist.name) {
+      return res.status(500).json({
+        code: 500,
+        error: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      code: 500,
+      error: error.message,
+    });
   }
 }

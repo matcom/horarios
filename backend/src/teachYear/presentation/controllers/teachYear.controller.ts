@@ -59,7 +59,7 @@ export class TeachYearController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @PermissionsDecorator(UserPermissions.HANDLE_TEACHE_YEAR)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER_YEAR)
   @Post('create')
   async create(@Body() body: TeachYearCreateDto, @Response() res) {
 
@@ -70,7 +70,7 @@ export class TeachYearController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @PermissionsDecorator(UserPermissions.HANDLE_TEACHE_YEAR)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER_YEAR)
   @Put()
   async update(@Body() body: TeachYearUpdateDto, @Response() res) {
     this._logger.log('Update');
@@ -80,7 +80,7 @@ export class TeachYearController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @PermissionsDecorator(UserPermissions.HANDLE_TEACHE_YEAR)
+  @PermissionsDecorator(UserPermissions.HANDLE_TEACHER_YEAR)
   @Delete()
   async delete(@Body() body: { id: string }, @Response() res) {
     this._logger.log('Delete');

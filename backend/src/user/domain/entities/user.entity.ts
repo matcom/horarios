@@ -72,13 +72,12 @@ export class User extends DomainEntity<UserProps> {
   }
 
   public RemovePermission(permission): void {
-
-    console.log(this.permissions);
-
     const pos = Math.log2(permission & -permission) + 1;
     this.props.permissions = this.permissions & ~(1 << (pos - 1));
+  }
 
-    console.log(this.props.permissions);
+  public static CheckPermission(permission: number, allPermissions: number): boolean {
+    return (allPermissions & permission) > 0;
   }
 
 

@@ -1,3 +1,6 @@
+import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
+import { Class } from '../../../class/domain/entities/class.entity';
+
 export enum RowLocations {
   teachers = `"teachers"."id"`,
   locals = `"local"."id"`,
@@ -131,3 +134,17 @@ export const BodyQuery = `
              LEFT JOIN "week" "week"
                        ON "week"."id" = "class"."week_id"
 `;
+
+export function BuildInterval(classes: (ClassPersistence | Class)[], intervalTimePeriod: number): (ClassPersistence | Class)[][] {
+  const result = [];
+  const classesCopy = [...classes];
+  while (classesCopy.length > 0) {
+    const firstClass = classesCopy[0];
+    const classesInInterval = classesCopy.filter((c) => {
+      return c.start >= firstClass.start && c.start <= new Date(firstClass.start.getDate() + intervalTimePeriod);
+    });
+    result.push(classesInInterval);
+    classesCopy.splice(0, classesInInterval.length);
+  }
+  return result;
+}

@@ -97,7 +97,7 @@
                   {{ !newRestriction.attribute ? 'Elegir Attriburo' : newRestriction.attribute }}
                 </button>
                 <div class='dropdown-menu'>
-                  <a style='cursor:pointer;' v-for='u in this.attributes' :key='u[1]' class='dropdown-item'
+                  <a style='cursor:pointer;' v-for='u in this.attributes' :key='u[2]' class='dropdown-item'
                      @click='newRestriction.attribute = u[1]'>{{ u[0] }}</a>
                 </div>
               </div>
@@ -151,13 +151,14 @@ export default {
         priority: 0,
       },
       attributes: [
-        ['prioridad', 'priority'],
-        ['local', 'localId'],
-        ['asignatura', 'lessonId'],
+        ['prioridad', 'priority', 1],
+        ['local', 'localId', 2],
+        ['asignatura', 'lessonId', 3],
         ['grupo', 'groupId'],
-        ['inicio del turno', 'start'],
-        ['fin del turno', 'end'],
-        ['semana', 'week'],
+        ['inicio del turno', 'start', 4],
+        ['fin del turno', 'end', 5],
+        ['semana', 'week', 6],
+        ['dia de la semana', 'start', 7],
       ],
       operators: [
         '>',
@@ -177,7 +178,7 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.simpleCountRestrictions.create(token, {
+      this.$store.state.distributionRestrictions.create(token, {
         conditions: JSON.stringify(conditions),
         ...this.newRestriction,
       })

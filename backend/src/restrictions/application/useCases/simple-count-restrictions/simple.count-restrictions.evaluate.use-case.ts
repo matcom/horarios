@@ -9,7 +9,7 @@ import {
 import { SimpleCountRestrictions } from '../../../domain/entities/simple-count-restriction.entity';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, Opera } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
 

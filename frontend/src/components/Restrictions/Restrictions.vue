@@ -86,6 +86,14 @@ export default {
           }
         });
 
+      this.$store.state.distributionRestrictions.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.restrictions = this.restrictions.concat(this.$store.state.distributionRestrictions.data);
+            this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+          }
+        });
+
 
     },
     filterList(list, box, prop) {
@@ -120,6 +128,16 @@ export default {
         case Restrictions_type.CountConditionsRestriction:
 
           this.$store.state.countConditionsRestrictions.delete(token, restrictionId).then(result => {
+            if (result === true) {
+              this.restrictions = this.restrictions.filter(u => u.id !== restrictionId);
+              this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+            }
+          });
+
+          break;
+        case Restrictions_type.DistributionRestrictions:
+
+          this.$store.state.distributionRestrictions.delete(token, restrictionId).then(result => {
             if (result === true) {
               this.restrictions = this.restrictions.filter(u => u.id !== restrictionId);
               this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
