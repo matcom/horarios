@@ -41,6 +41,11 @@ export class CreateUserUseCase implements IUseCase<UserCreateDto, Promise<Create
   async execute(request: UserCreateDto): Promise<CreateUserUseCaseResponse> {
     this._logger.log('Executing...');
 
+    let exist = await this.userRepository.findOne({ email: request.email });
+
+    if (exist)
+      return left(Result.Fail(new AppError.ValidationError('User already exist')));
+
     const userDomainOrError: Result<User> = User.New({
       username: request.username,
       password: request.password,
@@ -55,11 +60,6 @@ export class CreateUserUseCase implements IUseCase<UserCreateDto, Promise<Create
 
     const user: User = userDomainOrError.unwrap();
     user.setPasswordHash(request.password);
-
-    let exist = await this.userRepository.findOne({ email: user.email });
-
-    if (exist)
-      return left(Result.Fail(new AppError.ValidationError('User already exist')));
 
     try {
       await this.userRepository.save(user);

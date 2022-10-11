@@ -10,7 +10,8 @@ import {
   RemoveClassUseCase,
   RemoveInSerieClassUseCase,
   UpdateClassUseCase,
-  UpdateMultipleClassInSameSerieUseCase,
+  UpdateMultipleClassByFieldsUseCase,
+  UpdateMultipleClassInSameSerieByDropUseCase,
 } from '../../application/useCases';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 import { Class } from '../../domain/entities/class.entity';
@@ -25,7 +26,6 @@ import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-se
 import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
 import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Controller('class')
 export class ClassController {
@@ -40,10 +40,11 @@ export class ClassController {
     private readonly paginatedClass: PaginatedClassUseCase,
     private readonly findDetailsClass: FindDetailsClassUseCase,
     private readonly findAllClass: FindAllClassUseCase,
-    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieUseCase,
+    private readonly updateMultipleClass: UpdateMultipleClassInSameSerieByDropUseCase,
     private readonly removeInSerie: RemoveInSerieClassUseCase,
     private readonly queryClass: QueryClassUseCase,
-    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase) {
+    private readonly createInSerie: CreteMultipleClassInSameSerieUseCase,
+    private readonly updateByFields: UpdateMultipleClassByFieldsUseCase) {
 
     this._logger = new Logger('ClassController');
   }
@@ -130,6 +131,16 @@ export class ClassController {
     this._logger.log('Update in serie');
 
     const c = await this.updateMultipleClass.execute(body);
+    return ProcessResponse.setResponse<Class>(res, c, a => a);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @PermissionsDecorator(UserPermissions.CREATE_EVENT)
+  @Put('multiple_by_fields')
+  async updateMultipleByFields(@Body() body: ClassUpdateDto, @Response() res) {
+    this._logger.log('Update in serie');
+
+    const c = await this.updateByFields.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, a => a);
   }
 

@@ -24,7 +24,8 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
     private readonly configService: AppConfigService,
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly sendEmailUseCase: SendEmailUseCase) {
-    this._logger = new Logger('FindByIdUseCase');
+
+    this._logger = new Logger('RegisterUseCase');
   }
 
   async execute(request: RegisterDto): Promise<RegisterUseCaseResponse> {
@@ -34,7 +35,7 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
       const userOrError = await this.createUserUseCase.execute({
         ...request,
         permissions: 0,
-        status: UserStatus.Pending,
+        status: UserStatus.Register,
       });
 
       if (userOrError.isLeft()) {
@@ -44,17 +45,17 @@ export class RegisterUseCase implements IUseCase<RegisterDto, Promise<RegisterUs
 
       const user = userOrError.value.unwrap();
 
-      const linkToConfirmRegister = this.configService.app.hostFront + `/:${user._id.toString()}`;
+      // const linkToConfirmRegister = this.configService.app.hostFront + `/:${user._id.toString()}`;
+      //
+      // const emailOrError = await this.sendEmailUseCase.execute({
+      //   to: user.email,
+      //   body: { data: '', message: `Press the link to confirm register ${linkToConfirmRegister}` },
+      // });
 
-      const emailOrError = await this.sendEmailUseCase.execute({
-        to: user.email,
-        body: { data: '', message: `Press the link to confirm register ${linkToConfirmRegister}` },
-      });
-
-      if (emailOrError.isLeft()) {
-        const error = emailOrError.value.unwrapError();
-        return left(Result.Fail(new AppError.UnexpectedError(error)));
-      }
+      // if (emailOrError.isLeft()) {
+      //   const error = emailOrError.value.unwrapError();
+      //   return left(Result.Fail(new AppError.UnexpectedError(error)));
+      // }
 
       return right(Result.Ok(user));
 
