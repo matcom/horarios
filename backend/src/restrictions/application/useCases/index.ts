@@ -31,6 +31,21 @@ import {
 import {
   FindByIdSimpleCountRestrictionUseCase,
 } from './simple-count-restrictions/simple.count-restrictions.find-one.use-case';
+import {
+  CreateDistributionRestrictionUseCase,
+} from './distribution-restrictions/distribution-restrictions.create.use-case';
+import {
+  EvaluateDistributionRestrictionUseCase,
+} from './distribution-restrictions/distribution-restrictions.evaluate.use-case';
+import {
+  FindAllDistributionRestrictionsUseCase,
+} from './distribution-restrictions/distribution-restrictions.find-all.use-case';
+import {
+  RemoveDistributionRestrictionsUseCase,
+} from './distribution-restrictions/distribution-restrictions.remove.use-case';
+import {
+  FindByIdDistributionRestrictionUseCase,
+} from './distribution-restrictions/distribution-restrictions.find-one.use-case';
 
 export * from './get-class-by-conditions.use-case';
 export * from './build-where.use-case';
@@ -46,6 +61,13 @@ export * from './count-conditions-restrictions/count-conditions.restrictions.cre
 export * from './count-conditions-restrictions/count-condition.restrictions.remove.use-case';
 export * from './count-conditions-restrictions/count-conditions.restrictions.find-all.use-case';
 export * from './count-conditions-restrictions/count-conditions.restrictions.find-one.use-case';
+
+
+export * from './distribution-restrictions/distribution-restrictions.create.use-case';
+export * from './distribution-restrictions/distribution-restrictions.evaluate.use-case';
+export * from './distribution-restrictions/distribution-restrictions.find-all.use-case';
+export * from './distribution-restrictions/distribution-restrictions.find-one.use-case';
+export * from './distribution-restrictions/distribution-restrictions.remove.use-case';
 
 export * from './restrictions.evaluation.use-case';
 
@@ -65,4 +87,10 @@ export const RestrictionsUseCases = [
   FindAllCountConditionsRestrictionsUseCase,
   EvaluateCountConditionsRestrictionsUseCase,
   RemoveCountConditionsRestrictionsUseCase,
+
+  CreateDistributionRestrictionUseCase,
+  EvaluateDistributionRestrictionUseCase,
+  FindAllDistributionRestrictionsUseCase,
+  RemoveDistributionRestrictionsUseCase,
+  FindByIdDistributionRestrictionUseCase,
 ];
