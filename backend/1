@@ -2694,3 +2694,35 @@ rogress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:803
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
 	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:92)
+2022-10-10 22:05:46,630 [5674729]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:05:46.628Z] Invalid streamingData
+2022-10-10 22:05:46,630 [5674729]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:05:46.628Z] Invalid streamingData,joinedText:[<!--        <div class='collapse' id='collapse_horarios'>-->] not a substring of joinedTokens:[<!--        <div class='collapse' id='collapse_horarios'>]
+2022-10-10 22:05:46,630 [5674729]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:05:46.628Z] Invalid streamingData
+2022-10-10 22:05:46,630 [5674729]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:05:46.628Z] Invalid streamingData,joinedText:[<!--        <div class='collapse' id='collapse_horarios'>-->] not a substring of joinedTokens:[<!--        <div class='collapse' id='collapse_horarios'>]
+2022-10-10 22:08:18,813 [5826912]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:18.810Z] Invalid streamingData
+2022-10-10 22:08:18,813 [5826912]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:18.810Z] Invalid streamingData
+2022-10-10 22:08:18,814 [5826913]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:18.810Z] Invalid streamingData,joinedText:[        <!-- Divider -->] not a substring of joinedTokens:[        <!-- Divider]
+2022-10-10 22:08:18,814 [5826913]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:18.810Z] Invalid streamingData,joinedText:[        <!-- Divider -->] not a substring of joinedTokens:[        <!-- Divider]
+2022-10-10 22:08:54,361 [5862460]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:54.328Z] Invalid streamingData
+2022-10-10 22:08:54,361 [5862460]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:54.328Z] Invalid streamingData,joinedText:[          <router-link :to="{name: 'usersPage'}" class='collapse-item'>Usuarios</router-link>] not a substring of joinedTokens:['>
+          <router-link :to="{name: 'usersPage'}" class='collapse-item'>Usuarios</router-link]
+2022-10-10 22:08:54,361 [5862460]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:54.328Z] Invalid streamingData
+2022-10-10 22:08:54,361 [5862460]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:08:54.328Z] Invalid streamingData,joinedText:[          <router-link :to="{name: 'usersPage'}" class='collapse-item'>Usuarios</router-link>] not a substring of joinedTokens:['>
+          <router-link :to="{name: 'usersPage'}" class='collapse-item'>Usuarios</router-link]
+2022-10-10 22:14:15,050 [6183149]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:15.048Z] Invalid streamingData
+2022-10-10 22:14:15,050 [6183149]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:15.048Z] Invalid streamingData
+2022-10-10 22:14:15,050 [6183149]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:15.048Z] Invalid streamingData,joinedText:[              <router-link :to="{name: 'horariosPage'}" class='collapse-item'>Horarios</router-link>] not a substring of joinedTokens:['>
+              <router-link :to="{name: 'horariosPage'}" class='collapse-item'>Horarios</router-link]
+2022-10-10 22:14:15,050 [6183149]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:15.048Z] Invalid streamingData,joinedText:[              <router-link :to="{name: 'horariosPage'}" class='collapse-item'>Horarios</router-link>] not a substring of joinedTokens:['>
+              <router-link :to="{name: 'horariosPage'}" class='collapse-item'>Horarios</router-link]
+2022-10-10 22:14:36,661 [6204760]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:36.659Z] Invalid streamingData
+2022-10-10 22:14:36,661 [6204760]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:36.659Z] Invalid streamingData
+2022-10-10 22:14:36,661 [6204760]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:36.659Z] Invalid streamingData,joinedText:[<!--                </router-link>-->] not a substring of joinedTokens:[>
+<!--                </router-link]
+2022-10-10 22:14:36,661 [6204760]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:14:36.659Z] Invalid streamingData,joinedText:[<!--                </router-link>-->] not a substring of joinedTokens:[>
+<!--                </router-link]
+2022-10-10 22:16:01,100 [6289199]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:16:01.093Z] Invalid streamingData
+2022-10-10 22:16:01,100 [6289199]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:16:01.093Z] Invalid streamingData
+2022-10-10 22:16:01,100 [6289199]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:16:01.093Z] Invalid streamingData,joinedText:[
+] not a substring of joinedTokens:[]
+2022-10-10 22:16:01,100 [6289199]   WARN - #copilot - [ERROR] [streamChoices] [2022-10-11T02:16:01.093Z] Invalid streamingData,joinedText:[
+] not a substring of joinedTokens:[]
