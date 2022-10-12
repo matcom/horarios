@@ -1,6 +1,3 @@
-import { ClassPersistence } from '../../../class/infra/entities/class.persistence';
-import { Class } from '../../../class/domain/entities/class.entity';
-
 export enum RowLocations {
   teachers = `"teachers"."id"`,
   locals = `"local"."id"`,
@@ -20,7 +17,7 @@ export function ExistInEnum(value: string, _enum: any) {
   return Object.values(_enum).includes(value as any);
 }
 
-export function Opera(n1: number, n2: number, op: string): boolean {
+export function Opera(n1: number, op: string, n2: number): boolean {
   switch (op) {
     case '==':
       return n1 == n2;
@@ -135,16 +132,35 @@ export const BodyQuery = `
                        ON "week"."id" = "class"."week_id"
 `;
 
-export function BuildInterval(classes: (ClassPersistence | Class)[], intervalTimePeriod: number): (ClassPersistence | Class)[][] {
+// classes aqui tiene un objeto de la forma: {class_id: '', class_start: '', class_end: '',} xq es una consulta directa sobre la BD
+export function BuildInterval(classes: any[], intervalTimePeriod: number): any[][] {
   const result = [];
   const classesCopy = [...classes];
+
   while (classesCopy.length > 0) {
     const firstClass = classesCopy[0];
+
+    const startDate = new Date(firstClass['class_start']);
+    const endDate = new Date(firstClass['class_start']);
+
+    endDate.setDate(endDate.getDate() + intervalTimePeriod);
+
     const classesInInterval = classesCopy.filter((c) => {
-      return c.start >= firstClass.start && c.start <= new Date(firstClass.start.getDate() + intervalTimePeriod);
+      const x1 = startDate;
+      const x2 = c['class_start'];
+      const x3 = endDate;
+
+      // console.log(x1, " /// ", x2, " /// ", x3);
+      // console.log(x1 >= x2 && x1 < x3);
+
+      return x2 >= x1 && x2 < x3;
     });
+
     result.push(classesInInterval);
     classesCopy.splice(0, classesInInterval.length);
+
+    console.log(classesInInterval.length);
+
   }
   return result;
 }

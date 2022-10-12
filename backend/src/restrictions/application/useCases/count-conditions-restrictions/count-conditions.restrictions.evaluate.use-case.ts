@@ -92,7 +92,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
 
         let count = 0;
         for (let i = 0; i < intervalBoth.length; ++i)
-          count += (Opera(intervalBoth[i].length, r.part * interval[i].length, r.operator)) ? 1 : 0;
+          count += (Opera(intervalBoth[i].length, r.operator, r.part * interval[i].length)) ? 1 : 0;
 
         const final = count / (intervalBoth.length === 0 ? 1 : intervalBoth.length) * r.priority;
         amountEvaluation += final;
