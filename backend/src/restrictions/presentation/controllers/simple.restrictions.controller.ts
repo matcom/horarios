@@ -67,6 +67,7 @@ export class SimpleRestrictionsController {
       ...body,
       teacherId: { id: req.user.id },
     });
+
     return ProcessResponse.setResponse(res, cr, SimpleCountRestrictionsMappers.DomainToDto);
   }
 

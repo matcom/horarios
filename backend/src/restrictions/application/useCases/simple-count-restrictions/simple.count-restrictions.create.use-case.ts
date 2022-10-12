@@ -11,9 +11,11 @@ import { SimpleCountRestrictions } from '../../../domain/entities/simple-count-r
 import { CountRestrictionsCreateDto } from '../../dtos/count-restrictions/count-restrictions.create.dto';
 import { RestrictionType } from '../../../domain/enums/restriction-type';
 import { FindByIdUserUseCase } from '../../../../user/application/useCases/user.findById.use-case';
+import { FindAllTeacherUseCase } from '../../../../teacher/application/useCases';
 
 export type CreateSimpleCountRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<SimpleCountRestrictions>
-  | AppError.ValidationErrorResult<SimpleCountRestrictions>,
+  | AppError.ValidationErrorResult<SimpleCountRestrictions>
+  | AppError.ObjectNotExistResult<SimpleCountRestrictions>,
   Result<SimpleCountRestrictions>>;
 
 
@@ -25,6 +27,7 @@ export class CreateSimpleCountRestrictionUseCase implements IUseCase<SimpleCount
   constructor(
     private readonly countRestrictionsRepository: SimpleCountRestrictionsRepository,
     private readonly userFindById: FindByIdUserUseCase,
+    private readonly teacherGetAll: FindAllTeacherUseCase,
   ) {
     this._logger = new Logger('CreateSimpleCountRestrictionsUseCase');
   }
@@ -32,8 +35,17 @@ export class CreateSimpleCountRestrictionUseCase implements IUseCase<SimpleCount
   async execute(request: CountRestrictionsCreateDto): Promise<CreateSimpleCountRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
-    const user = await this.userFindById.execute({ id: request.teacherId.id });
-    request.teacherId = user.value.unwrap().teacherId;
+    const teachers = await this.teacherGetAll.execute({ filter: { userId: request.teacherId.id } });
+
+    if (teachers.isLeft() || teachers.value.unwrap().items.length === 0)
+      return left(Result.Fail(new AppError.ObjectNotExist('Teacher not found')));
+
+    if (!request.conditions)
+      return left(Result.Fail(new AppError.ValidationError('Conditions not found')));
+
+    const teacher = teachers.value.unwrap().items[0];
+
+    request.teacherId = { id: teacher._id.toString() };
 
     const countRestrictionsOrError: Result<SimpleCountRestrictions> = SimpleCountRestrictions.New({
       ...request,

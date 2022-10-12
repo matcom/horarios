@@ -17,9 +17,10 @@
           <div class='card-body'>
             <h5 class='card-title text-black-50'><strong> Condicion </strong></h5>
 
-            <pre>
-                {{ JSON.stringify(this.restriction.conditions, undefined, 2) }}
-              </pre>
+            <HandleConditions v-bind='this.restriction.conditions'></HandleConditions>
+            <!--            <pre>-->
+            <!--                {{ JSON.stringify(this.restriction.conditions, undefined, 2) }}-->
+            <!--              </pre>-->
           </div>
         </div>
       </div>
@@ -47,27 +48,116 @@
 
       </div>
 
+      <div v-if='this.restriction.restrictionType === 1'>
 
-      <div v-if="this.restriction.hasOwnProperty('subCondition' )">
+        <div class='row py-4'>
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Parte / Min </strong></h5>
+                <p class='card-text'>{{ restriction.part }} / {{ restriction.min }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Operador </strong></h5>
+                <p class='card-text'>{{ restriction.operator }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div v-if='this.restriction.restrictionType === 2'>
         <div class='card'>
           <div class='card-body'>
             <h5 class='card-title text-black-50'><strong> SubCondicion </strong></h5>
 
-            <pre>
-                {{ JSON.stringify(this.restriction.subCondition, undefined, 2) }}
-              </pre>
+            <HandleConditions v-bind='this.restriction.subCondition'></HandleConditions>
+            <!--            <pre>-->
+            <!--                {{ JSON.stringify(this.restriction.subCondition, undefined, 2) }}-->
+            <!--              </pre>-->
           </div>
         </div>
+
+        <div class='row py-4'>
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong>Parte</strong></h5>
+                <p class='card-text'>{{ restriction.part }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Operador </strong></h5>
+                <p class='card-text'>{{ restriction.operator }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
       </div>
+
+      <div v-if='this.restriction.restrictionType === 3'>
+        <div class='row py-4'>
+          <div class='col-sm-4'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Min </strong></h5>
+                <p class='card-text'> {{ restriction.min }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class='col-sm-4'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Operador </strong></h5>
+                <p class='card-text'>{{ restriction.operator }}</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class='col-sm-4'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Atributo </strong></h5>
+                <p class='card-text'>{{ restriction.attribute }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
+import HandleConditions from '@/components/Restrictions/HandleConditions';
 
 export default {
   name: 'BreachedRestrictionsDetails',
+  components: {
+    HandleConditions,
+  },
   data() {
     return {
       restriction: {

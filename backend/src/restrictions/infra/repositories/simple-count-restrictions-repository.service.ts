@@ -10,7 +10,7 @@ import { ICountRestrictionsRepository } from '../../domain/interfaces/ICountRest
 @Injectable()
 export class SimpleCountRestrictionsRepository extends BaseRepository<SimpleCountRestrictions, SimpleCountRestrictionsPersistence> implements ICountRestrictionsRepository {
   constructor(@InjectRepository(SimpleCountRestrictionsPersistence) _repository: Repository<SimpleCountRestrictionsPersistence>) {
-    super(_repository, SimpleCountRestrictionsMappers.DomainToPersist, SimpleCountRestrictionsMappers.PersistToDomain, 'CountRestrictionsRepository');
+    super(_repository, SimpleCountRestrictionsMappers.DomainToPersist, SimpleCountRestrictionsMappers.PersistToDomain, 'SimpleCountRestrictionsRepository');
   }
 
   async findDetails(id: string): Promise<SimpleCountRestrictions> {

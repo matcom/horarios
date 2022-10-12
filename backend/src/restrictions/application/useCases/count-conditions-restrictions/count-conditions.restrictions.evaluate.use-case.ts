@@ -52,13 +52,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         const r = restrictions[t];
         const condition = r.condition;
 
-        let temporalInterval = [];
-        for (let i = 0, k = 0; i < classes.length; i += r.interval, ++k) {
-          temporalInterval.push([]);
-
-          for (let j = 0; j < r.interval; ++j)
-            temporalInterval[k].push(classes[i + j]);
-        }
+        let temporalInterval = BuildInterval(classes, r.interval);
 
         const whereCondition = this.buildWhere.build(condition as Tree);
         const rawQuery1 = `${bodyQuery} WHERE ${whereCondition} ORDER BY "class"."start" ASC`;
@@ -72,15 +66,15 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         let interval = [];
         let intervalBoth = [];
 
-        let idsEvaluation: Set<string> = new Set(evaluation.map(x => x.id));
-        let idsEvaluationBoth: Set<string> = new Set(evaluationBoth.map(x => x.id));
+        let idsEvaluation: Set<string> = new Set(evaluation.map(x => x['class_id'] || x.id));
+        let idsEvaluationBoth: Set<string> = new Set(evaluationBoth.map(x => x['class_id'] || x.id));
 
         for (let i = 0; i < temporalInterval.length; ++i) {
           interval.push([]);
           intervalBoth.push([]);
           for (let j = 0; j < temporalInterval[i].length; ++j) {
 
-            let element = temporalInterval[i][j];
+            let element = temporalInterval[i][j].id;
 
             let existInInterval = idsEvaluation.has(element);
             let existInBothInterval = idsEvaluationBoth.has(element);

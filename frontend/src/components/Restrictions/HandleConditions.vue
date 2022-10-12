@@ -269,6 +269,16 @@ export default {
   created() {
     this.addInitialRules();
     this.loadData();
+
+    // this.$store.state.restrictions.loadMinData();
+    // let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
+
+    const path = window.location.href.split('/');
+    if (path[path.length - 1] != 'conditions' && path[path.length - 1] != 'count_conditions') {
+      setTimeout(() => {
+        this.query = this.$attrs || {};
+      }, 1000);
+    }
   },
   watch: {
     query: function(val) {

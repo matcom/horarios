@@ -140,14 +140,14 @@ export function BuildInterval(classes: any[], intervalTimePeriod: number): any[]
   while (classesCopy.length > 0) {
     const firstClass = classesCopy[0];
 
-    const startDate = new Date(firstClass['class_start']);
-    const endDate = new Date(firstClass['class_start']);
+    const startDate = new Date(firstClass['class_start'] || firstClass.start);
+    const endDate = new Date(firstClass['class_start'] || firstClass.start);
 
     endDate.setDate(endDate.getDate() + intervalTimePeriod);
 
     const classesInInterval = classesCopy.filter((c) => {
       const x1 = startDate;
-      const x2 = c['class_start'];
+      const x2 = c['class_start'] || c.start;
       const x3 = endDate;
 
       // console.log(x1, " /// ", x2, " /// ", x3);
@@ -159,7 +159,7 @@ export function BuildInterval(classes: any[], intervalTimePeriod: number): any[]
     result.push(classesInInterval);
     classesCopy.splice(0, classesInInterval.length);
 
-    console.log(classesInInterval.length);
+    // console.log(classesInInterval.length);
 
   }
   return result;
