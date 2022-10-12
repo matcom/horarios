@@ -13,12 +13,12 @@ export default {
     }
   }, removeMinData() {
     localStorage.removeItem(data_key);
-  }, makeQuery(token, lessons, locals, groups, types, start, end) {
+  }, makeQuery(token, lessons, locals, groups, types, majors, start, end) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(token, '');
 
     let body = {
-      lessons, locals, groups, types,
+      lessons, locals, groups, types, majors,
     };
 
     if (start !== null) {

@@ -80,6 +80,24 @@
         </div>
       </div>
 
+      <!--Majors-->
+      <div class='col'>
+        <div class='dropdown mb-0'>
+          <button class='btn btn-light dropdown-toggle' type='button' id='tipos_drop_down' data-toggle='dropdown'
+                  aria-haspopup='true' aria-expanded='true'>
+            Carreras
+          </button>
+          <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'
+               style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
+            <div class='input-group m-2 ' v-for='it in majors' :key='it.id'>
+              <div class='input-group-text bg-white'>
+                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
+                <span class='ml-2' id='basi5-addon3'>{{ it.fullName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class='col'>
         <button class='btn btn-block btn-outline-dark' @click='makeQuery'>
           Filtrar
@@ -707,6 +725,7 @@ export default {
       classes: [],
       typeClasses: [],
       errors: 0,
+      majors: [],
       detailsClickedEvent: {
         id: '',
         description: '',
@@ -828,6 +847,7 @@ export default {
       this.loadFrom('lessons');
       this.loadFrom('locals');
       this.loadFrom('semesters');
+      this.loadFrom('majors');
       // this.loadFrom('classes');
 
       setTimeout(() => {
@@ -880,6 +900,10 @@ export default {
           if (result === true) {
             this[arg] = this.$store.state[arg].data;
 
+            this[arg].sort((a, b) => {
+              return a.shortName.localeCompare(b.shortName);
+            });
+
             if (arg === 'classes') {
               this.fixHoursInClasses();
               this.updateEventsInCalendar();
@@ -911,6 +935,7 @@ export default {
       let toSendResources = [];
       let toSendUsers = [];
       let toSendTypes = [];
+      let toSendMajors = [];
       let toSendStartDate = null;
       let toSendEndDate = null;
 
@@ -921,6 +946,7 @@ export default {
       this.resources.forEach(this.getMarkedData(toSendResources));
       this.lessons.forEach(this.getMarkedData(toSendLessons));
       this.typeClasses.forEach(this.getMarkedData(toSendTypes));
+      this.majors.forEach(this.getMarkedData(toSendMajors));
 
       if (this.datetimeStart !== '') {
         toSendStartDate = this.datetimeStart;
@@ -936,6 +962,7 @@ export default {
         toSendLocals,
         toSendGroups,
         toSendTypes,
+        toSendMajors,
         toSendStartDate,
         toSendEndDate)
         .then(result => {
