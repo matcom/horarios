@@ -8,33 +8,33 @@ import { ClassRepository } from 'src/class/infra/repositories/class.repository';
 import { BodyQuery, BuildInterval, Opera } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
-import { DistributionRestrictionsRepository } from '../../../infra/repositories/distribution-restrictions.repository';
-import { DistributionRestrictions } from '../../../domain/entities/distribution-restriction.entity';
+import { ExclusionRestrictions } from '../../../domain/entities/exclusion-restriction.entity';
+import { ExclusionRestrictionsRepository } from '../../../infra/repositories/exclusion-restriction.repository';
 
-export type EvaluateDistributionRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto>
+export type EvaluateExclusionRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<EvaluateRestrictionsResponseDto>
   | AppError.ValidationErrorResult<EvaluateRestrictionsResponseDto>,
   Result<EvaluateRestrictionsResponseDto>>;
 
 
 @Injectable()
-export class EvaluateDistributionRestrictionUseCase implements IUseCase<{}, Promise<EvaluateDistributionRestrictionUseCaseResponse>> {
+export class EvaluateExclusionRestrictionUseCase implements IUseCase<{}, Promise<EvaluateExclusionRestrictionUseCaseResponse>> {
 
   private _logger: Logger;
 
   constructor(
-    private readonly countRestrictionsRepository: DistributionRestrictionsRepository,
+    private readonly countRestrictionsRepository: ExclusionRestrictionsRepository,
     private readonly buildWhere: BuildWhereUseCase,
     private readonly classRepository: ClassRepository,
   ) {
     this._logger = new Logger('EvaluateCountRestrictionsUseCase');
   }
 
-  async execute(request: { teacherId: string }): Promise<EvaluateDistributionRestrictionUseCaseResponse> {
+  async execute(request: { teacherId: string }): Promise<EvaluateExclusionRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
     const bodyQuery = BodyQuery;
 
-    const restrictions: DistributionRestrictions[] = (await this.countRestrictionsRepository
+    const restrictions: ExclusionRestrictions[] = (await this.countRestrictionsRepository
       .findAll({ teacherId: request.teacherId }))
       .items;
 
@@ -52,19 +52,20 @@ export class EvaluateDistributionRestrictionUseCase implements IUseCase<{}, Prom
         const evaluation = await this.classRepository.executeRawQuery(rawQuery, []);
 
         let intervals = BuildInterval(evaluation, r.interval);
+
         let count = 0;
         for (let i = 0; i < intervals.length; ++i) {
-          const diffValues = new Set(intervals[i].map(x => x[`class_${r.attribute}`]));
-
-          const evaluation = (Opera(diffValues.size, r.operator, r.min)) ? 1 : 0;
-
-          console.log('EVAL: ' + evaluation);
-
-
-          if (evaluation == 0)
-            ans.add(r._id.toString());
-
-          count += evaluation;
+          // const diffValues = new Set(intervals[i].map(x => x[`class_${r.attribute}`]));
+          //
+          // const evaluation = (Opera(diffValues.size, r.operator, r.min)) ? 1 : 0;
+          //
+          // console.log('EVAL: ' + evaluation);
+          //
+          //
+          // if (evaluation == 0)
+          //   ans.add(r._id.toString());
+          //
+          // count += evaluation;
         }
 
         const final = count / (intervals.length === 0 ? 1 : intervals.length) * r.priority;
