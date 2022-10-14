@@ -73,7 +73,7 @@ export default {
     })
       .then(response => response.json())
       .then(json => {
-        json = json.items;
+        json = json.items ? json.items : json;
 
         this.data = json;
         this.saveMinData();

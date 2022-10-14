@@ -24,12 +24,11 @@ export default {
     return Petitions.post(`${Endpoints.simple_count_restrictions}/create`, body)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
 
   },
@@ -43,7 +42,7 @@ export default {
     })
       .then(response => response.json())
       .then(json => {
-        json = json.items;
+        json = json.items ? json.items : json;
         this.data = json;
         this.saveMinData();
 

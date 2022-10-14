@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, OperaNumbers } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
 import { DistributionRestrictionsRepository } from '../../../infra/repositories/distribution-restrictions.repository';
@@ -51,20 +51,12 @@ export class EvaluateDistributionRestrictionUseCase implements IUseCase<{}, Prom
         const rawQuery = `${bodyQuery} WHERE ${where} ORDER BY "class"."start" ASC`;
         const evaluation = await this.classRepository.executeRawQuery(rawQuery, []);
 
-        let intervals = [];
-        for (let i = 0, k = 0; i < evaluation.length; i += r.interval, ++k) {
-          intervals.push([]);
-
-          for (let j = 0; j < r.interval; ++j)
-            intervals[k].push(evaluation[i + j]);
-        }
-
+        let intervals = BuildInterval(evaluation, r.interval);
         let count = 0;
         for (let i = 0; i < intervals.length; ++i) {
+          const diffValues = new Set(intervals[i].map(x => x[`class_${r.attribute}`]));
 
-          const diffValues = new Set(intervals[i].map(x => x[r.attribute]));
-
-          const evaluation = (Opera(r.min, diffValues.size, r.operator)) ? 1 : 0;
+          const evaluation = (OperaNumbers(diffValues.size, r.operator, r.min)) ? 1 : 0;
 
           if (evaluation == 0)
             ans.add(r._id.toString());

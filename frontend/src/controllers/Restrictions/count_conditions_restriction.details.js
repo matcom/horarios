@@ -28,12 +28,10 @@ export default {
     return Petitions.get(`${Endpoints.count_conditions_restrictions}/find_one/${id}`)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
-        if (json !== null && !json.hasOwnProperty('error')) {
-          this.data = json;
-          this.saveMinData();
-          return true;
-        }
-        return false;
+        this.data = json;
+        this.saveMinData();
+
+        return json !== null && !json.hasOwnProperty('error');
       });
   },
 };

@@ -38,7 +38,7 @@ export class SimpleRestrictionsController {
   async simpleConditions(@Request() req, @Response() res) {
     this._logger.log('EvaluateSimpleCountRestrictions');
 
-    let count = await this.evaluate.execute({ teacherId: req.user.props.id });
+    let count = await this.evaluate.execute({ teacherId: req.user.id });
 
     return ProcessResponse.setResponse(res, count);
   }
@@ -65,16 +65,21 @@ export class SimpleRestrictionsController {
 
     const cr = await this.create.execute({
       ...body,
-      teacherId: { id: req.user.props.id },
+      teacherId: { id: req.user.id },
     });
+
     return ProcessResponse.setResponse(res, cr, SimpleCountRestrictionsMappers.DomainToDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('all')
-  async getAll(@Body() body: SimpleCountRestrictionsFindAllDto, @Response() res) {
+  async getAll(@Body() body: SimpleCountRestrictionsFindAllDto, @Response() res, @Request() req) {
     this._logger.log('Get All');
 
-    const ans = await this.findAll.execute(body);
+    const ans = await this.findAll.execute({
+      ...body,
+      user: req.user,
+    });
     return ProcessResponse.setResponse(res, ans, SimpleCountRestrictionsMappers.AllToDto);
   }
 

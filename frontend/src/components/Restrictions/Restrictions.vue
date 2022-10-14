@@ -37,10 +37,10 @@
             <div v-for="(rest, index) in filterList(restrictions, text, 'id')" :key='rest.id'
                  class='list-group-item list-group-item-action'>
 
-              Condition {{ index + 1 }}
-              <pre>
-                {{ JSON.stringify(rest.conditions, undefined, 2) }}
-              </pre>
+              <div>
+                <h5>Restriccion tipo {{ rest.restrictionType }}</h5>
+                <HandleConditions v-bind='rest.conditions'></HandleConditions>
+              </div>
 
               <div style='cursor: pointer' class='form-inline justify-content-end'>
                 <i class='fas fa-trash' @click.prevent='removeRestriction(rest.id)'></i>
@@ -55,14 +55,32 @@
 
 <script>
 import Restrictions_type from '@/controllers/Restrictions/restrictions_type';
+import VueQueryBuilder from 'vue-query-builder';
+import HandleConditions from '@/components/Restrictions/HandleConditions';
 
 export default {
   name: 'Restrictions',
+  components: {
+    VueQueryBuilder,
+    HandleConditions,
+  },
   data() {
     return {
       restrictions: [],
       text: '',
       val: 1,
+      labels: {
+        'matchType': 'Grupo de condiciones',
+        'matchTypes': [
+          { 'id': 'all', 'label': 'AND' },
+          { 'id': 'any', 'label': 'OR' },
+        ],
+        'addRule': 'Agregar Regla',
+        'removeRule': '&times;',
+        'addGroup': 'Agregar Grupo',
+        'removeGroup': '&times;',
+        'textInputPlaceholder': 'value',
+      },
     };
   },
   methods: {
@@ -82,6 +100,22 @@ export default {
         .then(result => {
           if (result === true) {
             this.restrictions = this.restrictions.concat(this.$store.state.countConditionsRestrictions.data);
+            this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+          }
+        });
+
+      this.$store.state.distributionRestrictions.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.restrictions = this.restrictions.concat(this.$store.state.distributionRestrictions.data);
+            this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+          }
+        });
+
+      this.$store.state.relationalRestrictions.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.restrictions = this.restrictions.concat(this.$store.state.relationalRestrictions.data);
             this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
           }
         });
@@ -120,6 +154,26 @@ export default {
         case Restrictions_type.CountConditionsRestriction:
 
           this.$store.state.countConditionsRestrictions.delete(token, restrictionId).then(result => {
+            if (result === true) {
+              this.restrictions = this.restrictions.filter(u => u.id !== restrictionId);
+              this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+            }
+          });
+
+          break;
+        case Restrictions_type.DistributionRestrictions:
+
+          this.$store.state.distributionRestrictions.delete(token, restrictionId).then(result => {
+            if (result === true) {
+              this.restrictions = this.restrictions.filter(u => u.id !== restrictionId);
+              this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);
+            }
+          });
+
+          break;
+        case Restrictions_type.RelationalRestrictions:
+
+          this.$store.state.relationalRestrictions.delete(token, restrictionId).then(result => {
             if (result === true) {
               this.restrictions = this.restrictions.filter(u => u.id !== restrictionId);
               this.restrictions = this.restrictions.slice().sort((a, b) => b.priority - a.priority);

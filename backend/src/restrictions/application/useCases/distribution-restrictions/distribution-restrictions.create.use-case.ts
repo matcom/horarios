@@ -11,9 +11,11 @@ import { DistributionRestrictionsRepository } from '../../../infra/repositories/
 import {
   DistributionRestrictionsCreateDto,
 } from '../../dtos/distribution-restrictions/distribution-restrictions.create.dto';
+import { FindAllTeacherUseCase } from '../../../../teacher/application/useCases';
 
 export type CreateDistributionRestrictionUseCaseResponse = Either<AppError.UnexpectedErrorResult<DistributionRestrictions>
-  | AppError.ValidationErrorResult<DistributionRestrictions>,
+  | AppError.ValidationErrorResult<DistributionRestrictions>
+  | AppError.ObjectNotExistResult<DistributionRestrictions>,
   Result<DistributionRestrictions>>;
 
 
@@ -25,6 +27,7 @@ export class CreateDistributionRestrictionUseCase implements IUseCase<Distributi
   constructor(
     private readonly countRestrictionsRepository: DistributionRestrictionsRepository,
     private readonly userFindById: FindByIdUserUseCase,
+    private readonly teacherGetAll: FindAllTeacherUseCase,
   ) {
     this._logger = new Logger('CreateDistributionRestrictionsUseCase');
   }
@@ -32,8 +35,17 @@ export class CreateDistributionRestrictionUseCase implements IUseCase<Distributi
   async execute(request: DistributionRestrictionsCreateDto): Promise<CreateDistributionRestrictionUseCaseResponse> {
     this._logger.log('Executing...');
 
-    const user = await this.userFindById.execute({ id: request.teacherId.id });
-    request.teacherId = user.value.unwrap().teacherId;
+    const teachers = await this.teacherGetAll.execute({ filter: { userId: request.teacherId.id } });
+
+    if (teachers.isLeft() || teachers.value.unwrap().items.length === 0)
+      return left(Result.Fail(new AppError.ObjectNotExist('Teacher')));
+
+    if (!request.conditions)
+      return left(Result.Fail(new AppError.ValidationError('Conditions not found')));
+
+    const teacher = teachers.value.unwrap().items[0];
+
+    request.teacherId = { id: teacher._id.toString() };
 
     const countRestrictionsOrError: Result<DistributionRestrictions> = DistributionRestrictions.New({
       ...request,

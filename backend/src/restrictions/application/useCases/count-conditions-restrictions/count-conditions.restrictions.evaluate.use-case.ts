@@ -5,7 +5,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IUseCase } from '../../../../shared/core/interfaces/IUseCase';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, OperaNumbers } from '../../utils/utils';
 import { Tree } from '../../dtos/tree.dto';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import {
@@ -52,13 +52,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         const r = restrictions[t];
         const condition = r.condition;
 
-        let temporalInterval = [];
-        for (let i = 0, k = 0; i < classes.length; i += r.interval, ++k) {
-          temporalInterval.push([]);
-
-          for (let j = 0; j < r.interval; ++j)
-            temporalInterval[k].push(classes[i + j]);
-        }
+        let temporalInterval = BuildInterval(classes, r.interval);
 
         const whereCondition = this.buildWhere.build(condition as Tree);
         const rawQuery1 = `${bodyQuery} WHERE ${whereCondition} ORDER BY "class"."start" ASC`;
@@ -72,15 +66,15 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         let interval = [];
         let intervalBoth = [];
 
-        let idsEvaluation: Set<string> = new Set(evaluation.map(x => x.id));
-        let idsEvaluationBoth: Set<string> = new Set(evaluationBoth.map(x => x.id));
+        let idsEvaluation: Set<string> = new Set(evaluation.map(x => x['class_id'] || x.id));
+        let idsEvaluationBoth: Set<string> = new Set(evaluationBoth.map(x => x['class_id'] || x.id));
 
         for (let i = 0; i < temporalInterval.length; ++i) {
           interval.push([]);
           intervalBoth.push([]);
           for (let j = 0; j < temporalInterval[i].length; ++j) {
 
-            let element = temporalInterval[i][j];
+            let element = temporalInterval[i][j].id;
 
             let existInInterval = idsEvaluation.has(element);
             let existInBothInterval = idsEvaluationBoth.has(element);
@@ -92,7 +86,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
 
         let count = 0;
         for (let i = 0; i < intervalBoth.length; ++i)
-          count += (Opera(intervalBoth[i].length, r.part * interval[i].length, r.operator)) ? 1 : 0;
+          count += (OperaNumbers(intervalBoth[i].length, r.operator, r.part * interval[i].length)) ? 1 : 0;
 
         const final = count / (intervalBoth.length === 0 ? 1 : intervalBoth.length) * r.priority;
         amountEvaluation += final;

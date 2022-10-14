@@ -17,7 +17,29 @@ export function ExistInEnum(value: string, _enum: any) {
   return Object.values(_enum).includes(value as any);
 }
 
-export function Opera(n1: number, n2: number, op: string): boolean {
+export function OperaSet(s1: Set<any>, op: string, s2: Set<any>) {
+  switch (op) {
+    case 'EQUALS':
+      return s1.size == s2.size && Array.from(s1).every(element => {
+        return s2.has(element);
+      });
+
+    case 'NOT_EQUALS':
+      return s1.size != s2.size || Array.from(s1).some(element => {
+        return !s2.has(element);
+      });
+
+    case 'SUBSET':
+      return Array.from(s1).every(element => {
+        return s2.has(element);
+      });
+
+    default:
+      return false;
+  }
+}
+
+export function OperaNumbers(n1: number, op: string, n2: number): boolean {
   switch (op) {
     case '==':
       return n1 == n2;
@@ -131,3 +153,36 @@ export const BodyQuery = `
              LEFT JOIN "week" "week"
                        ON "week"."id" = "class"."week_id"
 `;
+
+// classes aqui tiene un objeto de la forma: {class_id: '', class_start: '', class_end: '',} xq es una consulta directa sobre la BD
+export function BuildInterval(classes: any[], intervalTimePeriod: number): any[][] {
+  const result = [];
+  const classesCopy = [...classes];
+
+  while (classesCopy.length > 0) {
+    const firstClass = classesCopy[0];
+
+    const startDate = new Date(firstClass['class_start'] || firstClass.start);
+    const endDate = new Date(firstClass['class_start'] || firstClass.start);
+
+    endDate.setDate(endDate.getDate() + intervalTimePeriod);
+
+    const classesInInterval = classesCopy.filter((c) => {
+      const x1 = startDate;
+      const x2 = c['class_start'] || c.start;
+      const x3 = endDate;
+
+      // console.log(x1, " /// ", x2, " /// ", x3);
+      // console.log(x1 >= x2 && x1 < x3);
+
+      return x2 >= x1 && x2 < x3;
+    });
+
+    result.push(classesInInterval);
+    classesCopy.splice(0, classesInInterval.length);
+
+    // console.log(classesInInterval.length);
+
+  }
+  return result;
+}

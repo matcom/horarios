@@ -29,9 +29,10 @@ export class QueryClassUseCase implements IUseCase<ClassQueryDto, Promise<QueryC
 
     try {
 
-      let qb = await this
+      let qb = (await this
         .classRepository
-        .getQueryBuilder('class');
+        .getQueryBuilder('class'))
+        .leftJoinAndSelect('class.group', 'group');
 
       if (request.lessons && request.lessons.length > 0)
         qb.andWhere('lesson_id IN (:...lessonIds)', { lessonIds: request.lessons });
@@ -44,6 +45,9 @@ export class QueryClassUseCase implements IUseCase<ClassQueryDto, Promise<QueryC
 
       if (request.groups && request.groups.length > 0)
         qb.andWhere('group_id IN (:...groupIds)', { groupIds: request.groups });
+
+      if (request.majors && request.majors.length > 0)
+        qb.andWhere('group.major_id IN (:...majorIds)', { majorIds: request.majors });
 
       if (request.start)
         qb.andWhere('start >= :start', { start: request.start });

@@ -57,6 +57,7 @@ import Restrictions from '@/components/Restrictions/Restrictions';
 import BreachedRestrictions from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictions';
 import BreachedRestrictionsDetails from '@/components/Restrictions/BreachedRestrictions/BreachedRestrictionsDetails';
 import DistributionRestrictions from '@/components/Restrictions/DistributionRestrictions';
+import RelationalRestrictions from '@/components/Restrictions/RelationalRestrictions';
 
 Vue.use(Router);
 
@@ -399,6 +400,14 @@ const router = new Router({
           path: '/restrictions/simple_count',
           name: 'simpleCountRestrictionsPage',
           component: HandleRestrictionsSimpleCount,
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: '/restrictions/relational',
+          name: 'relationalRestrictionPage',
+          component: RelationalRestrictions,
           meta: {
             requiresAuth: true,
           },

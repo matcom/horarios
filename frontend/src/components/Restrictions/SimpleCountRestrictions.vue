@@ -197,6 +197,8 @@ export default {
         .then(result => {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
+          else
+            alert(this.$store.state.simpleCountRestrictions.data.error);
         });
     },
   },
