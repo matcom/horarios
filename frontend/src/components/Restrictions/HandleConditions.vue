@@ -274,7 +274,7 @@ export default {
     // let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
 
     const path = window.location.href.split('/');
-    if (path[path.length - 1] != 'conditions' && path[path.length - 1] != 'count_conditions') {
+    if (path[path.length - 1] != 'conditions' && path[path.length - 1] != 'count_conditions' && path[path.length - 1] != 'relational') {
       setTimeout(() => {
         this.query = this.$attrs || {};
       }, 1000);

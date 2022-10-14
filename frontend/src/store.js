@@ -48,6 +48,8 @@ import SimpleCountRestrictionsDetails from './controllers/Restrictions/simple_co
 import CountCondtionalsRestrictinsDetails from './controllers/Restrictions/count_conditions_restriction.details';
 import DistributionRestrictions from './controllers/Restrictions/distribution_attr_restrictions';
 import DistributionRestrictionsDetails from './controllers/Restrictions/distribute_attr_restrictions_details';
+import RelationalRestrictions from './controllers/Restrictions/relational-restrictions.';
+import RelationalRestrictionsDetails from './controllers/Restrictions/relational-restrictions_details';
 
 Vue.use(Vuex);
 
@@ -101,6 +103,8 @@ const store = new Vuex.Store({
     countConditionsRestrictionsDetails: CountCondtionalsRestrictinsDetails,
     distributionRestrictions: DistributionRestrictions,
     distributionRestrictionsDetails: DistributionRestrictionsDetails,
+    relationalRestrictions: RelationalRestrictions,
+    relationalRestrictionsDetails: RelationalRestrictionsDetails,
   }, mutations: {}, actions: {},
 });
 

@@ -1,7 +1,7 @@
 import Petitions from '@/controllers/petitions';
 import Endpoints from '@/endpoints/endpoints';
 
-const data_key = 'calendario-matcom-count-conditions-restriction-details';
+const data_key = 'calendario-matcom-relational-restriction-details';
 
 export default {
   data: {},
@@ -25,7 +25,7 @@ export default {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
-    return Petitions.get(`${Endpoints.count_conditions_restrictions}/find_one/${id}`)
+    return Petitions.get(`${Endpoints.relational_restrictions}/find_one/${id}`)
       .then(response => response.json(), response => console.log('Error getting the response.'))
       .then(json => {
         this.data = json;
