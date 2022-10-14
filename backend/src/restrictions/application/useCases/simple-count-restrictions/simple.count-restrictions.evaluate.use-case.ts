@@ -9,7 +9,7 @@ import {
 import { SimpleCountRestrictions } from '../../../domain/entities/simple-count-restriction.entity';
 import { BuildWhereUseCase } from '../build-where.use-case';
 import { ClassRepository } from 'src/class/infra/repositories/class.repository';
-import { BodyQuery, BuildInterval, Opera } from '../../utils/utils';
+import { BodyQuery, BuildInterval, OperaNumbers } from '../../utils/utils';
 import { EvaluateRestrictionsResponseDto } from '../../dtos/evaluate-restrictions.response.dto';
 import { Tree } from '../../dtos/tree.dto';
 
@@ -58,7 +58,7 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
         let count = 0;
         if (r.min) {
           for (let i = 0; i < intervals.length; ++i) {
-            const evaluation = (Opera(intervals[i].length, r.operator, r.min)) ? 1 : 0;
+            const evaluation = (OperaNumbers(intervals[i].length, r.operator, r.min)) ? 1 : 0;
 
             if (evaluation == 0)
               ans.add(r._id.toString());
@@ -68,7 +68,7 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
           }
         } else if (r.part) {
           for (let i = 1; i < intervals.length; ++i) {
-            const evaluation = (Opera(intervals[i].length, r.operator, r.part * intervals[i - 1].length)) ? 1 : 0;
+            const evaluation = (OperaNumbers(intervals[i].length, r.operator, r.part * intervals[i - 1].length)) ? 1 : 0;
 
             if (evaluation == 0)
               ans.add(r._id.toString());

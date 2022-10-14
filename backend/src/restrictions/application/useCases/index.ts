@@ -46,6 +46,17 @@ import {
 import {
   FindByIdDistributionRestrictionUseCase,
 } from './distribution-restrictions/distribution-restrictions.find-one.use-case';
+import { CreateRelationalRestrictionsUseCase } from './relational-restrictions/relational-restrictions.create.use-case';
+import {
+  EvaluateRelationalRestrictionsUseCase,
+} from './relational-restrictions/relational-restrictions.evaluate.use-case';
+import {
+  FindAllRelationalRestrictionsUseCase,
+} from './relational-restrictions/relational-restrictions.find-all.use-case';
+import { RemoveRelationalRestrictionsUseCase } from './relational-restrictions/relational-restrictions.remove.use-case';
+import {
+  FindByIdRelationalRestrictionUseCase,
+} from './relational-restrictions/relational-restrictions.find-one.use-case';
 
 export * from './get-class-by-conditions.use-case';
 export * from './build-where.use-case';
@@ -68,6 +79,12 @@ export * from './distribution-restrictions/distribution-restrictions.evaluate.us
 export * from './distribution-restrictions/distribution-restrictions.find-all.use-case';
 export * from './distribution-restrictions/distribution-restrictions.find-one.use-case';
 export * from './distribution-restrictions/distribution-restrictions.remove.use-case';
+
+export * from './relational-restrictions/relational-restrictions.create.use-case';
+export * from './relational-restrictions/relational-restrictions.evaluate.use-case';
+export * from './relational-restrictions/relational-restrictions.find-all.use-case';
+export * from './relational-restrictions/relational-restrictions.find-one.use-case';
+export * from './relational-restrictions/relational-restrictions.remove.use-case';
 
 export * from './restrictions.evaluation.use-case';
 
@@ -93,4 +110,10 @@ export const RestrictionsUseCases = [
   FindAllDistributionRestrictionsUseCase,
   RemoveDistributionRestrictionsUseCase,
   FindByIdDistributionRestrictionUseCase,
+
+  CreateRelationalRestrictionsUseCase,
+  EvaluateRelationalRestrictionsUseCase,
+  FindAllRelationalRestrictionsUseCase,
+  RemoveRelationalRestrictionsUseCase,
+  FindByIdRelationalRestrictionUseCase,
 ];

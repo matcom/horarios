@@ -17,7 +17,29 @@ export function ExistInEnum(value: string, _enum: any) {
   return Object.values(_enum).includes(value as any);
 }
 
-export function Opera(n1: number, op: string, n2: number): boolean {
+export function OperaSet(s1: Set<any>, op: string, s2: Set<any>) {
+  switch (op) {
+    case 'EQUALS':
+      return s1.size == s2.size && Array.from(s1).every(element => {
+        return s2.has(element);
+      });
+
+    case 'NOT_EQUALS':
+      return s1.size != s2.size || Array.from(s1).some(element => {
+        return !s2.has(element);
+      });
+
+    case 'SUBSET':
+      return Array.from(s1).every(element => {
+        return s2.has(element);
+      });
+
+    default:
+      return false;
+  }
+}
+
+export function OperaNumbers(n1: number, op: string, n2: number): boolean {
   switch (op) {
     case '==':
       return n1 == n2;

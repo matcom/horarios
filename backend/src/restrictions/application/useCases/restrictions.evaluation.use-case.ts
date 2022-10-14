@@ -16,6 +16,9 @@ import { RestrictionType } from '../../domain/enums/restriction-type';
 import {
   EvaluateDistributionRestrictionUseCase,
 } from './distribution-restrictions/distribution-restrictions.evaluate.use-case';
+import {
+  EvaluateRelationalRestrictionsUseCase,
+} from './relational-restrictions/relational-restrictions.evaluate.use-case';
 
 export type EvaluateRestrictionsUseCaseResponse = Either<AppError.UnexpectedErrorResult<HappinessDto>
   | AppError.ValidationErrorResult<HappinessDto>,
@@ -32,6 +35,7 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
     private readonly evaluateSimpleCountRestrictions: EvaluateSimpleCountRestrictionUseCase,
     private readonly evaluateCountConditionsRestrictions: EvaluateCountConditionsRestrictionsUseCase,
     private readonly evaluateDistributionRestrictions: EvaluateDistributionRestrictionUseCase,
+    private readonly relationalRestriction: EvaluateRelationalRestrictionsUseCase,
   ) {
     this._logger = new Logger('RestrictionsEvaluationUseCase');
   }
@@ -57,28 +61,32 @@ export class RestrictionsEvaluationUseCase implements IUseCase<{}, Promise<Evalu
       const val1 = await this.evaluateSimpleCountRestrictions.execute({ teacherId: t._id.toString() });
       const val2 = await this.evaluateCountConditionsRestrictions.execute({ teacherId: t._id.toString() });
       const val3 = await this.evaluateDistributionRestrictions.execute({ teacherId: t._id.toString() });
+      const val4 = await this.relationalRestriction.execute({ teacherId: t._id.toString() });
 
       if (val1.isRight() && val2.isRight() && val3.isRight()) {
         let u1 = val1.value.unwrap();
         let u2 = val2.value.unwrap();
         let u3 = val3.value.unwrap();
+        let u4 = val4.value.unwrap();
 
         this._logger.debug(`Simple Count Restrictions: ${JSON.stringify(u1)}`);
         this._logger.debug(`Count Conditional Restrictions: ${JSON.stringify(u2)}`);
         this._logger.debug(`Distribution Restrictions: ${JSON.stringify(u3)}`);
+        this._logger.debug(`Relational Restrictions: ${JSON.stringify(u4)}`);
 
-        teacherAccomplishCount += (u1.evaluation + u2.evaluation + u3.evaluation);
-        teacherPriorityCount += (u1.priorityAmounts + u2.priorityAmounts + u2.priorityAmounts);
+        teacherAccomplishCount += (u1.evaluation + u2.evaluation + u3.evaluation + u4.evaluation);
+        teacherPriorityCount += (u1.priorityAmounts + u2.priorityAmounts + u2.priorityAmounts + u4.priorityAmounts);
 
         u1.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.SimpleCountRestriction]));
         u2.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.CountConditionsRestriction]));
         u3.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.DistributionRestrictions]));
+        u4.restrictionId.forEach(r => breachedRestrictions.add([r, t._id.toString(), RestrictionType.RelationalRestrictions]));
 
         priorityCount += t.priority;
 
         accomplishCount += teacherAccomplishCount / (teacherPriorityCount == 0 ? 1 : teacherPriorityCount) * t.priority;
 
-        this._logger.verbose(`Teacher ${t.shortName} Results: -- SimpleCount: ${u1.evaluation} -- CountConditions: ${u2.evaluation} -- DistributionRestrictions: ${u3.evaluation}`);
+        this._logger.verbose(`Teacher ${t.shortName} Results: -- SimpleCount: ${u1.evaluation} -- CountConditions: ${u2.evaluation} -- DistributionRestrictions: ${u3.evaluation} -- RelationalRestrictions: ${u4.evaluation}`);
       }
     }
 

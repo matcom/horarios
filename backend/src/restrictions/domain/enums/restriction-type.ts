@@ -3,5 +3,6 @@ export enum RestrictionType {
   SimpleCountRestriction,
   CountConditionsRestriction,
   DistributionRestrictions,
-  ExclusionRestrictions
+  ExclusionRestrictions,
+  RelationalRestrictions,
 }
