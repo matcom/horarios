@@ -3,6 +3,7 @@ export type ClassQueryDto = {
   locals: string[];
   groups: string[];
   types: string[];
+  majors: string[];
   start: Date;
   end: Date;
 };

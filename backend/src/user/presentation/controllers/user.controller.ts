@@ -36,7 +36,7 @@ export class UserController {
   async getProfile(@Request() req, @Response() res) {
     this._logger.log('Get profile');
 
-    return ProcessResponse.setResponse(res, right(Result.Ok(req.user)), UserMapper.DomainToDto);
+    return ProcessResponse.setResponse(res, right(Result.Ok(req.user)));
   }
 
 

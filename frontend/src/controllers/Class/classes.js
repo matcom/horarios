@@ -4,16 +4,20 @@ import Endpoints from '../../endpoints/endpoints';
 const data_key = 'calendario-matcom-classes';
 
 export default {
-  data: [], saveMinData() {
+  data: [],
+  saveMinData() {
     localStorage.setItem(data_key, JSON.stringify(this.data));
-  }, loadMinData() {
+  },
+  loadMinData() {
     let stored = localStorage.getItem(data_key);
     if (stored !== null) {
       this.data = JSON.parse(stored);
     }
-  }, removeMinData() {
+  },
+  removeMinData() {
     localStorage.removeItem(data_key);
-  }, createInSerie(token, body) {
+  },
+  createInSerie(token, body) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.multipleCreateClass, body)
@@ -27,7 +31,8 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
 
       });
-  }, deleteInSerie(token, id) {
+  },
+  deleteInSerie(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -42,7 +47,8 @@ export default {
 
       })
       .catch(err => console.log(err));
-  }, delete(token, id) {
+  },
+  delete(token, id) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -57,7 +63,8 @@ export default {
 
       })
       .catch(err => console.log(err));
-  }, getAll(token, filter = {}) {
+  },
+  getAll(token, filter = {}) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
 
@@ -66,7 +73,7 @@ export default {
     })
       .then(response => response.json())
       .then(json => {
-        json = json.items;
+        json = json.items ? json.items : json;
 
         this.data = json;
         this.saveMinData();
@@ -74,7 +81,8 @@ export default {
         return json !== null && !json.hasOwnProperty('error');
 
       });
-  }, getData(token, filter = {}, pageNum = 1, pageLimit = 100) {
+  },
+  getData(token, filter = {}, pageNum = 1, pageLimit = 100) {
     Petitions.clearHeaders();
     Petitions.set_JSONHeaders(null, null, token);
     return Petitions.post(Endpoints.classes, {

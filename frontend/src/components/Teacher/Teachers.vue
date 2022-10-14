@@ -308,11 +308,18 @@ export default {
       this.$store.state.users.getAll(token)
         .then(result => {
           if (result === true) {
+
+            let alreadyLinkedUsers = this.teachers
+              .filter(x => x.userId && x.userId.id)
+              .map(t => t.userId.id);
+
             this.users = this.$store.state.users.data;
+
+            this.users = this.users
+              .filter(x => !alreadyLinkedUsers.includes(x.id));
 
             this.teacherIdSelectedForLink = teacherId;
             $('#modalLinkUser').modal('show');
-
           }
         });
     },
@@ -347,7 +354,7 @@ export default {
       let token = this.$store.state.profile.data.token;
 
       this.$store.state.teachers.unlinkUser(token, {
-        teacherId,
+        teacherId: teacherId,
       })
         .then(result => {
           if (result === true) {

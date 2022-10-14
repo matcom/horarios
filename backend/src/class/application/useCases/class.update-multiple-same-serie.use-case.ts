@@ -10,14 +10,14 @@ import * as moment from 'moment';
 import { ClassRepository } from '../../infra/repositories/class.repository';
 import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
 
-export type UpdateMultipleClassUseCaseResponse =
+export type UpdateMultipleClassByDropUseCaseResponse =
   Either<AppError.UnexpectedErrorResult<number | any>
     | AppError.ValidationErrorResult<number | any>
     | AppError.ObjectNotExistResult<number | any>,
     Result<number | any>>;
 
 @Injectable()
-export class UpdateMultipleClassInSameSerieUseCase implements IUseCase<ClassUpdateMultipleInSameSerieDto, Promise<UpdateMultipleClassUseCaseResponse>> {
+export class UpdateMultipleClassInSameSerieByDropUseCase implements IUseCase<ClassUpdateMultipleInSameSerieDto, Promise<UpdateMultipleClassByDropUseCaseResponse>> {
 
   private _logger: Logger;
 
@@ -29,7 +29,7 @@ export class UpdateMultipleClassInSameSerieUseCase implements IUseCase<ClassUpda
     this._logger = new Logger('UpdateMultipleClassUseCase');
   }
 
-  async execute(request: ClassUpdateMultipleInSameSerieDto): Promise<UpdateMultipleClassUseCaseResponse> {
+  async execute(request: ClassUpdateMultipleInSameSerieDto): Promise<UpdateMultipleClassByDropUseCaseResponse> {
     this._logger.log('Executing');
 
     const classes = await this.findAll.execute({

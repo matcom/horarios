@@ -78,10 +78,7 @@ export class TeacherController {
   async unlinkTeacher(@Body() body: { teacherId: string }, @Response() res, @Request() req) {
     this._logger.log('UnLink User');
 
-    const u = await this.breakUserLink.execute({
-      ...body,
-      userId: req.user.props.id,
-    });
+    const u = await this.breakUserLink.execute(body);
 
     return ProcessResponse.setResponse(res, u);
   }

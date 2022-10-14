@@ -106,6 +106,7 @@ export default {
               };
             }),
           });
+
           break;
         case 'typeClasses':
           if (this.typeClasses.length === 0)
@@ -122,6 +123,9 @@ export default {
               };
             }),
           });
+
+          break;
+
         case 'groups':
           if (this.groups.length === 0)
             break;
@@ -137,6 +141,9 @@ export default {
               };
             }),
           });
+
+          break;
+
         case 'lessons':
           if (this.lessons.length === 0)
             break;
@@ -152,6 +159,9 @@ export default {
               };
             }),
           });
+
+          break;
+
         case 'locals':
           if (this.locals.length === 0)
             break;
@@ -167,6 +177,9 @@ export default {
               };
             }),
           });
+
+          break;
+
         case 'semesters':
           if (this.semesters.length === 0)
             break;
@@ -182,6 +195,9 @@ export default {
               };
             }),
           });
+
+          break;
+
         case 'departments':
           if (this.departments.length === 0)
             break;
@@ -197,6 +213,11 @@ export default {
               };
             }),
           });
+
+          break;
+
+        default:
+          break;
       }
     },
 
@@ -210,26 +231,26 @@ export default {
       );
 
       // make start date
-      this.rules.push({
-        type: 'radio',
-        id: 'startDescription',
-        label: 'Horario del Turno. Inicio.',
-        choices: [
-          { label: 'En la mañana', value: 'morning' },
-          { label: 'En la tarde', value: 'afternoon' },
-        ],
-      });
-
-      // make end date
-      this.rules.push({
-        type: 'radio',
-        id: 'endDescription',
-        label: 'Horario del Turno. Finalizacion.',
-        choices: [
-          { label: 'En la mañana', value: 'morning' },
-          { label: 'En la tarde', value: 'afternoon' },
-        ],
-      });
+      // this.rules.push({
+      //   type: 'radio',
+      //   id: 'startDescription',
+      //   label: 'Horario del Turno. Inicio.',
+      //   choices: [
+      //     { label: 'En la mañana', value: 'morning' },
+      //     { label: 'En la tarde', value: 'afternoon' },
+      //   ],
+      // });
+      //
+      // // make end date
+      // this.rules.push({
+      //   type: 'radio',
+      //   id: 'endDescription',
+      //   label: 'Horario del Turno. Finalizacion.',
+      //   choices: [
+      //     { label: 'En la mañana', value: 'morning' },
+      //     { label: 'En la tarde', value: 'afternoon' },
+      //   ],
+      // });
 
       this.rules.push({
         type: 'numeric',
@@ -248,6 +269,16 @@ export default {
   created() {
     this.addInitialRules();
     this.loadData();
+
+    // this.$store.state.restrictions.loadMinData();
+    // let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
+
+    const path = window.location.href.split('/');
+    if (path[path.length - 1] != 'conditions' && path[path.length - 1] != 'count_conditions' && path[path.length - 1] != 'relational') {
+      setTimeout(() => {
+        this.query = this.$attrs || {};
+      }, 1000);
+    }
   },
   watch: {
     query: function(val) {

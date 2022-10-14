@@ -1,3 +1,4 @@
 export type SimpleCountRestrictionsFindAllDto = {
-  filter: {}
+  filter: {},
+  user: any,
 };

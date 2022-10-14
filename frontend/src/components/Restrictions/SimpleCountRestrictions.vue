@@ -1,13 +1,86 @@
 <template>
   <div>
-    <p style='text-align: justify'> Restriccion de cuenta simple: Lorem ipsum dolor sit amet, consectetur adipisicing
-      elit. Aliquam, amet animi asperiores at dignissimos iste libero maiores modi nam nemo numquam quam qui quis
-      reprehenderit unde velit veritatis! Accusamus accusantium alias architecto at autem corporis dicta dolore dolores
-      doloribus enim eos ex, exercitationem illo inventore ipsam iusto laborum minus mollitia natus non officiis placeat
-      possimus quidem quis quisquam quos repudiandae rerum saepe sequi ullam vel veritatis vero voluptatem. Aliquid
-      ducimus enim, id itaque laudantium minima sit totam. Commodi expedita id laudantium officia optio ratione
-      repudiandae saepe similique ullam voluptatem. Blanditiis eius incidunt maiores necessitatibus provident quae
-      repellendus sint tenetur voluptatum. </p>
+    <div style='text-align: justify'>
+      <p>
+        Este requerimiento se refiere al número de turnos que han satisfecho las
+        condiciones. El usuario debe configurar el operador de comparación O a aplicar y el valor V con el cual
+        comparar. El requerimiento se cumple si la cantidad de
+        turnos que satisfacen las condiciones mantiene una relación O con V.
+        El valor V puede ser numérico, o bien porcentual o fraccionario con respecto al
+        total de turnos que pasan la etapa de las condiciones, de modo que son
+        válidas, por ejemplo, las siguientes variantes:
+      </p>
+
+      <ul>
+        <li>
+          <strong>
+            que sean en total 10
+          </strong>
+
+          <ol>
+            <li>
+              Valor: 10
+            </li>
+            <li>
+              Operador: =
+            </li>
+          </ol>
+        </li>
+
+        <li>
+          <strong>
+            que sean no más de la mitad (de los que pasan las condiciones)
+          </strong>
+
+          <ol>
+            <li>
+              Valor: 1/2 de los que cumplen las condiciones
+            </li>
+            <li>
+              Operador: <=
+            </li>
+          </ol>
+        </li>
+
+        <li>
+          <strong>
+            que sean al menos el 23% (de los que pasan las condiciones)
+          </strong>
+
+          <ol>
+            <li>
+              Valor: 23/100 de los que cumplen las condiciones iniciales
+            </li>
+            <li>
+              Operador: >=
+            </li>
+          </ol>
+        </li>
+      </ul>
+
+
+      <p> Esta clase cuenta con los siguientes atributos: </p>
+
+      <ul>
+        <li>
+          min, que representa el número de turnos que deben cumplir los
+          requerimientos
+        </li>
+        <li>
+          part, número fraccionario que representa qué parte del total de turnos
+          deben cumplir los requerimientos
+        </li>
+
+        <li>
+          operator, literal que representa el operador aritmético que se
+          aplica entre la cantidad de turnos que cumplen las condiciones y min o el
+          producto de part por la cardinalidad del conjunto de turnos que pasan
+          las condiciones, dependiendo de cuál de ellos (min o part) esté
+          establecido
+        </li>
+      </ul>
+
+    </div>
     <div role='document'>
       <div class='modal-header'>
         <h5 class='modal-title' id='exampleModalLabel'>Nueva Restricción Simple</h5>
@@ -31,12 +104,13 @@
                    id='input-part'
                    v-model='newRestriction.part'>
           </div>
-          <div class='form-group'>
-            <label for='input-operator' class='col-form-label'>Operador:</label>
-            <input type='text'
-                   :class="{'form-control': true, 'border-danger': errors & (1 << 2)}"
-                   id='input-operator' v-model='newRestriction.operator' />
-          </div>
+          <!--          <div class='form-group'>-->
+          <!--            <label for='input-operator' class='col-form-label'>Operador:</label>-->
+          <!--            <input type='text'-->
+          <!--                   :class="{'form-control': true, 'border-danger': errors & (1 << 2)}"-->
+          <!--                   id='input-operator' v-model='newRestriction.operator' />-->
+          <!--          </div>-->
+
           <div class='form-group'>
             <label for='input-interval' class='col-form-label'>Intervalo:</label>
             <input type='number'
@@ -44,6 +118,7 @@
                    id='input-interval'
                    v-model='newRestriction.interval'>
           </div>
+
           <div class='form-group'>
             <label for='input-priority' class='col-form-label'>Prioridad:</label>
             <input type='number'
@@ -51,6 +126,26 @@
                    id='input-priority'
                    v-model='newRestriction.priority'>
           </div>
+
+
+          <div class='col col-md-6 form-group'>
+            <label for='input-operator' class='col-form-label'>Operador:</label>
+
+            <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
+              <button
+                :class="{'btn': true, 'btn-light': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 2)}"
+                type='button' id='teacher_drop_down'
+                data-toggle='dropdown'
+                aria-haspopup='true' aria-expanded='true'>
+                {{ !newRestriction.operator ? 'Elegir Operador' : newRestriction.operator }}
+              </button>
+              <div class='dropdown-menu'>
+                <a style='cursor:pointer;' v-for='u in this.operators' :key='u' class='dropdown-item'
+                   @click='newRestriction.operator = u'>{{ u }}</a>
+              </div>
+            </div>
+          </div>
+
         </form>
       </div>
       <div class='modal-footer'>
@@ -77,6 +172,14 @@ export default {
         interval: 0,
         priority: 0,
       },
+      operators: [
+        '>',
+        '<',
+        '>=',
+        '<=',
+        '!=',
+        '==',
+      ],
     };
   },
   methods: {
@@ -94,6 +197,8 @@ export default {
         .then(result => {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
+          else
+            alert(this.$store.state.simpleCountRestrictions.data.error);
         });
     },
   },

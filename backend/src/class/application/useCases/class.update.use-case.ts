@@ -26,6 +26,8 @@ export class UpdateClassUseCase implements IUseCase<ClassUpdateDto, Promise<Upda
   async execute(request: ClassUpdateDto): Promise<UpdateClassUseCaseResponse> {
     this._logger.log('Executing');
 
+    console.log(request);
+
     const toUpdate = Optional(await this.classRepository.findById(request.classId));
     if (toUpdate.isNone())
       return left(Result.Fail(new AppError.ObjectNotExist(`Class with id ${request.classId} doesn't exist`)));

@@ -1,5 +1,8 @@
 export enum RestrictionType {
   Unknown,
   SimpleCountRestriction,
-  CountConditionsRestriction
+  CountConditionsRestriction,
+  DistributionRestrictions,
+  ExclusionRestrictions,
+  RelationalRestrictions,
 }

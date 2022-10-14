@@ -18,6 +18,6 @@ export class ReportsController {
     let doc = await this.generateExcelReport.Handle();
 
     // return doc;
-    doc.write('report.xlsx', res);
+    doc.write('horario.xlsx', res);
   }
 }

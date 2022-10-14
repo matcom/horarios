@@ -44,7 +44,7 @@
                 </div>
                 <div v-if='error.showError' class='form-group'>
                   <div class='card bg-danger text-white small animated--grow-in'>
-                    <div class='card-body'>{{error.message}}</div>
+                    <div class='card-body'>{{ error.message }}</div>
                   </div>
                 </div>
                 <a class='btn btn-primary btn-user btn-block text-white' @click='register'>
@@ -121,7 +121,7 @@ export default {
               this.$router.push({ name: 'loginPage' });
             } else {
               console.log(result.error + ':' + result.message);
-              this.error.message = result.message;
+              this.error.message = result.error + ':' + result.message;
               this.error.showError = true;
               setTimeout(() => {
                 this.error.showError = false;

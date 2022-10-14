@@ -76,6 +76,10 @@ export class User extends DomainEntity<UserProps> {
     this.props.permissions = this.permissions & ~(1 << (pos - 1));
   }
 
+  public static CheckPermission(permission: number, allPermissions: number): boolean {
+    return (allPermissions & permission) > 0;
+  }
+
 
   public static New(props: newUserProps): Result<User> {
     const ans: Result<User> = this.Create({
@@ -91,7 +95,7 @@ export class User extends DomainEntity<UserProps> {
 
   public static Create(props: UserProps, id: string = null): Result<User> {
     const shortNameOrError = Guard.againstAtLeast({
-      argumentPath: 'shortname',
+      argumentPath: 'username',
       numChars: 3,
       argument: props.username,
     });
@@ -100,7 +104,7 @@ export class User extends DomainEntity<UserProps> {
     }
 
 
-    const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 5, argument: props.password });
+    const passwordOrError = Guard.againstAtLeast({ argumentPath: 'password', numChars: 3, argument: props.password });
     if (!passwordOrError.succeeded) {
       return Result.Fail(new AppError.ValidationError(passwordOrError.message));
     }
@@ -130,7 +134,7 @@ export class User extends DomainEntity<UserProps> {
     if (props.password) {
       const passwordOrError = Guard.againstAtLeast({
         argumentPath: 'password',
-        numChars: 5,
+        numChars: 3,
         argument: props.password,
       });
       if (!passwordOrError.succeeded) {
