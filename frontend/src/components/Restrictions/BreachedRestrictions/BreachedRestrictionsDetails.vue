@@ -145,6 +145,42 @@
         </div>
       </div>
 
+      <div v-if='this.restriction.restrictionType === 5'>
+        <div class=' row col-sm-6'>
+
+          <div class='card text-center'>
+            <div class='card-body'>
+              <h5 class='card-title text-black-50'><strong> Atributo </strong></h5>
+              <p class='card-text'>{{ restriction.attribute }}</p>
+            </div>
+          </div>
+
+
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Operador </strong></h5>
+                <p class='card-text'>{{ restriction.operator }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class='card'>
+          <div class='card-body'>
+            <h5 class='card-title text-black-50'><strong> SubCondicion </strong></h5>
+
+            <HandleConditions v-bind='this.restriction.subCondition'></HandleConditions>
+            <!--            <pre>-->
+            <!--                {{ JSON.stringify(this.restriction.subCondition, undefined, 2) }}-->
+            <!--              </pre>-->
+          </div>
+        </div>
+
+
+      </div>
+
     </div>
   </div>
 </template>
