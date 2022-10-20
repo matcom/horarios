@@ -38,7 +38,8 @@
                            :to="{name: 'teacherPage', params: {teacherId: teacher.id}}"
                            class='list-group-item list-group-item-action'>{{ teacher.fullName }} ({{ teacher.email }})
                 <div class='form-inline justify-content-end'>
-                  <i v-if='teacher.userId.id === null' class='fas fa-link mx-3' data-toggle='tooltip'
+                  <i v-if='!teacher.userId || teacher.userId === {} || teacher.userId.id === null' class='fas fa-link mx-3'
+                     data-toggle='tooltip'
                      title='Enlazar con usuario'
                      @click.prevent='linkUserModal(teacher.id)'></i>
                   <i v-else class='fas fa-unlink mx-3' data-toggle='tooltip' title='Desenlazar usuario'
@@ -379,10 +380,25 @@ export default {
         if (result === true) {
           this.teachers.push(this.$store.state.teachers.data);
           this.teachers = this.teachers.slice().sort((a, b) => b.shortName - a.shortName);
+
+          this.restore();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+    },
+
+    restore() {
+      this.newTeacher = {
+        fullName: '',
+        shortName: '',
+        priority: '',
+        description: '',
+        email: '',
+        facultyIds: [],
+        departmentId: {},
+      };
     },
 
     comparer(prop, val) {

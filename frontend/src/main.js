@@ -7,8 +7,11 @@ import './assets/vendor/jquery/jquery.min';
 import './assets/vendor/bootstrap/js/bootstrap.bundle.min';
 import './assets/vendor/jquery-easing/jquery.easing.min';
 import './assets/js/sb-admin-2.min';
+import vSelect from 'vue-select'
+
 
 Vue.config.productionTip = false;
+Vue.component('v-select', vSelect)
 
 new Vue({
   store,

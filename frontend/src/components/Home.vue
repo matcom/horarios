@@ -772,6 +772,15 @@ export default {
       config: {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         defaultView: 'agendaWeek',
+        slotMinTime: '08:30:00',
+        slotMaxTime: '17:00:00',
+        slotDuration: '01:30:00', // tiempo que cubre una celda
+        contentHeight: 'auto',
+        contentWidth: 'auto',
+        businessHours: {
+          startTime: '8:00',
+          endTime: '17:00',
+        },
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
@@ -811,14 +820,7 @@ export default {
         },
         groupByResourceAndDates: true,
         initialView: 'timeGridWeek',
-        slotDuration: '00:30:00', // tiempo que cubre una celda
-        scrollTime: '08:00:00',
-        businessHours: {
-          startTime: '8:00',
-          endTime: '17:00',
-        },
-        // minTime: '8:00',
-        // maxTime: '17:00',
+        // scrollTime: '08:00:00',
         allDaySlot: false, // poner un evento que dura todo el dia
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,

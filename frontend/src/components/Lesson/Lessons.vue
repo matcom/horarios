@@ -35,7 +35,7 @@
               <router-link v-for="lesson in filterList(lessons, text, 'id')" :key='lesson.id'
                            :to="{name: 'lessonPage', params: {lessonId: lesson.id}}"
                            class='list-group-item list-group-item-action'>
-                {{ lesson.fullName }}
+                {{ lesson.fullName }} (Año: {{ lesson.year }})
                 <div class='form-inline justify-content-end'>
                   <i class='fas fa-trash' @click.prevent='removeLesson(lesson.id)'></i>
                 </div>
@@ -100,34 +100,8 @@
 
               </div>
 
-              <div class='form-lesson'>
-                <label for='input-description' class='col-form-label'>Descripcion:</label>
-                <textarea class='form-control' id='input-description' v-model='newLesson.description'></textarea>
-              </div>
-
-              <div class='row'>
-
-                <div class='col col-md-6'>
-
-                  <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
-                    <button
-                      :style='[selectedTeacher.id ? {"color": "green"}: {} ]'
-                      :class="{'btn': true, 'btn-light': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
-                      type='button' id='teacher_drop_down'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='true'>
-                      {{ !selectedTeacher.shortName ? 'Elegir Profesor' : selectedTeacher.shortName }}
-                    </button>
-                    <div class='dropdown-menu'>
-                      <a style='cursor:pointer;' v-for='u in this.teachers' :key='u.id' class='dropdown-item'
-                         @click='selectedTeacher = u'>{{ u.fullName }}</a>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class='col col-md-6'>
-
+              <div class='row py-3 mx-0'>
+                <div>
                   <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
                     <button :style='[selectedSemester.id ? {"color": "green"} : {}]'
                             :class="{'btn': true, 'btn-light': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 4)}"
@@ -154,6 +128,18 @@
 
               </div>
 
+              <div>
+                <label :class="{'border-danger': errors & (1 << 3)}"> Elegir Profesor</label>
+                <div :class="{'border-danger': errors & (1 << 3)}">
+                  <infinite-scroll :values='this.teachers' v-model='selectedFromInfiniteScroll'></infinite-scroll>
+                </div>
+              </div>
+
+              <div class='form-lesson'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='newLesson.description'></textarea>
+              </div>
+
             </form>
           </div>
 
@@ -171,8 +157,14 @@
 </template>
 
 <script>
+import InfiniteScroll from '@/components/InfiniteScroll';
+
 export default {
   name: 'Lessons',
+  components: { InfiniteScroll },
+  comments: [
+    InfiniteScroll,
+  ],
   data() {
     return {
       lessons: [],
@@ -195,7 +187,7 @@ export default {
         localId: {},
         year: '',
       },
-      selectedTeacher: {},
+      selectedFromInfiniteScroll: '',
       selectedLocal: {},
       selectedSemester: {},
     };
@@ -205,7 +197,9 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.lessons.getAll(token)
+      this.$store.state.lessons.getAll(token, {
+        majorId: this.major.id,
+      })
         .then(result => {
           if (result === true) {
             this.lessons = this.$store.state.lessons.data;
@@ -268,7 +262,7 @@ export default {
       this.errors |= (this.newLesson.fullName === '') ? 1 : this.errors;
       this.errors |= (this.newLesson.shortName === '') ? (1 << 1) : this.errors;
       this.errors |= (this.newLesson.year === '') ? (1 << 2) : this.errors;
-      this.errors |= (Object.keys(this.selectedTeacher).length === 0) ? (1 << 3) : this.errors;
+      this.errors |= (this.selectedFromInfiniteScroll === '') ? (1 << 3) : this.errors;
       this.errors |= (!this.semesters.some(x => x.selected === true)) ? (1 << 4) : this.errors;
 
       setTimeout(() => {
@@ -286,8 +280,9 @@ export default {
       let token = this.$store.state.profile.data.token;
 
       this.newLesson.majorId = { id: this.major.id };
-      this.newLesson.teacherId = { id: this.selectedTeacher.id };
+      this.newLesson.teacherId = { id: this.selectedFromInfiniteScroll };
       this.newLesson.semesterIds = [];
+      this.newLesson.priority = !this.newLesson.priority ? 1 : this.newLesson.priority;
 
       this.semesters.forEach(s => {
         if (s.selected)
@@ -297,11 +292,33 @@ export default {
       this.$store.state.lessons.create(token, this.newLesson).then(result => {
         if (result === true) {
           this.lessons.push(this.$store.state.lessons.data);
-          this.lessons = this.lessons.slice().sort((a, b) => b.shortName - a.shortName);
+          this.lessons = this.lessons.slice().sort((a, b) => b.year - a.year);
+
+          this.restart();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+    },
+    restart() {
+      this.newLesson = {
+        fullName: '',
+        shortName: '',
+        priority: '',
+        description: '',
+        duration: '',
+        majorId: {},
+        teacherId: {},
+        semesterIds: [],
+        localId: {},
+        year: '',
+      };
+
+      this.selectedSemester = {};
+      this.selectedLocal = {};
+      this.selectedFromInfiniteScroll = '';
+
     },
     comparer(prop, val) {
       return function(a, b) {
@@ -313,14 +330,6 @@ export default {
           return 0;
         }
       };
-    },
-    chooseTeacher(id) {
-      const teacher = this.teachers.find(x => x.Id === id);
-      this.btnTeacherText = teacher.fullName;
-    },
-    chooseLocal(id) {
-      const local = this.locals.find(x => x.Id === id);
-      this.btnLocalText = local.fullName;
     },
   },
   created() {

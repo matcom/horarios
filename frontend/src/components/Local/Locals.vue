@@ -60,31 +60,38 @@
           </div>
           <div class='modal-body'>
             <form>
-              <div class='form-group'>
-                <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text'
-                       :class="{'form-control': true, 'border-danger': errors & 1}"
-                       id='input-fullName'
-                       v-model='newLocal.fullName'>
+
+              <div class='row'>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
+                  <input type='text'
+                         :class="{'form-control': true, 'border-danger': errors & 1}"
+                         id='input-fullName'
+                         v-model='newLocal.fullName'>
+                </div>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-shortName' class='col-form-label'>Nombre Reducido:</label>
+                  <input type='text'
+                         :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
+                         id='input-shortName'
+                         v-model='newLocal.shortName'>
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre Reducido:</label>
-                <input type='text'
-                       :class="{'form-control': true, 'border-danger': errors & (1 << 1)}"
-                       id='input-shortName'
-                       v-model='newLocal.shortName'>
+
+              <div class='row'>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                  <input type='number' class='form-control' id='input-priority' v-model='newLocal.priority' />
+                </div>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-capacity' class='col-form-label'>Capacidad:</label>
+                  <input class='form-control' type='number' id='input-capacity' v-model='newLocal.capacity'></input>
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority' v-model='newLocal.priority' />
-              </div>
+
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
                 <textarea class='form-control' id='input-description' v-model='newLocal.description'></textarea>
-              </div>
-              <div class='form-group'>
-                <label for='input-capacity' class='col-form-label'>Capacidad:</label>
-                <textarea class='form-control' id='input-capacity' v-model='newLocal.capacity'></textarea>
               </div>
             </form>
           </div>
@@ -160,6 +167,16 @@ export default {
     unsetVal() {
       this.val = -1;
     },
+    restore() {
+      this.newLocal = {
+        fullName: '',
+        shortName: '',
+        priority: '',
+        description: '',
+        facultyId: '',
+        capacity: '',
+      };
+    },
     removeLocal(localId) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
@@ -201,6 +218,9 @@ export default {
         if (result === true) {
           this.locals.push(this.$store.state.locals.data);
           this.locals = this.locals.slice().sort((a, b) => b.shortName - a.shortName);
+
+          this.restore();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }

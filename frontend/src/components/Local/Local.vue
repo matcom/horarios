@@ -89,26 +89,33 @@
           </div>
           <div class='modal-body'>
             <form>
-              <div class='form-group'>
-                <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
-                <input type='text' class='form-control' id='input-fullName' v-model='local.fullName'>
+
+              <div class='row'>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-fullName' class='col-form-label'>Nombre completo:</label>
+                  <input type='text' class='form-control' id='input-fullName' v-model='local.fullName'>
+                </div>
+                <div class='form-group'>
+                  <label for='input-shortName' class='col-form-label'>Nombre:</label>
+                  <input type='text' class='form-control' id='input-shortName' v-model='local.shortName'>
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-shortName' class='col-form-label'>Nombre:</label>
-                <input type='text' class='form-control' id='input-shortName' v-model='local.shortName'>
+
+              <div class='row'>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-priority' class='col-form-label'>Prioridad:</label>
+                  <input type='number' class='form-control' id='input-priority'
+                         v-model='local.priority' />
+                </div>
+                <div class='col col-md-6 form-group'>
+                  <label for='input-capacity' class='col-form-label'>Capacidad:</label>
+                  <input type='number' class='form-control' id='input-capacity' v-model='local.capacity'></input>
+                </div>
               </div>
-              <div class='form-group'>
-                <label for='input-priority' class='col-form-label'>Prioridad:</label>
-                <input type='number' class='form-control' id='input-priority'
-                       v-model='local.priority' />
-              </div>
+
               <div class='form-group'>
                 <label for='input-description' class='col-form-label'>Descripcion:</label>
                 <textarea class='form-control' id='input-description' v-model='local.description'></textarea>
-              </div>
-              <div class='form-group'>
-                <label for='input-capacity' class='col-form-label'>Capacidad:</label>
-                <input type='number' class='form-control' id='input-capacity' v-model='local.capacity'></input>
               </div>
             </form>
           </div>
