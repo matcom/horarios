@@ -7,6 +7,7 @@
       @close='onClose'
       @search='(query) => (this.search = query)'
       v-model='selectedFromInfiniteScroll'
+      :multiple='this.selectMultiple'
     >
       <template #list-footer>
         <li v-show='hasNextPage' ref='load' class='loader'>
@@ -20,7 +21,7 @@
 <script>
 export default {
   name: 'InfiniteScroll',
-  props: ['values'],
+  props: ['values', 'selectMultiple'],
   data: () => ({
     observer: null,
     limit: 10,
@@ -61,12 +62,23 @@ export default {
         ul.scrollTop = scrollTop;
       }
     },
+    clear() {
+      this.selectedFromInfiniteScroll = '';
+    },
   },
   watch: {
     selectedFromInfiniteScroll: function(val) {
-      const ans = !val ? '' : this.values.find(x => x.fullName === val).id;
+      if (!this.selectMultiple) {
+        const ans = !val ? '' : this.values.find(x => x.fullName === val).id;
+        this.$emit('input', ans);
+      } else {
+        const ans = [];
 
-      this.$emit('input', ans);
+        for (let i = 0; i < val.length; ++i)
+          ans.push(this.values.find(x => x.fullName === val[i]).id);
+
+        this.$emit('input', ans);
+      }
     },
   },
 };

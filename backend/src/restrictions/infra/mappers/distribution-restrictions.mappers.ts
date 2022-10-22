@@ -34,6 +34,7 @@ export class DistributionRestrictionsMappers {
       interval: domain.interval,
       operator: domain.operator,
       attribute: domain.attribute,
+      description: domain.description
     };
   }
 
@@ -50,6 +51,7 @@ export class DistributionRestrictionsMappers {
       attribute: domain.attribute,
       operator: domain.operator,
       restrictionType: domain.restrictionType,
+      description: domain.description
     };
   }
 

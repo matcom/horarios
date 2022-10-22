@@ -5,13 +5,15 @@ import { GroupModule } from '../group/group.module';
 import { LocalModule } from '../local/local.module';
 import { ReportsController } from './presentation/controllers/reports.controller';
 import { LessonModule } from '../lesson/lesson.module';
+import { TypeclassModule } from '../typeclass/typeclass.module';
 
 @Module({
   imports: [
     ClassModule,
     GroupModule,
     LocalModule,
-    LessonModule
+    LessonModule,
+    TypeclassModule,
   ],
   providers: [GenerateExcelReport],
   exports: [GenerateExcelReport],

@@ -11,10 +11,13 @@
           </button>
           <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'
                style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
-            <div class='input-group m-2 ' v-for='it in lessons' :key='it.id'>
-              <div class='input-group-text bg-white'>
-                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                <span class='ml-2' id='basic-'>{{ it.shortName }}</span>
+
+            <div style='display: grid; grid-template-columns: repeat(10, 1fr);'>
+              <div class='input-group m-2' v-for='it in lessons' :key='it.id' style='width: 80%; display: inline'>
+                <div class='input-group-text bg-white'>
+                  <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
+                  <span class='ml-2' id='basic-'>{{ it.shortName }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -31,10 +34,12 @@
           </button>
           <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'
                style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
-            <div class='input-group m-2 ' v-for='it in groups' :key='it.id'>
-              <div class='input-group-text bg-white'>
-                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                <span class='ml-2' :style='{color: it.color}' id='basi7-addon3'>{{ it.shortName }}</span>
+            <div style='display: grid; grid-template-columns: repeat(5, 1fr);'>
+              <div class='input-group m-2 ' v-for='it in groups' :key='it.id' style='width: 80%; display: inline'>
+                <div class='input-group-text bg-white'>
+                  <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
+                  <span class='ml-2' :style='{color: it.color}' id='basi7-addon3'>{{ it.shortName }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -51,10 +56,12 @@
           </button>
           <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton' x-placement='bottom-start'
                style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
-            <div class='input-group m-2 ' v-for='it in locals' :key='it.id'>
-              <div class='input-group-text bg-white'>
-                <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                <span class='ml-2' id='basi3-addon3'>{{ it.shortName }}</span>
+            <div style='display: grid; grid-template-columns: repeat(4, 1fr);'>
+              <div class='input-group m-2 ' v-for='it in locals' :key='it.id' style='width: 87%; display: inline'>
+                <div class='input-group-text bg-white'>
+                  <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
+                  <span class='ml-2' id='basi3-addon3'>{{ it.shortName }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -136,7 +143,8 @@
       :options='config'
     >
       <template v-slot:eventContent='arg'>
-        <b> {{ arg.event.title }} ({{ arg.timeText }})</b>
+        <b> {{ arg.event.title }}</b>
+        <!--        <b> {{ arg.event.title }} ({{ arg.timeText }})</b>-->
       </template>
     </FullCalendar>
 
@@ -153,115 +161,35 @@
           </div>
           <div class='modal-body'>
             <form>
-              <div class='row'>
 
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir Profesores Extras:</label>
-                </div>
-
-                <div class='col-sm-6'>
-
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 1)}"
-                      type='button'
-                      id='input-select-university'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color:black'
-                      :disabled='teachers.length === 0'
-                      :style='[this.teachers.some(x => x.selected) ? {"background-color": "green"}: {}]'
-                    >
-                      Elija de la lista
-                    </button>
-
-                    <div class='dropdown-menu animated--fade-in ' aria-labelledby='dropdownMenuButton'
-                         x-placement='bottom-start'
-                         style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>
-                      <div class='input-group m-2 ' v-for='it in this.teachers' :key='it.id'>
-                        <div class='input-group-text bg-white'>
-                          <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                          <span class='ml-2' id='basic7-addon3'>
-                            <strong> {{ it.shortName }}</strong>
-                            </span>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir Profesores Extras:</label>
+                <infinite-scroll ref='infiniteScrollTeachers' :values='this.teachers' :select-multiple='true'
+                                 v-model='selectedTeachers'></infinite-scroll>
               </div>
 
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir asignatura:</label>
-                </div>
-
-                <div class='col-sm-6'>
-
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 2)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color:black'
-                      :disabled='this.lessons.length === 0'
-                    >
-                      {{
-                        !(newClass.lessonId && newClass.lessonId.id)
-                          ? 'Elija de la lista'
-                          : lessons.find(x => x.id === newClass.lessonId.id).shortName
-                      }}
-                    </button>
-
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.lessons' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.lessonId = {id: l.id}'>
-                        <strong> {{ l.fullName }}</strong></a>
-                    </div>
-                  </div>
-
-                </div>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir asignatura:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 2) ? 'red': 'black' }">*</label>
+                <infinite-scroll ref='infiniteScrollLesson' :values='this.lessons'
+                                 v-model='selectedLesson'></infinite-scroll>
               </div>
 
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir local:</label>
-                </div>
-
-                <div class='col-sm-6'>
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color: black'
-                      :disabled='this.locals.length === 0'
-                    >
-                      {{
-                        !(newClass.localId && newClass.localId.id)
-                          ? 'Elija de la lista'
-                          : locals.find(x => x.id === newClass.localId.id).shortName
-                      }}
-                    </button>
-
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.locals' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.localId = {id: l.id}'>
-                        <strong>{{ l.fullName }}</strong>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir local:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 3) ? 'red': 'black' }">*</label>
+                <infinite-scroll ref='infiniteScrollLocal' :values='this.locals'
+                                 v-model='selectedLocal'></infinite-scroll>
               </div>
 
-              <div class='row'>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir grupo:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 5) ? 'red': 'black' }">*</label>
+                <infinite-scroll ref='infiniteScrollGroup' :values='this.groups'
+                                 v-model='selectedGroup'></infinite-scroll>
+              </div>
+
+              <div class='my-2 row'>
                 <div class='col-md-6'>
                   <label class='col-form-label'> Elegir tipo de clase:</label>
                 </div>
@@ -294,39 +222,7 @@
                 </div>
               </div>
 
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir grupo:</label>
-                </div>
-
-                <div class='col-sm-6'>
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'bg-white': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 5)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color: black;'
-                      :disabled='this.groups.length === 0'
-                    >
-                      {{
-                        !(newClass.groupId && newClass.groupId.id)
-                          ? 'Elija de la lista'
-                          : groups.find(x => x.id === newClass.groupId.id).shortName
-                      }}
-                    </button>
-
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.groups' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.groupId = {id: l.id}'>
-                        <strong> {{ l.fullName }}</strong> </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class='row'>
+              <div class='my-2 row'>
                 <div class='col col-md-6'>
                   <input type='checkbox'
                          v-model='newClass.inSerie' /> Crear en serie ?
@@ -536,7 +432,7 @@
 
     <!-- Modal Update-->
     <div class='modal fade' id='modalEdit' tabindex='-1' role='dialog'
-         aria-labelledby='modalEdit' aria-hidden='true' ref='modalEdit'>
+         aria-labelledby='modalEdit' aria-hidden='true' ref='modalEdit' style='overflow-y: scroll'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
@@ -547,63 +443,29 @@
           </div>
           <div class='modal-body'>
             <form>
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir asignatura:</label>
-                </div>
 
-                <div class='col-sm-6' v-if='newClass.lessonId.id'>
-
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 2)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color:black'
-                      :disabled='this.lessons.length === 0'
-                    >
-                      {{ lessons.find(x => x.id === newClass.lessonId.id).shortName }}
-                    </button>
-
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.lessons' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.lessonId = {id: l.id}'>
-                        <strong> {{ l.fullName }}</strong></a>
-                    </div>
-                  </div>
-
-                </div>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir Profesores Extras:</label>
+                <infinite-scroll :values='this.teachers' :select-multiple='true'
+                                 v-model='selectedTeachers'></infinite-scroll>
               </div>
 
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir local:</label>
-                </div>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir asignatura:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 2) ? 'red': 'black' }">*</label>
+                <infinite-scroll :values='this.lessons' v-model='selectedLesson'></infinite-scroll>
+              </div>
 
-                <div class='col-sm-6' v-if='newClass.localId.id'>
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true,'bg-white': true, 'btn-lg': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 3)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color: black'
-                      :disabled='this.locals.length === 0'
-                    >
-                      {{ locals.find(x => x.id === newClass.localId.id).shortName }}
-                    </button>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir local:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 3) ? 'red': 'black' }">*</label>
+                <infinite-scroll :values='this.locals' v-model='selectedLocal'></infinite-scroll>
+              </div>
 
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.locals' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.localId = {id: l.id}'>
-                        <strong>{{ l.fullName }}</strong>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <div class='my-2'>
+                <label class='col-form-label'> Elegir grupo:</label>
+                <label class='col-form-label' :style="{ color: errors & (1 << 5) ? 'red': 'black' }">*</label>
+                <infinite-scroll :values='this.groups' v-model='selectedGroup'></infinite-scroll>
               </div>
 
               <div class='row'>
@@ -630,34 +492,6 @@
                          @click.prevent='newClass.typeClassId = {id: l.id}'>
                         <strong>{{ l.fullName }} </strong>
                       </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class='row'>
-                <div class='col-md-6'>
-                  <label class='col-form-label'> Elegir grupo:</label>
-                </div>
-
-                <div class='col-sm-6' v-if='newClass.groupId.id'>
-                  <div class='form-group dropright'>
-                    <button
-                      :class="{'btn': true, 'btn-secondary': true, 'btn-lg': true, 'bg-white': true, 'dropdown-toggle': true, 'border-danger': errors & (1 << 5)}"
-                      type='button'
-                      id='input-select-faculty'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='false'
-                      style='width: 220px; height: 40px; color: black;'
-                      :disabled='this.groups.length === 0'
-                    >
-                      {{ groups.find(x => x.id === newClass.groupId.id).shortName }}
-                    </button>
-
-                    <div class='dropdown-menu'>
-                      <a style='cursor: pointer' v-for='l in this.groups' :key='l.id' class='dropdown-item'
-                         @click.prevent='newClass.groupId = {id: l.id}'>
-                        <strong> {{ l.fullName }}</strong> </a>
                     </div>
                   </div>
                 </div>
@@ -702,6 +536,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import moment from 'moment';
 import Permission from '@/utils/permission';
 import ClassFrequency from '@/utils/class_frequency';
+import InfiniteScroll from '@/components/InfiniteScroll';
 
 Settings.defaultLocale = 'es';
 
@@ -710,6 +545,7 @@ export default {
   components: {
     Datetime,
     FullCalendar,
+    InfiniteScroll,
   },
   data() {
     return {
@@ -724,6 +560,10 @@ export default {
       events: [],
       classes: [],
       typeClasses: [],
+      selectedTeachers: [],
+      selectedLesson: '',
+      selectedLocal: '',
+      selectedGroup: '',
       errors: 0,
       majors: [],
       detailsClickedEvent: {
@@ -773,13 +613,13 @@ export default {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
         defaultView: 'agendaWeek',
         slotMinTime: '08:30:00',
-        slotMaxTime: '17:00:00',
-        slotDuration: '01:30:00', // tiempo que cubre una celda
+        slotMaxTime: '18:00:00',
+        slotDuration: '01:35:00', // tiempo que cubre una celda
         contentHeight: 'auto',
         contentWidth: 'auto',
         businessHours: {
           startTime: '8:00',
-          endTime: '17:00',
+          endTime: '18:00',
         },
         plugins: [
           dayGridPlugin,
@@ -893,6 +733,13 @@ export default {
       });
     },
 
+    clearIntoScrolls() {
+      this.$refs.infiniteScrollTeachers.clear();
+      this.$refs.infiniteScrollGroup.clear();
+      this.$refs.infiniteScrollLesson.clear();
+      this.$refs.infiniteScrollLocal.clear();
+    },
+
     loadFrom(arg) {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
@@ -982,8 +829,12 @@ export default {
     updateClass() {
       this.detailsClickedEvent.teachers.forEach(t => {
         let teacher = this.teachers.find(x => x.id === t.id);
-        teacher.selected = true;
+        this.selectedTeachers.push(teacher.id);
       });
+
+      this.selectedGroup = this.detailsClickedEvent.group.id;
+      this.selectedLesson = this.detailsClickedEvent.lesson.id;
+      this.selectedLocal = this.detailsClickedEvent.resourceId;
 
       this.newClass = {
         serieId: this.detailsClickedEvent.serieId,
@@ -1036,7 +887,6 @@ export default {
 
               this.updateEventsInCalendar();
 
-
             } else {
               alert(this.$store.state.class.data.error);
             }
@@ -1059,6 +909,8 @@ export default {
               alert(this.$store.state.class.data.error);
             }
           });
+
+        this.clearIntoScrolls();
       }
 
 
@@ -1142,9 +994,8 @@ export default {
     },
 
     addEvent(id, title, start, end, allDay, data, selectInfo, color) {
-
       this.classes.push(data);
-      this.classes = this.classes.slice().sort((a, b) => b.shortName - a.shortName);
+      // this.classes = this.classes.slice().sort((a, b) => b.shortName - a.shortName);
 
       let calendarApi = selectInfo.view.calendar;
       calendarApi.unselect(); // clear date selection
@@ -1159,15 +1010,14 @@ export default {
           resourceId: data.resourceId,
         });
       }
-
     },
 
     checkErrors() {
       // this.errors |= (!this.teachers.some(x => x.selected === true)) ? (1 << 1) : this.errors;
-      this.errors |= (Object.keys(this.newClass.lessonId).length === 0) ? (1 << 2) : this.errors;
-      this.errors |= (Object.keys(this.newClass.localId).length === 0) ? (1 << 3) : this.errors;
+      this.errors |= (this.selectedLesson === '') ? (1 << 2) : this.errors;
+      this.errors |= (this.selectedLocal === '') ? (1 << 3) : this.errors;
       this.errors |= (Object.keys(this.newClass.typeClassId).length === 0) ? (1 << 4) : this.errors;
-      this.errors |= (Object.keys(this.newClass.groupId).length === 0) ? (1 << 5) : this.errors;
+      this.errors |= (this.selectedGroup === '') ? (1 << 5) : this.errors;
       this.errors |= (this.newClass.inSerie && this.selectedClassFrequency === {}) ? (1 << 6) : this.errors;
 
       setTimeout(() => {
@@ -1177,12 +1027,17 @@ export default {
       return this.errors > 0;
     },
 
-    saveClass() {
+    async saveClass() {
       if (this.checkErrors()) return;
 
       $('#modalCreate').modal('hide');
 
+      this.newClass.lessonId = { id: this.selectedLesson };
+      this.newClass.groupId = { id: this.selectedGroup };
+      this.newClass.localId = { id: this.selectedLocal };
+
       const title = this.lessons.find(x => x.id === this.newClass.lessonId.id).fullName;
+      const subTitle = this.lessons.find(x => x.id === this.newClass.lessonId.id).shortName;
       let selectInfo = this.actualSelectInfo;
 
       const startDate = selectInfo.startStr;
@@ -1192,15 +1047,14 @@ export default {
       let token = this.$store.state.profile.data.token;
 
       this.newClass.fullName = title;
-      this.newClass.shortName = title;
+      this.newClass.shortName = subTitle;
       this.newClass.priority = 1; // TODO: check this
       this.newClass.start = startDate;
       this.newClass.end = endDate;
       this.newClass.resourceId = this.newClass.localId.id;
 
-      this.teachers.forEach(s => {
-        if (s.selected)
-          this.newClass.teacherIds.push({ id: s.id });
+      this.selectedTeachers.forEach(s => {
+        this.newClass.teacherIds.push({ id: s });
       });
 
       if (!this.newClass.inSerie) {
@@ -1208,15 +1062,25 @@ export default {
         this.$store.state.class.create(token, this.newClass)
           .then(result => {
             if (result === true) {
-              this.addEvent(
-                this.$store.state.class.data.id,
-                title,
-                startDate,
-                endDate,
-                selectInfo.allDay,
-                this.$store.state.class.data,
-                selectInfo,
-                this.$store.state.class.data.color);
+
+              this.classes.push({
+                ...this.$store.state.class.data,
+                fullName: title,
+                shortName: subTitle,
+              });
+
+              // this.addEvent(
+              //   this.$store.state.class.data.id,
+              //   subTitle,
+              //   startDate,
+              //   endDate,
+              //   selectInfo.allDay,
+              //   this.$store.state.class.data,
+              //   selectInfo,
+              //   this.$store.state.class.data.color);
+
+              this.updateEventsInCalendar();
+
             } else {
               alert(this.$store.state.class.data.error);
             }
@@ -1235,27 +1099,43 @@ export default {
 
               let data = this.$store.state.classes.data;
 
-              data.forEach(d => {
+              for (let i = 0; i < data.length; ++i) {
+                const d = data[i];
 
-                this.newClass.id = d.id;
-                this.newClass.start = d.start;
-                this.newClass.end = d.end;
+                this.classes.push({
+                  ...this.newClass,
+                  fullName: title,
+                  shortName: subTitle,
+                  id: d.id,
+                  start: d.start,
+                  end: d.end,
+                  color: d.color,
+                });
 
-                this.addEvent(
-                  d.id,
-                  title,
-                  d.start,
-                  d.end,
-                  selectInfo.allDay,
-                  this.newClass,
-                  selectInfo,
-                  d.color);
-              });
+                //   this.newClass.id = d.id;
+                //   this.newClass.start = d.start;
+                //   this.newClass.end = d.end;
+                //
+                //   this.addEvent(
+                //     d.id,
+                //     subTitle,
+                //     d.start,
+                //     d.end,
+                //     selectInfo.allDay,
+                //     this.newClass,
+                //     selectInfo,
+                //     d.color);
+              }
+
+              this.updateEventsInCalendar();
+
             } else {
               alert(this.$store.state.classes.data.error);
             }
+
           });
 
+        this.clearIntoScrolls();
       }
 
       this.restore();
@@ -1265,9 +1145,10 @@ export default {
 
     restore() {
 
-      this.teachers.forEach(t => {
-        t.selected = false;
-      });
+      this.selectedTeachers = [];
+      this.selectedGroup = '';
+      this.selectedLesson = '';
+      this.selectedLocal = '';
 
       this.newClass = {
         description: '',
@@ -1290,6 +1171,11 @@ export default {
      */
     handleDateSelect(selectInfo) {
       this.actualSelectInfo = selectInfo;
+
+      this.selectedTeachers = [];
+      this.selectedGroup = '';
+      this.selectedLesson = '';
+      this.selectedLocal = '';
 
       $('#modalCreate').modal('show');
     },

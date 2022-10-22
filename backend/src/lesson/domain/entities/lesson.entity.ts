@@ -112,6 +112,7 @@ export class Lesson extends DomainEntity<LessonProps> {
     this.props.description = props.description ?? this.props.description;
     this.props.fullName = props.fullName ?? this.props.fullName;
     this.props.shortName = props.shortName ?? this.props.shortName;
+    this.props.year = props.year ?? this.props.year;
 
     this.props.teacherId = props.teacherId ?? this.props.teacherId;
     this.props.majorId = props.majorId ?? this.props.majorId;

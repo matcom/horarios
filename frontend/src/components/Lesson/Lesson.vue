@@ -85,7 +85,10 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Profesor </strong></h5>
-              <p class='card-text'>{{ lesson.teacher.fullName }}</p>
+              <p class='card-text'>
+                {{ this.selectedFromInfiniteScroll ? (teachers.find(x => x.id === this.selectedFromInfiniteScroll)).fullName : lesson.teacher.fullName
+                }}
+              </p>
             </div>
           </div>
         </div>
@@ -217,7 +220,7 @@ export default {
       this.$store.state.teachers.getAll(token, {})
         .then(result => {
           if (result === true) {
-            this. teachers = this.$store.state.teachers.data;
+            this.teachers = this.$store.state.teachers.data;
           }
         });
     },

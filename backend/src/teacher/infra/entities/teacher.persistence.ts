@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { FacultyPersistence } from '../../../faculty/infra/entities/faculty.persistence';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
@@ -30,12 +30,12 @@ export class TeacherPersistence extends PersistentEntity {
   @ManyToMany(
     () => FacultyPersistence,
     f => f.teachers,
-    { cascade: ['update'] },
+    {  },
   )
   @JoinTable()
   faculties: FacultyPersistence[] | any;
 
-  @ManyToOne(() => LessonPersistence,
+  @OneToMany(() => LessonPersistence,
     lesson => lesson.teacher,
     { nullable: true })
   lesson: LessonPersistence[];
@@ -46,7 +46,7 @@ export class TeacherPersistence extends PersistentEntity {
   @ManyToOne(
     () => DepartmentPersistence,
     department => department.teachers,
-    { nullable: true })
+    { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'department_id' })
   department: DepartmentPersistence | any;
 

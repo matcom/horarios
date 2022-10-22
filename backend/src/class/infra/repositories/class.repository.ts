@@ -29,7 +29,7 @@ export class ClassRepository extends BaseRepository<Class, ClassPersistence> imp
       .find({
         where: filter,
         order: sort,
-        relations: ['lesson', 'local', 'typeClass', 'week'],
+        relations: ['lesson', 'local', 'typeClass', 'week', 'group'],
       });
 
     return c.map(ClassMappers.PersistToDomain);

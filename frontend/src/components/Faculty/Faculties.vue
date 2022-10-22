@@ -30,10 +30,10 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(faculties, text, 'id').length === 0" type='button'
+              <button v-if="filterList(faculties, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="fac in filterList(faculties, text, 'id')" :key='fac.id'
+              <router-link v-for="fac in filterList(faculties, text, 'fullName')" :key='fac.id'
                            :to="{name: 'facultyPage', params: {facultyId: fac.id}}"
                            class='list-group-item list-group-item-action'>{{ fac.fullName }} ({{ fac.shortName }})
                 <div class='form-inline justify-content-end'>

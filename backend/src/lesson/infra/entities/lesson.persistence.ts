@@ -27,8 +27,8 @@ export class LessonPersistence extends PersistentEntity {
   @Column({ type: 'int' })
   year: number;
 
-  @Column({ type: 'text', name: 'teacher_id' })
-  teacherId: string;
+  @Column({ type: 'text', name: 'teacher_id', nullable: true })
+  teacherId?: string;
 
   @Column({ type: 'text', name: 'local_id', nullable: true })
   localId: string;
@@ -41,7 +41,7 @@ export class LessonPersistence extends PersistentEntity {
     teacher => teacher.lesson,
     {})
   @JoinColumn({ name: 'teacher_id' })
-  teacher: TeacherPersistence | any;
+  teacher?: TeacherPersistence | any;
 
   @ManyToOne(
     () => LocalPersistence,

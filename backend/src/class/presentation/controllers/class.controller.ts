@@ -107,8 +107,6 @@ export class ClassController {
   async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
     this._logger.log('Create in serie');
 
-    console.log(body);
-
     const c = await this.createInSerie.execute(body);
     return ProcessResponse.setResponse(res, c);
   }

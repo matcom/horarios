@@ -33,6 +33,7 @@ export class RelationalRestrictionsMappers {
       interval: domain.interval,
       operator: domain.operator,
       attribute: domain.attribute,
+      description: domain.description
     };
   }
 
@@ -49,6 +50,7 @@ export class RelationalRestrictionsMappers {
       operator: domain.operator,
       restrictionType: domain.restrictionType,
       attribute: domain.attribute,
+      description: domain.description
     };
   }
 

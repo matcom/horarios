@@ -10,6 +10,7 @@ export type BaseRestrictionProps = DomainTimestamp & {
   teacherId: { id: string },
   teacher?: Teacher
   restrictionType: RestrictionType;
+  description: string;
 };
 
 type newBaseRestrictionProps = Omit<BaseRestrictionProps,
@@ -22,6 +23,10 @@ export abstract class BaseRestriction<T> extends DomainEntity<T & BaseRestrictio
 
   get interval(): number {
     return this.props.interval;
+  }
+
+  get description(): string {
+    return this.props.description;
   }
 
   get priority(): number {

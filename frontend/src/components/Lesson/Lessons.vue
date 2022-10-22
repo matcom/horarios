@@ -29,10 +29,10 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-lesson'>
-              <button v-if="filterList(lessons, text, 'id').length === 0" type='button'
+              <button v-if="filterList(lessons, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="lesson in filterList(lessons, text, 'id')" :key='lesson.id'
+              <router-link v-for="lesson in filterList(lessons, text, 'fullName')" :key='lesson.id'
                            :to="{name: 'lessonPage', params: {lessonId: lesson.id}}"
                            class='list-group-item list-group-item-action'>
                 {{ lesson.fullName }} (Año: {{ lesson.year }})
@@ -131,7 +131,8 @@
               <div>
                 <label :class="{'border-danger': errors & (1 << 3)}"> Elegir Profesor</label>
                 <div :class="{'border-danger': errors & (1 << 3)}">
-                  <infinite-scroll :values='this.teachers' v-model='selectedFromInfiniteScroll'></infinite-scroll>
+                  <infinite-scroll ref='infiniteScrollTeachers' :values='this.teachers'
+                                   v-model='selectedTeacher'></infinite-scroll>
                 </div>
               </div>
 
@@ -162,9 +163,6 @@ import InfiniteScroll from '@/components/InfiniteScroll';
 export default {
   name: 'Lessons',
   components: { InfiniteScroll },
-  comments: [
-    InfiniteScroll,
-  ],
   data() {
     return {
       lessons: [],
@@ -187,7 +185,7 @@ export default {
         localId: {},
         year: '',
       },
-      selectedFromInfiniteScroll: '',
+      selectedTeacher: '',
       selectedLocal: {},
       selectedSemester: {},
     };
@@ -249,7 +247,7 @@ export default {
       this.$store.state.lessons.delete(token, lessonId).then(result => {
         if (result === true) {
           this.lessons = this.lessons.filter(x => x.id !== lessonId);
-          this.lessons = this.lessons.slice().sort((a, b) => b.shortName - a.shortName);
+          this.lessons = this.lessons.slice().sort((a, b) => b.fullName - a.fullName);
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
@@ -262,7 +260,7 @@ export default {
       this.errors |= (this.newLesson.fullName === '') ? 1 : this.errors;
       this.errors |= (this.newLesson.shortName === '') ? (1 << 1) : this.errors;
       this.errors |= (this.newLesson.year === '') ? (1 << 2) : this.errors;
-      this.errors |= (this.selectedFromInfiniteScroll === '') ? (1 << 3) : this.errors;
+      this.errors |= (this.selectedTeacher === '') ? (1 << 3) : this.errors;
       this.errors |= (!this.semesters.some(x => x.selected === true)) ? (1 << 4) : this.errors;
 
       setTimeout(() => {
@@ -279,8 +277,11 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
+      this.newLesson.fullName += ` ${this.major.shortName}`;
+      this.newLesson.shortName += ` ${this.major.shortName}`;
+
       this.newLesson.majorId = { id: this.major.id };
-      this.newLesson.teacherId = { id: this.selectedFromInfiniteScroll };
+      this.newLesson.teacherId = { id: this.selectedTeacher };
       this.newLesson.semesterIds = [];
       this.newLesson.priority = !this.newLesson.priority ? 1 : this.newLesson.priority;
 
@@ -295,6 +296,7 @@ export default {
           this.lessons = this.lessons.slice().sort((a, b) => b.year - a.year);
 
           this.restart();
+          this.$refs.infiniteScrollTeachers.clear();
 
         } else {
           this.$router.push({ name: 'notFoundPage' });
@@ -317,7 +319,7 @@ export default {
 
       this.selectedSemester = {};
       this.selectedLocal = {};
-      this.selectedFromInfiniteScroll = '';
+      this.selectedTeacher = '';
 
     },
     comparer(prop, val) {
