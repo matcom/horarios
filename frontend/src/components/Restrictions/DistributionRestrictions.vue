@@ -60,6 +60,13 @@
       </div>
       <div class='modal-body'>
         <form>
+
+          <div v-if='this.handleAllRestrictions()' class='form-group'>
+            <label for='select_teacher' class='col-form-label'>Seleccione Profesor:</label>
+            <infinite-scroll id='select_teacher' :values='this.teachers'
+                             v-model='newRestriction.teacherId.id'></infinite-scroll>
+          </div>
+
           <div class='form-group'>
             <label for='input-min' class='col-form-label'>Mínimo:</label>
             <input type='number'
@@ -146,19 +153,26 @@
 
 <script>
 import Restrictions_type from '@/controllers/Restrictions/condition_types';
+import Permission from '@/utils/permission';
+import InfiniteScroll from '@/components/InfiniteScroll';
 
 export default {
   name: 'DistributionRestrictions',
+  components: {
+    InfiniteScroll,
+  },
   data() {
     return {
       errors: 0,
+      teachers: [],
       newRestriction: {
         min: 0,
         attribute: '',
         operator: '',
         interval: 0,
         priority: 0,
-        description: ''
+        description: '',
+        teacherId: { id: undefined },
       },
       attributes: [
         ['prioridad', 'priority', 1],
@@ -181,6 +195,21 @@ export default {
     };
   },
   methods: {
+    loadData() {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.teachers.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.teachers = this.$store.state.teachers.data;
+          }
+        });
+    },
+
+    handleAllRestrictions() {
+      return this.$store.state.profile.hasRole(Permission.CREATE_RESTRICTIONS_FOR_ALL_USERS);
+    },
     checkErrors() {
       this.errors |= (this.newRestriction.min === 0) ? 1 : this.errors;
       this.errors |= (this.newRestriction.attribute === '') ? (1 << 1) : this.errors;
@@ -216,6 +245,9 @@ export default {
             alert(this.$store.state.distributionRestrictions.data.error);
         });
     },
+  },
+  created() {
+    this.loadData();
   },
 };
 </script>

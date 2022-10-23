@@ -3,7 +3,6 @@
     <pulse-loader color='#0000FF' style='position: fixed; z-index: 99; width: 100%; height: 100%; left: 50%; top:49%'
                   :loading='loading'></pulse-loader>
     <div class='row'>
-
       <!-- Asignaturas -->
       <div class='col'>
         <div class='dropdown mb-0'>
@@ -890,6 +889,7 @@ export default {
                 });
 
               this.updateEventsInCalendar();
+              this.emitEventForRefreshingHappiness();
 
             } else {
               alert(this.$store.state.class.data.error);
@@ -909,6 +909,8 @@ export default {
               _class.shortName = this.lessons.find(x => x.id === this.newClass.lessonId.id).shortName;
 
               this.updateEventsInCalendar();
+              this.emitEventForRefreshingHappiness();
+
             } else {
               alert(this.$store.state.class.data.error);
             }
@@ -1031,6 +1033,10 @@ export default {
       return this.errors > 0;
     },
 
+    emitEventForRefreshingHappiness() {
+      this.$root.$emit('refresh_happiness');
+    },
+
     async saveClass() {
       if (this.checkErrors()) return;
 
@@ -1073,17 +1079,8 @@ export default {
                 shortName: subTitle,
               });
 
-              // this.addEvent(
-              //   this.$store.state.class.data.id,
-              //   subTitle,
-              //   startDate,
-              //   endDate,
-              //   selectInfo.allDay,
-              //   this.$store.state.class.data,
-              //   selectInfo,
-              //   this.$store.state.class.data.color);
-
               this.updateEventsInCalendar();
+              this.emitEventForRefreshingHappiness();
 
             } else {
               alert(this.$store.state.class.data.error);
@@ -1132,6 +1129,7 @@ export default {
               }
 
               this.updateEventsInCalendar();
+              this.emitEventForRefreshingHappiness();
 
             } else {
               alert(this.$store.state.classes.data.error);
@@ -1230,6 +1228,8 @@ export default {
 
             });
 
+            this.emitEventForRefreshingHappiness();
+
           } else {
             alert(this.$store.state.classes.data.error);
           }
@@ -1247,6 +1247,8 @@ export default {
 
             this.classes = this.classes.filter(x => x.id !== id);
             info.event.remove();
+
+            this.emitEventForRefreshingHappiness();
 
           } else {
             alert(this.$store.state.classes.data.error);

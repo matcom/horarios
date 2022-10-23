@@ -38,9 +38,14 @@
                  class='list-group-item list-group-item-action'>
 
               <div>
-                <h5>Restriccion tipo {{ rest.restrictionType }}</h5>
+                <h5>Restriccion tipo {{ rest.restrictionType }}. {{ getRestrictionType(rest) }} </h5>
+                <h6>Profesor {{ (teachers.find(x => x.id === rest.teacherId.id)).fullName }}</h6>
                 <HandleConditions v-bind='rest.conditions'></HandleConditions>
               </div>
+
+              <p>Intervalo: {{ rest.interval }} </p>
+
+              <p>Descripcion: {{ rest.description }}</p>
 
               <div style='cursor: pointer' class='form-inline justify-content-end'>
                 <i class='fas fa-trash' @click.prevent='removeRestriction(rest.id)'></i>
@@ -67,6 +72,7 @@ export default {
   data() {
     return {
       restrictions: [],
+      teachers: [],
       text: '',
       val: 1,
       labels: {
@@ -120,7 +126,16 @@ export default {
           }
         });
 
+      this.$store.state.teachers.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.teachers = this.$store.state.teachers.data;
+          }
+        });
 
+    },
+    getRestrictionType(rest) {
+      return Object.keys(Restrictions_type)[Object.values(Restrictions_type).indexOf(rest.restrictionType)];
     },
     filterList(list, box, prop) {
       let tmp = list.slice().sort(this.comparer(prop, this.val));

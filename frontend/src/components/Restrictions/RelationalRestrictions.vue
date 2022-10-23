@@ -82,6 +82,12 @@
       </div>
       <div class='modal-body'>
         <form>
+
+          <div v-if='this.handleAllRestrictions()' class='form-group'>
+            <label for='select_teacher' class='col-form-label'>Seleccione Profesor:</label>
+            <infinite-scroll id='select_teacher' :values='this.teachers'
+                             v-model='newRestriction.teacherId.id'></infinite-scroll>
+          </div>
           <div class='form-group'>
             <label for='input-interval' class='col-form-label'>Intervalo:</label>
             <input type='number'
@@ -165,11 +171,14 @@
 <script>
 import HandleConditions from '@/components/Restrictions/HandleConditions';
 import Restrictions_type from '@/controllers/Restrictions/condition_types';
+import Permission from '@/utils/permission';
+import InfiniteScroll from '@/components/InfiniteScroll';
 
 export default {
   name: 'RelationalRestriction',
   components: {
     HandleConditions,
+    InfiniteScroll,
   },
   data() {
     return {
@@ -182,6 +191,7 @@ export default {
         priority: 0,
         description: '',
       },
+      teachers: [],
       operators: [
         'EQUALS',
         'NOT_EQUALS',
@@ -200,6 +210,17 @@ export default {
     };
   },
   methods: {
+    loadData() {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.teachers.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.teachers = this.$store.state.teachers.data;
+          }
+        });
+    },
     checkErrors() {
       this.errors |= (this.newRestriction.attribute === '') ? (1 << 4) : this.errors;
       this.errors |= (this.newRestriction.operator === '') ? (1 << 5) : this.errors;
@@ -211,6 +232,9 @@ export default {
       }, 3000);
 
       return this.errors > 0;
+    },
+    handleAllRestrictions() {
+      return this.$store.state.profile.hasRole(Permission.CREATE_RESTRICTIONS_FOR_ALL_USERS);
     },
     saveRestriction() {
       if (this.checkErrors()) return;
@@ -233,6 +257,9 @@ export default {
             alert(this.$store.state.relationalRestrictions.data.error);
         });
     },
+  },
+  created() {
+    this.loadData();
   },
 };
 </script>
