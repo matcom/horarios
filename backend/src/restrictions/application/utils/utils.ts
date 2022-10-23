@@ -85,7 +85,6 @@ export const BodyQuery = `
            "teachers"."priority"      AS "teachers_priority",
            "teachers"."email"         AS "teachers_email",
            "teachers"."department_id" AS "teachers_department_id",
-           "teachers"."lessonId"      AS "teachers_lessonId",
            "local"."id"               AS "local_id",
            "local"."created_at"       AS "local_created_at",
            "local"."updated_at"       AS "local_updated_at",

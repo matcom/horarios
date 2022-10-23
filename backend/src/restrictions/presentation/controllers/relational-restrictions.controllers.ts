@@ -67,7 +67,7 @@ export class RelationalRestrictionsController {
 
     const cr = await this.create.execute({
       ...body,
-      teacherId: { id: req.user.id },
+      teacherId: { id: body.teacherId.id ?? req.user.id },
     });
     return ProcessResponse.setResponse(res, cr, RelationalRestrictionsMappers.DomainToDto);
   }
