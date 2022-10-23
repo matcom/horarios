@@ -1,5 +1,9 @@
 <template>
   <div class='row'>
+
+    <pulse-loader color='#0000FF' style='position: fixed; z-index: 1; width: 100%; height: 100%; left: 50%; top:50%'
+                  :loading='loading'></pulse-loader>
+
     <div class='col-12'>
       <div class='card w-100 border-bottom-primary mb-1'>
         <div class='card-header py-2 bg-white'>
@@ -20,9 +24,9 @@
                 </button>
                 <!--                <button class='btn ml-2' @click.prevent='()'>-->
                 <!--                </button>-->
-                <router-link style='cursor: pointer' :to="{name: 'restrictionsConditionsPage'}" class='nav-link'>
-                  <i role='button' class='fas fa-plus'></i>
-                </router-link>
+                <!--                <router-link style='cursor: pointer' :to="{name: 'restrictionsConditionsPage'}" class='nav-link'>-->
+                <!--                  <i role='button' class='fas fa-plus'></i>-->
+                <!--                </router-link>-->
               </form>
             </div>
           </div>
@@ -49,15 +53,20 @@
 <script>
 
 import Condition_types from '@/controllers/Restrictions/condition_types';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 export default {
   name: 'BreachedRestrictions',
+  components: {
+    PulseLoader,
+  },
   data() {
     return {
       restrictions: [],
       teachers: [],
       val: 1,
       text: '',
+      loading: false,
     };
   },
   methods: {
@@ -77,6 +86,10 @@ export default {
 
                   for (let i = 0; i < this.restrictions.length; i++)
                     this.restrictions[i].teacherName = this.getTeacherName(this.restrictions[i].teacherId);
+
+
+                  this.loading = false;
+
                 }
               });
           }
@@ -113,6 +126,7 @@ export default {
     },
   },
   created() {
+    this.loading = true;
     this.loadData();
   },
 };

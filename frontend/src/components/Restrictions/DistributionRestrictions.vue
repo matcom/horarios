@@ -123,6 +123,15 @@
 
           </div>
 
+          <div class='form-group'>
+            <label for='input-description' class='col-form-label'>Descripcion:</label>
+            <textarea
+              :class="{'form-control': true, 'border-danger': errors & (1 << 5)}"
+              id='input-priority'
+              v-model='newRestriction.description'>
+            </textarea>
+          </div>
+
 
         </form>
       </div>
@@ -149,6 +158,7 @@ export default {
         operator: '',
         interval: 0,
         priority: 0,
+        description: ''
       },
       attributes: [
         ['prioridad', 'priority', 1],
@@ -171,7 +181,24 @@ export default {
     };
   },
   methods: {
+    checkErrors() {
+      this.errors |= (this.newRestriction.min === 0) ? 1 : this.errors;
+      this.errors |= (this.newRestriction.attribute === '') ? (1 << 1) : this.errors;
+      this.errors |= (this.newRestriction.operator === '') ? (1 << 2) : this.errors;
+      this.errors |= (this.newRestriction.interval === 0) ? (1 << 3) : this.errors;
+      this.errors |= (this.newRestriction.priority === 0) ? (1 << 4) : this.errors;
+      this.errors |= (this.newRestriction.description === '') ? (1 << 5) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveRestriction() {
+
+      if (this.checkErrors()) return;
+
       this.$store.state.restrictions.loadMinData();
       let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
 

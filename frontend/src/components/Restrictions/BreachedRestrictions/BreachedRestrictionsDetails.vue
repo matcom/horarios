@@ -48,6 +48,14 @@
 
       </div>
 
+      <div>
+        <div class='card text-center'>
+          <div class='card-body'>
+            <h5 class='card-title text-black-50'><strong> Descripcion </strong></h5>
+            <p class='card-text'>{{ restriction.description }}</p>
+          </div>
+        </div>
+      </div>
       <div v-if='this.restriction.restrictionType === 1'>
 
         <div class='row py-4'>
@@ -200,6 +208,7 @@ export default {
         id: '',
         restrictionType: '',
         teacherId: {},
+        description: '',
       },
       teacher: {},
     };

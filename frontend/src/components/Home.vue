@@ -1,5 +1,7 @@
 <template>
   <div id='home'>
+    <pulse-loader color='#0000FF' style='position: fixed; z-index: 99; width: 100%; height: 100%; left: 50%; top:49%'
+                  :loading='loading'></pulse-loader>
     <div class='row'>
 
       <!-- Asignaturas -->
@@ -537,6 +539,7 @@ import moment from 'moment';
 import Permission from '@/utils/permission';
 import ClassFrequency from '@/utils/class_frequency';
 import InfiniteScroll from '@/components/InfiniteScroll';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 Settings.defaultLocale = 'es';
 
@@ -546,9 +549,11 @@ export default {
     Datetime,
     FullCalendar,
     InfiniteScroll,
+    PulseLoader,
   },
   data() {
     return {
+      loading: false,
       courses: [],
       resources: [],
       tags: [],
@@ -697,7 +702,6 @@ export default {
 
         this.config.selectable = isAuthored;
         this.config.editable = isAuthored;
-
       }, 750);
     },
 
@@ -1276,6 +1280,9 @@ export default {
     },
 
     download() {
+
+      this.loading = true;
+
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
@@ -1296,6 +1303,9 @@ export default {
 
             link.click();
             link.remove();
+
+            this.loading = false;
+
           }
         });
     },
@@ -1317,9 +1327,15 @@ export default {
     },
   },
   created() {
+    this.loading = true;
     this.getClassFrequency();
     this.makeQuery();
     this.loadAll();
+  },
+  watch: {
+    classes: function() {
+      this.loading = false;
+    },
   },
 };
 </script>

@@ -139,6 +139,15 @@
           </div>
 
           <div class='form-group'>
+            <label for='input-description' class='col-form-label'>Descripcion:</label>
+            <textarea
+              :class="{'form-control': true, 'border-danger': errors & (1 << 6)}"
+              id='input-priority'
+              v-model='newRestriction.description'>
+            </textarea>
+          </div>
+
+          <div class='form-group'>
             <HandleConditions @show='false' v-model='query'></HandleConditions>
           </div>
 
@@ -171,6 +180,7 @@ export default {
         operator: '',
         interval: 0,
         priority: 0,
+        description: '',
       },
       operators: [
         'EQUALS',
@@ -194,6 +204,7 @@ export default {
       this.errors |= (this.newRestriction.attribute === '') ? (1 << 4) : this.errors;
       this.errors |= (this.newRestriction.operator === '') ? (1 << 5) : this.errors;
       this.errors |= (this.newRestriction.interval === 0) ? (1 << 2) : this.errors;
+      this.errors |= (this.newRestriction.description === '') ? (1 << 6) : this.errors;
 
       setTimeout(() => {
         this.errors = 0;

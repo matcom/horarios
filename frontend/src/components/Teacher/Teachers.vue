@@ -230,7 +230,7 @@ export default {
 
       const departmentId = this.$route.params.departmentId;
 
-      this.$store.state.teachers.getData(token, { departmentId })
+      this.$store.state.teachers.getAll(token, { departmentId })
         .then(result => {
           if (result === true) {
             this.teachers = this.$store.state.teachers.data;
