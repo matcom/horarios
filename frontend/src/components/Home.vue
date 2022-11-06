@@ -892,7 +892,7 @@ export default {
               this.emitEventForRefreshingHappiness();
 
             } else {
-              alert(this.$store.state.class.data.error);
+              this.displayErrorMessage('Edición múltiple', this.$store.state.class.data.error);
             }
           });
       } else {
@@ -912,7 +912,7 @@ export default {
               this.emitEventForRefreshingHappiness();
 
             } else {
-              alert(this.$store.state.class.data.error);
+              this.displayErrorMessage('Edición', this.$store.state.class.data.error);
             }
           });
 
@@ -923,12 +923,7 @@ export default {
       $('#modalEdit').modal('hide');
     },
 
-    /**
-     * Event has already been dropped on a valid date-time.
-     */
-    eventDrop(info) {
-      const updateAllEvents = confirm('Se modificará el horario de todos los eventos de la serie. Si cancela solo se actualizará el evento actual.');
-
+    drop_resize(info, allEvents) {
       const originalEvent = this.classes.find(x => x.id === info.event.id);
       const newStartEvent = info.event.startStr;
       const newEndEvent = info.event.endStr;
@@ -940,7 +935,7 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      if (updateAllEvents) {
+      if (allEvents) {
         this.$store.state.class.editMultiple(token, originalEvent.serieId, originalEvent, toUpdate)
           .then(result => {
             if (result === true) {
@@ -965,7 +960,7 @@ export default {
 
             } else {
               info.revert();
-              alert(this.$store.state.class.data.error);
+              this.displayErrorMessage('Manejo de turnos', this.$store.state.class.data.error);
             }
           });
       } else {
@@ -978,17 +973,42 @@ export default {
               this.updateEventsInCalendar();
             } else {
               info.revert();
-              alert(this.$store.state.class.data.error);
+              this.displayErrorMessage('Manejo de turnos', this.$store.state.class.data.error);
             }
           });
       }
     },
 
     /**
+     * Event has already been dropped on a valid date-time.
+     */
+    eventDrop(info) {
+      this.chooseBetweenTurns(info);
+    },
+
+    /**
      * Event has been resized.
      */
     eventResize(info) {
-      this.eventDrop(info);
+      this.chooseBetweenTurns(info);
+    },
+
+    chooseBetweenTurns(info) {
+      this.$swal.fire({
+        title: 'Seleccione los turnos que desea modificar ',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Todos los turnos de la serie',
+        denyButtonText: `Solo el actual`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal.fire('Todos los turnos de la serie fueron modificados', '', 'success');
+          this.drop_resize(info, true);
+        } else if (result.isDenied) {
+          this.$swal.fire('Solo se modifico el turno actual', '', 'info');
+          this.drop_resize(info, false);
+        }
+      });
     },
 
     // eventSelected(event, jsEvent, view) {
@@ -997,6 +1017,17 @@ export default {
 
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
+    },
+
+    displayErrorMessage(title, text) {
+      this.$swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: `Oops... ${title}`,
+        text,
+        footer: 'Facultad de Matemática y Computación. UH.',
+        timer: 5000,
+      });
     },
 
     addEvent(id, title, start, end, allDay, data, selectInfo, color) {
@@ -1083,7 +1114,7 @@ export default {
               this.emitEventForRefreshingHappiness();
 
             } else {
-              alert(this.$store.state.class.data.error);
+              this.displayErrorMessage('Manejo de turnos', this.$store.state.class.data.error);
             }
           });
 
@@ -1132,9 +1163,8 @@ export default {
               this.emitEventForRefreshingHappiness();
 
             } else {
-              alert(this.$store.state.classes.data.error);
+              this.displayErrorMessage('Manejo de turnos', this.$store.state.classes.data.error);
             }
-
           });
 
         this.clearIntoScrolls();
@@ -1198,7 +1228,7 @@ export default {
             $('#modalDetails').modal('show');
 
           } else {
-            alert('Refesque la pagina. El evento no fue encontrado');
+            this.displayErrorMessage('Manejo de turnos', 'El evento no fue encontrado. Refresque la página');
           }
         });
 
@@ -1231,7 +1261,7 @@ export default {
             this.emitEventForRefreshingHappiness();
 
           } else {
-            alert(this.$store.state.classes.data.error);
+            this.displayErrorMessage('Manejo de turnos', this.$store.state.classes.data.error);
           }
         });
 
@@ -1251,7 +1281,7 @@ export default {
             this.emitEventForRefreshingHappiness();
 
           } else {
-            alert(this.$store.state.classes.data.error);
+            this.displayErrorMessage('Manejo de turnos', this.$store.state.classes.data.error);
           }
         });
 

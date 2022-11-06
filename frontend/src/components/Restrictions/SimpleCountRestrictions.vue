@@ -92,7 +92,8 @@
         <form>
           <div v-if='this.handleAllRestrictions()' class='form-group'>
             <label for='select_teacher' class='col-form-label'>Seleccione Profesor:</label>
-            <infinite-scroll id='select_teacher' :values='this.teachers' v-model='newRestriction.teacherId.id'></infinite-scroll>
+            <infinite-scroll id='select_teacher' :values='this.teachers'
+                             v-model='newRestriction.teacherId.id'></infinite-scroll>
           </div>
 
           <div class='form-group'>
@@ -254,7 +255,14 @@ export default {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
           else
-            alert(this.$store.state.simpleCountRestrictions.data.error);
+            this.$swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: `Oops... problemas con las restricciones`,
+              text: this.$store.state.simpleCountRestrictions.data.error,
+              footer: 'Facultad de Matemática y Computación. UH.',
+              timer: 5000,
+            });
         });
     },
   },

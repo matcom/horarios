@@ -253,8 +253,16 @@ export default {
         .then(result => {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
-          else
-            alert(this.$store.state.relationalRestrictions.data.error);
+          else {
+            this.$swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: `Oops... problemas con las restricciones`,
+              text: this.$store.state.relationalRestrictions.data.error,
+              footer: 'Facultad de Matemática y Computación. UH.',
+              timer: 5000,
+            });
+          }
         });
     },
   },

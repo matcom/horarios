@@ -242,7 +242,14 @@ export default {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
           else
-            alert(this.$store.state.distributionRestrictions.data.error);
+            this.$swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: `Oops... problemas con las restricciones`,
+              text: this.$store.state.distributionRestrictions.data.error,
+              footer: 'Facultad de Matemática y Computación. UH.',
+              timer: 5000,
+            });
         });
     },
   },
