@@ -60,6 +60,13 @@
       </div>
       <div class='modal-body'>
         <form>
+
+          <div v-if='this.handleAllRestrictions()' class='form-group'>
+            <label for='select_teacher' class='col-form-label'>Seleccione Profesor:</label>
+            <infinite-scroll id='select_teacher' :values='this.teachers'
+                             v-model='newRestriction.teacherId.id'></infinite-scroll>
+          </div>
+
           <div class='form-group'>
             <label for='input-min' class='col-form-label'>Mínimo:</label>
             <input type='number'
@@ -123,6 +130,15 @@
 
           </div>
 
+          <div class='form-group'>
+            <label for='input-description' class='col-form-label'>Descripcion:</label>
+            <textarea
+              :class="{'form-control': true, 'border-danger': errors & (1 << 5)}"
+              id='input-priority'
+              v-model='newRestriction.description'>
+            </textarea>
+          </div>
+
 
         </form>
       </div>
@@ -137,18 +153,26 @@
 
 <script>
 import Restrictions_type from '@/controllers/Restrictions/condition_types';
+import Permission from '@/utils/permission';
+import InfiniteScroll from '@/components/InfiniteScroll';
 
 export default {
   name: 'DistributionRestrictions',
+  components: {
+    InfiniteScroll,
+  },
   data() {
     return {
       errors: 0,
+      teachers: [],
       newRestriction: {
         min: 0,
         attribute: '',
         operator: '',
         interval: 0,
         priority: 0,
+        description: '',
+        teacherId: { id: undefined },
       },
       attributes: [
         ['prioridad', 'priority', 1],
@@ -171,7 +195,39 @@ export default {
     };
   },
   methods: {
+    loadData() {
+      this.$store.state.profile.loadMinData();
+      let token = this.$store.state.profile.data.token;
+
+      this.$store.state.teachers.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.teachers = this.$store.state.teachers.data;
+          }
+        });
+    },
+
+    handleAllRestrictions() {
+      return this.$store.state.profile.hasRole(Permission.CREATE_RESTRICTIONS_FOR_ALL_USERS);
+    },
+    checkErrors() {
+      this.errors |= (this.newRestriction.min === 0) ? 1 : this.errors;
+      this.errors |= (this.newRestriction.attribute === '') ? (1 << 1) : this.errors;
+      this.errors |= (this.newRestriction.operator === '') ? (1 << 2) : this.errors;
+      this.errors |= (this.newRestriction.interval === 0) ? (1 << 3) : this.errors;
+      this.errors |= (this.newRestriction.priority === 0) ? (1 << 4) : this.errors;
+      this.errors |= (this.newRestriction.description === '') ? (1 << 5) : this.errors;
+
+      setTimeout(() => {
+        this.errors = 0;
+      }, 3000);
+
+      return this.errors > 0;
+    },
     saveRestriction() {
+
+      if (this.checkErrors()) return;
+
       this.$store.state.restrictions.loadMinData();
       let conditions = this.$store.state.restrictions.data[Restrictions_type.BASE_CONDITION];
 
@@ -186,9 +242,19 @@ export default {
           if (result === true)
             this.$router.push({ name: 'restrictionsPage' });
           else
-            alert(this.$store.state.distributionRestrictions.data.error);
+            this.$swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: `Oops... problemas con las restricciones`,
+              text: this.$store.state.distributionRestrictions.data.error,
+              footer: 'Facultad de Matemática y Computación. UH.',
+              timer: 5000,
+            });
         });
     },
+  },
+  created() {
+    this.loadData();
   },
 };
 </script>

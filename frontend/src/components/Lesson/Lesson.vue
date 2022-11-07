@@ -85,7 +85,10 @@
           <div class='card text-center'>
             <div class='card-body'>
               <h5 class='card-title text-black-50'><strong> Profesor </strong></h5>
-              <p class='card-text'>{{ lesson.teacher.fullName }}</p>
+              <p class='card-text'>
+                {{ this.selectedFromInfiniteScroll ? (teachers.find(x => x.id === this.selectedFromInfiniteScroll)).fullName : lesson.teacher.fullName
+                }}
+              </p>
             </div>
           </div>
         </div>
@@ -128,77 +131,29 @@
                     <label for='input-shortName' class='col-form-label'>Nombre:</label>
                     <input type='text' class='form-control' id='input-shortName' v-model='lesson.shortName'>
                   </div>
+                </div>
+                <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-priority' class='col-form-label'>Prioridad:</label>
                     <input type='number' class='form-control' id='input-priority' v-model='lesson.priority' />
                   </div>
-                </div>
-                <div class='col-md-6'>
                   <div class='form-group'>
                     <label for='input-year' class='col-form-label'>Anno:</label>
                     <input type='number' max='5' min='1' class='form-control' id='input-year' v-model='lesson.year'>
                   </div>
                 </div>
+              </div>
 
-                <div class='form-group'>
-                  <label for='input-description' class='col-form-label'>Descripcion:</label>
-                  <textarea class='form-control' id='input-description' v-model='lesson.description'></textarea>
+              <div>
+                <label> Elegir Profesor</label>
+                <div>
+                  <infinite-scroll :values='this.teachers' v-model='selectedFromInfiniteScroll'></infinite-scroll>
                 </div>
               </div>
 
-              <div class='row'>
-
-                <div class='col col-md-6'>
-
-                  <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>
-                    <button
-                      :style='[lesson.teacher.id ? {"color": "green"}: {} ]'
-                      class='btn btn-light dropdown-toggle'
-                      type='button' id='teacher_drop_down'
-                      data-toggle='dropdown'
-                      aria-haspopup='true' aria-expanded='true'>
-                      {{ !lesson.teacher.shortName ? 'Elegir Profesor' : lesson.teacher.shortName }}
-                    </button>
-                    <div class='dropdown-menu'>
-<!--                      <a style='cursor:pointer;' v-for='u in this.lesson.teacher' :key='u.id' class='dropdown-item'-->
-<!--                         @click='lesson.teacher = u'>{{ u.fullName }}</a>-->
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class='col col-md-6'>
-
-<!--                  <div style='margin-left: 5px; margin-top: 10px' class='form-group dropdown mb-0'>-->
-<!--                    <button :style='[selectedSemester.id ? {"color": "green"} : {}]'-->
-<!--                            class='btn btn-light dropdown-toggle'-->
-<!--                            type='button' id='teacher_drop_down'-->
-<!--                            data-toggle='dropdown'-->
-<!--                            aria-haspopup='true' aria-expanded='true'>-->
-<!--                      {{ !selectedSemester.shortName ? 'Elegir Semestre' : selectedSemester.shortName }}-->
-<!--                    </button>-->
-<!--                    <div class='dropdown-menu'>-->
-<!--                      <a style='cursor:pointer;' v-for='u in this.semesters' :key='u.id' class='dropdown-item'-->
-<!--                         @click='selectedSemester = u'>{{ u.fullName }}</a>-->
-<!--                    </div>-->
-
-<!--                  </div>-->
-
-
-                  <!--                  Elegir multiple-->
-                  <!--                  <div class='dropdown-menu animated&#45;&#45;fade-in ' aria-labelledby='dropdownMenuButton'-->
-                  <!--                       x-placement='bottom-start'-->
-                  <!--                       style='position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);'>-->
-                  <!--                    <div class='input-group m-2 ' v-for='it in semesters' :key='it.id'>-->
-                  <!--                      <div class='input-group-text bg-white'>-->
-                  <!--                        <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.'>-->
-                  <!--                        <span class='ml-2' id='basi7-addon3'>{{ it.shortName }}</span>-->
-                  <!--                      </div>-->
-                  <!--                    </div>-->
-                  <!--                  </div>-->
-
-                </div>
-
+              <div class='form-group'>
+                <label for='input-description' class='col-form-label'>Descripcion:</label>
+                <textarea class='form-control' id='input-description' v-model='lesson.description'></textarea>
               </div>
 
             </form>
@@ -218,10 +173,17 @@
 </template>
 
 <script>
+import InfiniteScroll from '@/components/InfiniteScroll';
+
 export default {
   name: 'Lesson',
+  components: {
+    InfiniteScroll,
+  },
   data() {
     return {
+      selectedFromInfiniteScroll: '',
+      teachers: [],
       lesson: {
         id: '',
         fullName: '',
@@ -254,6 +216,13 @@ export default {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+
+      this.$store.state.teachers.getAll(token, {})
+        .then(result => {
+          if (result === true) {
+            this.teachers = this.$store.state.teachers.data;
+          }
+        });
     },
     filterList(list, box, prop, val) {
       let tmp = list.slice().sort(this.comparer(prop, val));
@@ -267,6 +236,9 @@ export default {
     saveEdited() {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
+
+      if (this.selectedFromInfiniteScroll !== '')
+        this.lesson.teacherId = { id: this.selectedFromInfiniteScroll };
 
       this.$store.state.lesson.edit(token, { ...this.lesson })
         .then(result => {

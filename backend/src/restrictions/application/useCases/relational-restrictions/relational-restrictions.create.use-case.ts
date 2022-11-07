@@ -33,7 +33,12 @@ export class CreateRelationalRestrictionsUseCase implements IUseCase<RelationalR
   async execute(request: RelationalRestrictionsCreateDto): Promise<CreateRelationalRestrictionsUseCaseResponse> {
     this._logger.log('Executing...');
 
-    const teachers = await this.teacherGetAll.execute({ filter: { userId: request.teacherId.id } });
+    const teachers = await this.teacherGetAll.execute({
+      filter: [
+        { userId: request.teacherId.id },
+        { id: request.teacherId.id },
+      ],
+    });
 
     if (teachers.isLeft() || teachers.value.unwrap().items.length === 0)
       return left(Result.Fail(new AppError.ObjectNotExist('Teacher not found')));

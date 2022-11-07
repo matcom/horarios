@@ -30,6 +30,7 @@ export class ExclusionRestrictionsMappers {
       conditions: JSON.stringify(domain.condition),
       interval: domain.interval,
       attributes: domain.attributes,
+      description: domain.description
     };
   }
 
@@ -44,6 +45,7 @@ export class ExclusionRestrictionsMappers {
       teacherId: domain.teacherId,
       attributes: domain.attributes,
       restrictionType: domain.restrictionType,
+      description: domain.description
     };
   }
 

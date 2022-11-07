@@ -9,6 +9,7 @@ import { FindAllClassUseCase } from './class.find-all.use-case';
 import * as moment from 'moment';
 import { ClassRepository } from '../../infra/repositories/class.repository';
 import { CheckClassUseCase } from './class.check-class-restrictions.use-case';
+import { FindByIdGroupUseCase } from '../../../group/application/useCases';
 
 export type UpdateMultipleClassByDropUseCaseResponse =
   Either<AppError.UnexpectedErrorResult<number | any>
@@ -25,6 +26,7 @@ export class UpdateMultipleClassInSameSerieByDropUseCase implements IUseCase<Cla
     private readonly update: UpdateClassUseCase,
     private readonly findAll: FindAllClassUseCase,
     private readonly checkRestrictions: CheckClassUseCase,
+    private readonly groupFindOne: FindByIdGroupUseCase,
     private readonly classRepository: ClassRepository) {
     this._logger = new Logger('UpdateMultipleClassUseCase');
   }
@@ -53,6 +55,11 @@ export class UpdateMultipleClassInSameSerieByDropUseCase implements IUseCase<Cla
       parseArray += `'${c}',`;
     });
 
+    const group = await this.groupFindOne.execute({ id: classes.value.unwrap().items[0].groupId.id });
+
+    if (group.isLeft())
+      return left(Result.Fail(new AppError.ObjectNotExist(group.value.unwrapError().message)));
+
     let realClasses = classes.value.unwrap().items;
     for (let i = 0; i < realClasses.length; ++i) {
       let c = realClasses[i];
@@ -60,7 +67,10 @@ export class UpdateMultipleClassInSameSerieByDropUseCase implements IUseCase<Cla
       c.start.setSeconds(c.start.getSeconds() + diffInStartHours);
       c.end.setSeconds(c.end.getSeconds() + diffInEndHours);
 
-      const ans = await this.checkRestrictions.execute(c);
+      const ans = await this.checkRestrictions.execute({
+        _class: c,
+        year: group.value.unwrap().year,
+      });
 
       if (ans.isLeft())
         return left(Result.Fail(new AppError.ValidationError(ans.value.unwrapError().message)));

@@ -150,7 +150,9 @@ export default {
       this.$store.state.profile.loadMinData();
       let token = this.$store.state.profile.data.token;
 
-      this.$store.state.groups.getData(token)
+      this.$store.state.groups.getData(token, {
+        majorId: this.major.id
+      })
         .then(result => {
           if (result === true) {
             this.groups = this.$store.state.groups.data;

@@ -18,13 +18,18 @@
             <h5 class='card-title text-black-50'><strong> Condicion </strong></h5>
 
             <HandleConditions v-bind='this.restriction.conditions'></HandleConditions>
-            <!--            <pre>-->
-            <!--                {{ JSON.stringify(this.restriction.conditions, undefined, 2) }}-->
-            <!--              </pre>-->
           </div>
         </div>
       </div>
 
+      <div class='my-4'>
+        <div class='card text-center'>
+          <div class='card-body'>
+            <h5 class='card-title text-black-50'><strong> Descripcion </strong></h5>
+            <p class='card-text'>{{ restriction.description }}</p>
+          </div>
+        </div>
+      </div>
 
       <div class='row py-4'>
         <div class='col-sm-6'>
@@ -177,10 +182,7 @@
             <!--              </pre>-->
           </div>
         </div>
-
-
       </div>
-
     </div>
   </div>
 </template>
@@ -200,6 +202,7 @@ export default {
         id: '',
         restrictionType: '',
         teacherId: {},
+        description: '',
       },
       teacher: {},
     };
