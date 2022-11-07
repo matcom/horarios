@@ -31,14 +31,15 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(teachers, text, 'email').length === 0" type='button'
+              <button v-if="filterList(teachers, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="teacher in filterList(teachers, text, 'email')" :key='teacher.email'
+              <router-link v-for="teacher in filterList(teachers, text, 'fullName')" :key='teacher.email'
                            :to="{name: 'teacherPage', params: {teacherId: teacher.id}}"
                            class='list-group-item list-group-item-action'>{{ teacher.fullName }} ({{ teacher.email }})
                 <div class='form-inline justify-content-end'>
-                  <i v-if='teacher.userId.id === null' class='fas fa-link mx-3' data-toggle='tooltip'
+                  <i v-if='!teacher.userId || teacher.userId === {} || teacher.userId.id === null' class='fas fa-link mx-3'
+                     data-toggle='tooltip'
                      title='Enlazar con usuario'
                      @click.prevent='linkUserModal(teacher.id)'></i>
                   <i v-else class='fas fa-unlink mx-3' data-toggle='tooltip' title='Desenlazar usuario'
@@ -229,7 +230,7 @@ export default {
 
       const departmentId = this.$route.params.departmentId;
 
-      this.$store.state.teachers.getData(token, { departmentId })
+      this.$store.state.teachers.getAll(token, { departmentId })
         .then(result => {
           if (result === true) {
             this.teachers = this.$store.state.teachers.data;
@@ -379,10 +380,25 @@ export default {
         if (result === true) {
           this.teachers.push(this.$store.state.teachers.data);
           this.teachers = this.teachers.slice().sort((a, b) => b.shortName - a.shortName);
+
+          this.restore();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }
       });
+    },
+
+    restore() {
+      this.newTeacher = {
+        fullName: '',
+        shortName: '',
+        priority: '',
+        description: '',
+        email: '',
+        facultyIds: [],
+        departmentId: {},
+      };
     },
 
     comparer(prop, val) {

@@ -107,7 +107,7 @@
                       </button>
 
                       <div class='dropdown-menu'>
-                        <a v-for='u in this.types' :key='u' class='dropdown-item'
+                        <a style='cursor: pointer' v-for='u in this.types' :key='u' class='dropdown-item'
                            @click.prevent='chooseType(u)'>{{ u }}</a>
                       </div>
 
@@ -154,6 +154,7 @@ export default {
         type: '',
       },
       btnSelectedTypeText: '',
+      errors: 0,
     };
   },
   methods: {
@@ -205,7 +206,7 @@ export default {
       this.errors |= (this.newTypeClass.fullName === '') ? 1 : this.errors;
       this.errors |= (this.newTypeClass.shortName === '') ? (1 << 1) : this.errors;
       this.errors |= (this.newTypeClass.duration === '') ? (1 << 2) : this.errors;
-      this.errors |= (this.newTypeClass.type) ? (1 << 3) : this.errors;
+      this.errors |= (this.newTypeClass.type === '') ? (1 << 3) : this.errors;
 
       setTimeout(() => {
         this.errors = 0;
@@ -213,6 +214,19 @@ export default {
 
       return this.errors > 0;
     },
+
+    restore() {
+      this.btnSelectedTypeText = '';
+      this.newTypeClass = {
+        fullName: '',
+        shortName: '',
+        priority: '',
+        description: '',
+        duration: '',
+        type: '',
+      };
+    },
+
     saveTypeClass() {
       if (this.checkErrors()) return;
 
@@ -225,6 +239,9 @@ export default {
         if (result === true) {
           this.typeClasses.push(this.$store.state.typeClasses.data);
           this.typeClasses = this.typeClasses.slice().sort((a, b) => b.shortName - a.shortName);
+
+          this.restore();
+
         } else {
           this.$router.push({ name: 'notFoundPage' });
         }

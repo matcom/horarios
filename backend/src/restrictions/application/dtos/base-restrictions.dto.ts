@@ -9,4 +9,5 @@ export type BaseRestrictionsDto = {
   createdAt: Date;
   updatedAt: Date;
   restrictionType: RestrictionType;
+  description: string;
 }

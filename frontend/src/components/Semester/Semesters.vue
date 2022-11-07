@@ -30,10 +30,10 @@
         <div class='card'>
           <div class='card-body p-0'>
             <div class='list-group'>
-              <button v-if="filterList(semesters, text, 'id').length === 0" type='button'
+              <button v-if="filterList(semesters, text, 'fullName').length === 0" type='button'
                       class='list-group-item list-group-item-action' disabled>No hay resultados para mostrar
               </button>
-              <router-link v-for="sem in filterList(semesters, text, 'id')" :key='sem.id'
+              <router-link v-for="sem in filterList(semesters, text, 'fullName')" :key='sem.id'
                            :to="{name: 'semesterPage', params: {semesterId: sem.id}}"
                            class='list-group-item list-group-item-action'>
                 {{ sem.fullName }}
@@ -204,6 +204,7 @@ export default {
       this.newSemester.duration = moment(this.newSemester.end).diff(moment(this.newSemester.start), 'days');
       this.newSemester.start = new Date(this.newSemester.start);
       this.newSemester.end = new Date(this.newSemester.end);
+      this.newSemester.description = this.newSemester.description || '';
 
       this.$store.state.semesters.create(token, this.newSemester).then(result => {
         if (result === true) {

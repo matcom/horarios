@@ -280,7 +280,7 @@ export default {
       }, 1000);
     }
   },
-  watch: {
+ watch: {
     query: function(val) {
       this.$emit('input', val);
     },

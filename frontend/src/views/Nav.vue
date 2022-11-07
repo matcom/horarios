@@ -191,8 +191,9 @@
                    data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                   <i class='fas fa-smile mr-2 text-gray-400'></i>
                   <span
-                    class='mr-3 d-none d-lg-inline text-gray-600 small'>{{ isNaN(happiness) || !happiness ? 0 : happiness
-                    }}</span>
+                    class='mr-3 d-none d-lg-inline text-gray-600 small'>
+                    {{ isNaN(happiness) || !happiness ? 0 : Math.trunc(happiness * 100) }}
+                  </span>
                 </a>
               </li>
 
@@ -379,6 +380,7 @@ export default {
         .then(result => {
           if (result === true) {
             this.happiness = (this.$store.state.restrictions.data[Condition_types.HAPPINESS]).happiness;
+            console.log('happiness: ' + this.happiness);
           }
         });
     },
@@ -446,6 +448,9 @@ export default {
     this.$store.state.notifications.update();
 
     this.getHappiness();
+  },
+  mounted() {
+    this.$root.$on('refresh_happiness', this.getHappiness);
   },
 };
 </script>

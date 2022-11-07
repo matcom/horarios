@@ -26,6 +26,7 @@ import { ClassCreateInSerieDto } from '../../application/dtos/class.create-in-se
 import { JwtAuthGuard } from '../../../auth/application/guards/jwtAuthGuard';
 import { UserPermissions } from '../../../user/domain/enums/user.permissions';
 import { PermissionsDecorator } from '../../../auth/application/decorator/permission.decorator';
+import { v4 } from 'uuid';
 
 @Controller('class')
 export class ClassController {
@@ -107,8 +108,6 @@ export class ClassController {
   async createMultiple(@Body() body: ClassCreateInSerieDto, @Response() res) {
     this._logger.log('Create in serie');
 
-    console.log(body);
-
     const c = await this.createInSerie.execute(body);
     return ProcessResponse.setResponse(res, c);
   }
@@ -119,6 +118,7 @@ export class ClassController {
   async update(@Body() body: ClassUpdateDto, @Response() res) {
     this._logger.log('Update');
 
+    body.serieId = v4();
     const c = await this.updateClass.execute(body);
     return ProcessResponse.setResponse<Class>(res, c, ClassMappers.DomainToDto);
   }

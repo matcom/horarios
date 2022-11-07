@@ -36,7 +36,7 @@ export class CreateExclusionRestrictionUseCase implements IUseCase<ExclusionRest
     const teachers = await this.teacherGetAll.execute({ filter: { userId: request.teacherId.id } });
 
     if (teachers.isLeft() || teachers.value.unwrap().items.length === 0)
-      return left(Result.Fail(new AppError.ObjectNotExist('Teacher')));
+      return left(Result.Fail(new AppError.ObjectNotExist('Teacher not found')));
 
     if (!request.conditions)
       return left(Result.Fail(new AppError.ValidationError('Conditions not found')));

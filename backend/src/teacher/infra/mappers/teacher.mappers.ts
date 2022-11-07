@@ -38,7 +38,7 @@ export class TeacherMappers {
       email: domain.email,
       faculties: domain.facultyIds,
       department: domain.departmentId,
-      userId: domain.userId.id,
+      user: domain.userId,
     };
   }
 
@@ -53,7 +53,7 @@ export class TeacherMappers {
       updatedAt: domain.updatedAt,
       email: domain.email,
       departmentId: domain.departmentId,
-      userId: domain.userId,
+      userId: domain.userId ?? { id: null },
     };
   }
 

@@ -62,7 +62,10 @@ export class CreateClassUseCase implements IUseCase<ClassCreateDto, Promise<Crea
 
     const c: Class = classOrError.unwrap();
 
-    const check = await this.checkClass.execute(c);
+    const check = await this.checkClass.execute({
+      _class: c,
+      year: group.value.unwrap().year,
+    });
 
     if (check.isLeft())
       return check;

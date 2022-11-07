@@ -32,6 +32,7 @@ export class SimpleCountRestrictionsMappers {
       interval: domain.interval,
       part: domain.part,
       operator: domain.operator,
+      description: domain.description
     };
   }
 
@@ -48,6 +49,7 @@ export class SimpleCountRestrictionsMappers {
       teacherId: domain.teacherId,
       operator: domain.operator,
       restrictionType: domain.restrictionType,
+      description: domain.description
     };
   }
 
