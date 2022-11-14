@@ -70,4 +70,5 @@ export default {
   relational_restrictions: baseUrl + 'restrictions/relational_restrictions',
 
   happiness: baseUrl + 'restrictions/happiness',
+  getRestrictionsDescriptions: baseUrl + 'restrictions/descriptions'
 };

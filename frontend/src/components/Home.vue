@@ -149,10 +149,36 @@
       </template>
     </FullCalendar>
 
+
+    <!-- Modal show restrictions-->
+    <div class='modal fade' id='modalRestrictions' style='margin-left: 25%;' tabindex='-1' role='dialog'
+         aria-labelledby='modalRestrictions'
+         aria-hidden='true' ref='modalRestrictions'>
+      <div class='modal-dialog modal-dialog-scrollable' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='exampleModalLabel'>Restricciones Asociadas</h5>
+            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+          <div class='modal-body'>
+
+            <ul>
+              <li v-for='(r, index) in restrictions' :key='index'>
+                {{ r }}
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Create-->
-    <div class='modal fade' id='modalCreate' tabindex='-1' role='dialog' aria-labelledby='modalCreate'
-         aria-hidden='true' ref='modalCreate'>
-      <div class='modal-dialog' role='document'>
+    <div class='modal fade' id='modalCreate' autofocus role='dialog' aria-labelledby='modalCreate'
+         aria-hidden='true' ref='modalCreate' style='margin-left: -25%;'>
+      <div class='modal-dialog modal-dialog-scrollable' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
             <h5 class='modal-title' id='exampleModalLabel'>Nuevo Turno de Clase</h5>
@@ -263,7 +289,7 @@
                      :key='it.id'>
                   <div class='input-group-text bg-white d-inline'>
                     <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
-                    <span class='ml-2' id='basic-'>{{ it.val }}</span>
+                    <span class='ml-1' id='basic-'>{{ it.val }}</span>
                   </div>
                 </div>
 
@@ -289,7 +315,7 @@
     <!-- Modal Details-->
     <div class='modal fade' id='modalDetails' tabindex='-1' role='dialog' aria-labelledby='modalDetails'
          aria-hidden='true' ref='modalDetails'>
-      <div class='modal-dialog' role='document'>
+      <div class='modal-dialog modal-dialog-scrollable' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
             <h5 class='modal-title' id='modalDetailsTitle'>Detalles del Turno</h5>
@@ -434,7 +460,7 @@
     <!-- Modal Update-->
     <div class='modal fade' id='modalEdit' tabindex='-1' role='dialog'
          aria-labelledby='modalEdit' aria-hidden='true' ref='modalEdit' style='overflow-y: scroll'>
-      <div class='modal-dialog' role='document'>
+      <div class='modal-dialog modal-dialog-scrollable' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
             <h5 class='modal-title' id='modalEditTitle'>Editar Turno de Clase</h5>
@@ -539,6 +565,7 @@ import Permission from '@/utils/permission';
 import ClassFrequency from '@/utils/class_frequency';
 import InfiniteScroll from '@/components/InfiniteScroll';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
+import Condition_types from '@/controllers/Restrictions/condition_types';
 
 Settings.defaultLocale = 'es';
 
@@ -553,6 +580,7 @@ export default {
   data() {
     return {
       loading: false,
+      restrictions: [],
       courses: [],
       resources: [],
       tags: [],
@@ -1072,6 +1100,7 @@ export default {
       if (this.checkErrors()) return;
 
       $('#modalCreate').modal('hide');
+      $('#modalRestrictions').modal('hide');
 
       this.newClass.lessonId = { id: this.selectedLesson };
       this.newClass.groupId = { id: this.selectedGroup };
@@ -1209,6 +1238,7 @@ export default {
       this.selectedLesson = '';
       this.selectedLocal = '';
 
+      $('#modalRestrictions').modal('show');
       $('#modalCreate').modal('show');
     },
 
@@ -1367,6 +1397,27 @@ export default {
   watch: {
     classes: function() {
       this.loading = false;
+    },
+    selectedTeachers: function() {
+
+      if (!this.selectedTeachers || this.selectedTeachers.length === 0) {
+        this.restrictions = [];
+        return;
+      }
+
+      this.$store.state.restrictions.getDescriptionRestrictions({
+        teachers: this.selectedTeachers,
+      })
+        .then(result => {
+          if (result === true) {
+
+            this.restrictions = this.$store.state.restrictions.data[Condition_types.RESTRICTIONS_DESCRIPTIONS];
+
+          } else {
+            this.displayErrorMessage('Obtención de restricciones', this.$store.state.classes.data.error);
+          }
+        });
+
     },
   },
 };

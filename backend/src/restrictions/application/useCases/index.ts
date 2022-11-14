@@ -57,6 +57,7 @@ import { RemoveRelationalRestrictionsUseCase } from './relational-restrictions/r
 import {
   FindByIdRelationalRestrictionUseCase,
 } from './relational-restrictions/relational-restrictions.find-one.use-case';
+import { GetRestrictionsDescriptionsByTeacher } from './get-restrictions-descriptions-by-teacher.service';
 
 export * from './get-class-by-conditions.use-case';
 export * from './build-where.use-case';
@@ -87,11 +88,13 @@ export * from './relational-restrictions/relational-restrictions.find-one.use-ca
 export * from './relational-restrictions/relational-restrictions.remove.use-case';
 
 export * from './restrictions.evaluation.use-case';
+export * from './get-restrictions-descriptions-by-teacher.service';
 
 export const RestrictionsUseCases = [
   BuildWhereUseCase,
   GetClassesByConditions,
   RestrictionsEvaluationUseCase,
+  GetRestrictionsDescriptionsByTeacher,
 
   CreateSimpleCountRestrictionUseCase,
   EvaluateSimpleCountRestrictionUseCase,
