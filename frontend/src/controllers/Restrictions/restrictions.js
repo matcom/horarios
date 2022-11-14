@@ -39,4 +39,21 @@ export default {
         return false;
       });
   },
+
+  getDescriptionRestrictions(body = {}) {
+
+    Petitions.clearHeaders();
+    Petitions.set_JSONHeaders(null, null, null);
+
+    return Petitions.post(`${Endpoints.getRestrictionsDescriptions}`, body)
+      .then(response => response.json(), response => console.log('Error getting the response.'))
+      .then(json => {
+        if (json !== null && !json.hasOwnProperty('error')) {
+          // this.data = json;
+          this.updateDataValue(json, Condition_types.RESTRICTIONS_DESCRIPTIONS);
+          return true;
+        }
+        return false;
+      });
+  },
 };
