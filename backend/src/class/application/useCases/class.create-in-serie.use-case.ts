@@ -72,8 +72,6 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
       await unitOfWork.start();
       const repo = unitOfWork.getRepository(this.repositoryFactory);
 
-      console.log(request);
-
       return await unitOfWork.commit(() => this.work(request, repo, serieId, endSemester));
 
     } catch (e) {

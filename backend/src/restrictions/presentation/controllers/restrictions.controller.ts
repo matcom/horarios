@@ -1,5 +1,5 @@
-import { Controller, Get, Logger, Request, Response } from '@nestjs/common';
-import { RestrictionsEvaluationUseCase } from '../../application/useCases';
+import { Controller, Get, Logger, Request, Response, Body, Post } from '@nestjs/common';
+import { GetRestrictionsDescriptionsByTeacher, RestrictionsEvaluationUseCase } from '../../application/useCases';
 import { ProcessResponse } from '../../../shared/core/utils/processResponse';
 
 @Controller('restrictions')
@@ -8,6 +8,7 @@ export class RestrictionsController {
 
   constructor(
     private readonly happiness: RestrictionsEvaluationUseCase,
+    private readonly getRestrictionsDescriptionsByTeacher: GetRestrictionsDescriptionsByTeacher,
   ) {
     this._logger = new Logger('RestrictionsController');
   }
@@ -19,5 +20,14 @@ export class RestrictionsController {
     const ans = await this.happiness.execute();
 
     return ProcessResponse.setResponse(res, ans);
+  }
+
+  @Post('descriptions')
+  async getRestrictionsDescriptions(@Body() body, @Request() req, @Response() res) {
+    this._logger.log('Get Restrictions Descriptions');
+
+    const ans = await this.getRestrictionsDescriptionsByTeacher.execute({ teachers: body.teachers });
+
+    return res.json(ans);
   }
 }
