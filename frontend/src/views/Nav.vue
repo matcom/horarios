@@ -189,10 +189,12 @@
               <li class='nav-item dropdown no-arrow mx-1'>
                 <a class='nav-link dropdown-toggle' href='#' id='userDropdown' role='button'
                    data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                  <i class='fas fa-smile mr-2 text-gray-400'></i>
+                  <i class='fas fa-smile mr-2'
+                     :style='{color: [happiness >= 80 ? "#2BC10A" : happiness >= 60 ? "#EED013" : "#CD101C"] }'>
+                  </i>
                   <span
                     class='mr-3 d-none d-lg-inline text-gray-600 small'>
-                    {{ isNaN(happiness) || !happiness ? 0 : Math.trunc(happiness * 100) }}
+                    {{ happiness }}
                   </span>
                 </a>
               </li>
@@ -371,7 +373,7 @@ export default {
       username: '',
       notifications: [],
       notifications_unseened: 0,
-      happiness: 0,
+      happiness: 100,
     };
   },
   methods: {
@@ -380,7 +382,7 @@ export default {
         .then(result => {
           if (result === true) {
             this.happiness = (this.$store.state.restrictions.data[Condition_types.HAPPINESS]).happiness;
-            console.log('happiness: ' + this.happiness);
+            this.happiness = isNaN(this.happiness) || !this.happiness ? 0 : Math.trunc(this.happiness * 100);
           }
         });
     },

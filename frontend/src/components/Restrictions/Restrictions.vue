@@ -37,15 +37,15 @@
             <div v-for="(rest, index) in filterList(restrictions, text, 'id')" :key='rest.id'
                  class='list-group-item list-group-item-action'>
 
-              <div>
-                <h5>Restriccion tipo {{ rest.restrictionType }}. {{ getRestrictionType(rest) }} </h5>
-                <h6>Profesor {{ (teachers.find(x => x.id === rest.teacherId.id)).fullName }}</h6>
-                <HandleConditions v-bind='rest.conditions'></HandleConditions>
+              <div class='my-2'>
+                <h4>Restriccion tipo {{ rest.restrictionType }}. {{ getRestrictionType(rest) }} </h4>
+                <h5>Profesor {{ (teachers.find(x => x.id === rest.teacherId.id)).fullName }}</h5>
+                <!--                <HandleConditions v-bind='rest.conditions'></HandleConditions>-->
               </div>
+              <!--              <p>Intervalo: {{ rest.interval }} </p>-->
 
-              <p>Intervalo: {{ rest.interval }} </p>
-
-              <p>Descripcion: {{ rest.description }}</p>
+              <hr>
+              <p>{{ rest.description }}</p>
 
               <div style='cursor: pointer' class='form-inline justify-content-end'>
                 <i class='fas fa-trash' @click.prevent='removeRestriction(rest.id)'></i>
