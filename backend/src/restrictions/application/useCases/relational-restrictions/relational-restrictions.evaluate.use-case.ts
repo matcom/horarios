@@ -57,7 +57,7 @@ export class EvaluateRelationalRestrictionsUseCase implements IUseCase<{}, Promi
         const rawQuery1 = `${bodyQuery} WHERE ${whereCondition} ORDER BY "class"."start" ASC`;
 
         const whereSubCondition = this.buildWhere.build(r.subConditions as Tree);
-        const rawQuery2 = `${bodyQuery} WHERE ${whereCondition} AND ${whereSubCondition}  ORDER BY "class"."start" ASC`;
+        const rawQuery2 = `${bodyQuery} WHERE ${whereSubCondition}  ORDER BY "class"."start" ASC`;
 
         const set1 = await this.classRepository.executeRawQuery(rawQuery1, []);
         const set2 = await this.classRepository.executeRawQuery(rawQuery2, []);
@@ -74,20 +74,21 @@ export class EvaluateRelationalRestrictionsUseCase implements IUseCase<{}, Promi
             let element = ClassMappers.DomainToDto(temporalInterval[i][j]);
 
             let existInSet1 = idsSet1.has(element['class_id'] || element.id);
-            let existInSet2 = idsSet2.has(element['class_id'] || element.id)
+            let existInSet2 = idsSet2.has(element['class_id'] || element.id);
 
             if (existInSet1) valuesSet1.add(element[r.attribute]);
             if (existInSet2) valuesSet2.add(element[r.attribute]);
           }
 
-          if (valuesSet1.size > 0 && valuesSet2.size > 0) {
-            let evaluation = OperaSet(valuesSet1, r.operator, valuesSet1) ? 1 : 0;
 
-            if (evaluation === 0)
-              ans.add(r._id.toString());
+          // if (valuesSet1.size > 0 && valuesSet2.size > 0) {
+          let evaluation = OperaSet(valuesSet1, r.operator, valuesSet2) ? 1 : 0;
 
-            count += evaluation;
-          }
+          if (evaluation === 0)
+            ans.add(r._id.toString());
+
+          count += evaluation;
+          // }
         }
 
         const final = temporalInterval.length === 0 ? 0 : count / temporalInterval.length;

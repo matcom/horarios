@@ -151,12 +151,14 @@
       </div>
 
       <div v-if='this.restriction.restrictionType === 5'>
-        <div class=' row col-sm-6'>
+        <div class=' row py-4'>
 
-          <div class='card text-center'>
-            <div class='card-body'>
-              <h5 class='card-title text-black-50'><strong> Atributo </strong></h5>
-              <p class='card-text'>{{ restriction.attribute }}</p>
+          <div class='col-sm-6'>
+            <div class='card text-center'>
+              <div class='card-body'>
+                <h5 class='card-title text-black-50'><strong> Atributo </strong></h5>
+                <p class='card-text'>{{ restriction.attribute }}</p>
+              </div>
             </div>
           </div>
 
@@ -176,7 +178,7 @@
           <div class='card-body'>
             <h5 class='card-title text-black-50'><strong> SubCondicion </strong></h5>
 
-            <HandleConditions v-bind='this.restriction.subCondition'></HandleConditions>
+            <HandleConditions v-bind='this.restriction.subConditions'></HandleConditions>
             <!--            <pre>-->
             <!--                {{ JSON.stringify(this.restriction.subCondition, undefined, 2) }}-->
             <!--              </pre>-->
@@ -235,6 +237,19 @@ export default {
           });
 
           break;
+
+        case Restrictions_type.RelationalRestrictions:
+
+          this.$store.state.relationalRestrictionsDetails.getData(token, this.restriction.id).then(result => {
+            if (result === true) {
+              this.restriction = this.$store.state.relationalRestrictionsDetails.data;
+
+              this.getTeacher();
+            }
+          });
+
+          break;
+
         default:
           break;
       }

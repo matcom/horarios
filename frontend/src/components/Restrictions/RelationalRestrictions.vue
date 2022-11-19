@@ -190,6 +190,7 @@ export default {
         interval: 0,
         priority: 0,
         description: '',
+        teacherId: {}
       },
       teachers: [],
       operators: [
