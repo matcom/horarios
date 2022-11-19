@@ -43,9 +43,9 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
     const classes = (await this.classRepository.findAll({}, { start: 'ASC' })).items;
 
     try {
-      let ans: string[] = [];
-      let amountEvaluation = 0;
-      let priorityAmounts = 0;
+      let ans: Set<string> = new Set<string>();
+      let amountEvaluation = 1;
+      let priorityAmounts = 1;
 
       for (let t = 0; t < restrictions.length; ++t) {
 
@@ -73,8 +73,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
           interval.push([]);
           intervalBoth.push([]);
           for (let j = 0; j < temporalInterval[i].length; ++j) {
-
-            let element = temporalInterval[i][j].id;
+            let element = temporalInterval[i][j].props.id;
 
             let existInInterval = idsEvaluation.has(element);
             let existInBothInterval = idsEvaluationBoth.has(element);
@@ -85,8 +84,17 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         }
 
         let count = 0;
-        for (let i = 0; i < intervalBoth.length; ++i)
-          count += (OperaNumbers(intervalBoth[i].length, r.operator, r.part * interval[i].length)) ? 1 : 0;
+        for (let i = 0; i < intervalBoth.length; ++i) {
+          const evaluation = (OperaNumbers(intervalBoth[i].length, r.operator, r.part * interval[i].length)) ? 1 : 0;
+
+          console.log(intervalBoth[i].length, r.operator, interval[i].length, evaluation);
+
+          if (evaluation == 0)
+            ans.add(r._id.toString());
+
+          count += evaluation;
+
+        }
 
         const final = count / (intervalBoth.length === 0 ? 1 : intervalBoth.length) * r.priority;
         amountEvaluation += final;
@@ -100,7 +108,7 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         // });
       }
       return right(Result.Ok({
-        restrictionId: ans,
+        restrictionId: Array.from(ans),
         evaluation: amountEvaluation,
         priorityAmounts,
       }));

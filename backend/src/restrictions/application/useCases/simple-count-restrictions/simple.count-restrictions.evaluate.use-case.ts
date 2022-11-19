@@ -42,8 +42,8 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
 
     try {
       let ans: Set<string> = new Set<string>();
-      let amountEvaluation = 0;
-      let priorityAmounts = 0;
+      let amountEvaluation = 1;
+      let priorityAmounts = 1;
 
       for (let t = 0; t < restrictions.length; ++t) {
         const r = restrictions[t];
@@ -88,6 +88,7 @@ export class EvaluateSimpleCountRestrictionUseCase implements IUseCase<{}, Promi
         //   restrictionId: r._id.toString(),
         // });
       }
+
       return right(Result.Ok({
         restrictionId: Array.from(ans),
         evaluation: amountEvaluation,
