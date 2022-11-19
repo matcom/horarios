@@ -58,7 +58,7 @@
 
       <ul>
         <li>
-          subConditions, texto en lenguaje Ruby que representa el código
+          subConditions, representa el código
           correspondiente a las condiciones del requerimiento, o sea, a las
           condiciones que como requerimiento deben cumplir los turnos que
           cumplan con conditions.

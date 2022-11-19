@@ -253,7 +253,7 @@ export default {
       // });
 
       this.rules.push({
-        type: 'numeric',
+        type: 'select',
         id: 'dayOfWeek',
         label: 'Dia de la Semana',
         choices: [
