@@ -4,7 +4,9 @@ import { AppConfigService } from './shared/modules/config/service/app-config-ser
 import { AllExceptionsFilter } from './shared/core/ExceptionFilter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // logger: false
+  });
 
   app.enableCors({
     origin: '*',

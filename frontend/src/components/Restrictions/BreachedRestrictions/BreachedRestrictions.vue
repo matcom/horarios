@@ -35,13 +35,15 @@
       <div class='card'>
         <div class='card-body p-0'>
           <div class='list-group'>
-            <button v-if="filterList(restrictions, text, 'id').length === 0" type='button'
+            <button v-if="filterList(restrictions, text, 'teacherName').length === 0" type='button'
                     class='list-group-item list-group-item-action' disabled>No hay restricciones incumplidas
             </button>
-            <router-link v-for="(rest, index) in filterList(restrictions, text, 'id')" :key='rest.id'
+            <router-link v-for="(rest, index) in filterList(restrictions, text, 'teacherName')" :key='rest.id'
                          class='list-group-item list-group-item-action'
                          :to="{name: 'breachedRestrictionsDetailsPage', params: {restrictionId: rest.id, restrictionType: rest.restrictionType}}">
-              <strong>Profesor: </strong> {{ rest.teacherName }} <strong> IdRestriccion: </strong> {{ rest.id }}
+              <strong>Profesor: </strong> {{ rest.teacherName }}
+              <br>
+              <strong> ID de la restricción: </strong> {{ rest.id }}
             </router-link>
           </div>
         </div>

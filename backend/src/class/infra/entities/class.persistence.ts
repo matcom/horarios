@@ -1,4 +1,14 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
 import { PersistentEntity } from '../../../shared/modules/data-access/typeorm/base.entity';
 import { LessonPersistence } from '../../../lesson/infra/entities/lesson.persistence';
 import { TeacherPersistence } from '../../../teacher/infra/entities/teacher.persistence';
@@ -10,6 +20,13 @@ import { WeekPersistence } from '../../../week/infra/entities/week.persistence';
 @Entity('class')
 @Index(['id'], { unique: true })
 export class ClassPersistence extends PersistentEntity {
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  extractDayOfWeek() {
+    this.dayOfWeek = new Date(this.start).getDay();
+  }
+
   @Column({ type: 'text' })
   shortName: string;
 
@@ -21,6 +38,9 @@ export class ClassPersistence extends PersistentEntity {
 
   @Column({ type: 'int', default: 1 })
   priority: number;
+
+  @Column({ type: 'int', default: 0 })
+  dayOfWeek: number;
 
   @Column({ type: 'text', name: 'local_id' })
   localId: string;

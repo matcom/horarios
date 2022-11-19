@@ -18,12 +18,14 @@ export class BuildWhereUseCase {
 
         if (ExistInEnum(tree['operator'], NumberOperators))
           return `${RowLocations[tree['rule']]} ${tree['operator']} ${Number(tree['value'])}`;
-        if (tree['rule'] === 'dayOfWeek')
-          return `(SELECT EXTRACT (DOW FROM TIMESTAMP ${RowLocations[tree['rule']]})) ${tree['operator']} ${Number(tree['value'])}`;
 
         return `${RowLocations[tree['rule']]} ${tree['operator']} ${tree['value']}`;
 
-      } else { // is a binary operator but is always with equals (group_id, local_id, etc)
+      } else { // is a binary operator but is always with equals (group_id, local_id, day_of_week, etc)
+
+        if (tree['rule'] === 'dayOfWeek')
+          return `"class"."dayOfWeek" = ${Number(tree['value'])}`;
+        // return `(SELECT EXTRACT (DOW FROM TIMESTAMP ${RowLocations[tree['rule']]})) = ${Number(tree['value'])}`;
 
         return `${RowLocations[tree['rule']]} = '${tree['value']}'`;
       }
