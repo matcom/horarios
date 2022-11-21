@@ -21,7 +21,7 @@ export class SemesterMapper {
   }
 
   public static DomainToPersist(domain: Semester): Partial<SemesterPersistence> {
-    const x = {
+    return {
       id: domain._id.toString(),
       shortName: domain.shortName,
       fullName: domain.fullName,
@@ -33,11 +33,6 @@ export class SemesterMapper {
       start: domain.start,
       end: domain.end,
     };
-
-    console.log(x);
-
-    return x;
-
   }
 
   public static DomainToDto(domain: Semester): SemesterDto {

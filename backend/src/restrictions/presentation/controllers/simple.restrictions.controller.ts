@@ -63,9 +63,6 @@ export class SimpleRestrictionsController {
 
     this._logger.log('Create');
 
-    console.log(body);
-
-
     const cr = await this.create.execute({
       ...body,
       teacherId: { id: body.teacherId.id ?? req.user.id },
