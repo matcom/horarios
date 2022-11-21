@@ -7,4 +7,5 @@ export type ClassDto = PropsBaseDto & BaseDto & {
   serieId: string;
   color: string;
   resourceId: string;
+  groupId: { id: string; };
 }

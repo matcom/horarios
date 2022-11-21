@@ -29,8 +29,6 @@ export class CreateSemesterUseCase implements IUseCase<SemesterCreateDto, Promis
   async execute(request: SemesterCreateDto): Promise<CreateSemesterUseCaseResponse> {
     this._logger.log('Executing...');
 
-    console.log(request);
-
     const ans = await this
       .semesterOverlap
       .execute({
@@ -46,8 +44,6 @@ export class CreateSemesterUseCase implements IUseCase<SemesterCreateDto, Promis
     request.start = new Date(request.start);
     request.end = new Date(request.end);
 
-    console.log(request);
-
     const semesterDomainOrError: Result<Semester> = Semester.New({
       ...request,
     });
@@ -56,9 +52,6 @@ export class CreateSemesterUseCase implements IUseCase<SemesterCreateDto, Promis
       return left(semesterDomainOrError);
 
     const semester: Semester = semesterDomainOrError.unwrap();
-
-    console.log(semester.start, semester.end);
-
 
     try {
       await this.semesterRepository.save(semester);

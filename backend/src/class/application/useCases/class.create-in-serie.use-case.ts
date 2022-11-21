@@ -103,8 +103,6 @@ export class CreteMultipleClassInSameSerieUseCase implements IUseCase<ClassCreat
 
       const temp = lastModificationDay[startDate.getDay()];
 
-      console.log(startDate, temp, this.getDiffInDays(startDate, temp));
-
       if (
         !realRequest.days.includes(startDate.getDay()) ||
         (temp != null && this.getDiffInDays(startDate, temp) % ClassFrequency[realRequest.frequency] != 0))

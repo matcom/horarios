@@ -144,9 +144,10 @@
       :options='config'
     >
       <template v-slot:eventContent='arg'>
-        <b> {{ arg.event.title }}</b>
+        <b> {{ arg.event.title }} ({{ resolveGroupName(arg.event.groupId) }})</b>
         <!--        <b> {{ arg.event.title }} ({{ arg.timeText }})</b>-->
       </template>
+
     </FullCalendar>
 
 
@@ -277,7 +278,8 @@
                     <div class='dropdown-menu'>
                       <button style='cursor: pointer' v-for='c in this.classFrequency' :key='c.id'
                               class='dropdown-item'
-                              @click.prevent='selectedClassFrequency = c'>
+                              @click.prevent='selectedClassFrequency = c'
+                      >
                         <strong> {{ c.val }} </strong>
                       </button>
                     </div>
@@ -287,7 +289,9 @@
 
                 <div v-if='newClass.inSerie' class='col input-group m-2 d-inline' v-for='it in daysOfWeek'
                      :key='it.id'>
-                  <div class='input-group-text bg-white d-inline'>
+                  <div
+                    :class="{'input-group-text': true, 'bg-white': true, 'd-inline': true, 'border-danger': errors & (1 << 7)}"
+                  >
                     <input type='checkbox' aria-label='Checkbox for following text input' v-model='it.selected'>
                     <span class='ml-1' id='basic-'>{{ it.val }}</span>
                   </div>
@@ -334,18 +338,6 @@
                 <div class='col-sm-6'>
                   <p>
                     {{ this.detailsClickedEvent.lesson.fullName }}
-                  </p>
-                </div>
-
-              </div>
-
-              <div class='row'>
-                <div class='col-sm-6'> Descripcion:</div>
-
-                <div class='col-sm-6'>
-
-                  <p>
-                    {{ this.detailsClickedEvent.description }}
                   </p>
                 </div>
 
@@ -436,6 +428,19 @@
 
                 <div class='col-md-6'>
                   <p> {{ this.detailsClickedEvent.group.fullName }}</p>
+                </div>
+
+              </div>
+
+
+              <div class='row'>
+                <div class='col-sm-6'> Descripcion:</div>
+
+                <div class='col-sm-6'>
+
+                  <p>
+                    {{ this.detailsClickedEvent.description }}
+                  </p>
                 </div>
 
               </div>
@@ -760,6 +765,7 @@ export default {
           end: c.end,
           color: c.color,
           resourceId: c.resourceId,
+          groupId: c.groupId.id,
         });
       });
     },
@@ -1083,7 +1089,8 @@ export default {
       this.errors |= (this.selectedLocal === '') ? (1 << 3) : this.errors;
       this.errors |= (Object.keys(this.newClass.typeClassId).length === 0) ? (1 << 4) : this.errors;
       this.errors |= (this.selectedGroup === '') ? (1 << 5) : this.errors;
-      this.errors |= (this.newClass.inSerie && this.selectedClassFrequency === {}) ? (1 << 6) : this.errors;
+      this.errors |= (this.newClass.inSerie && !this.selectedClassFrequency.val) ? (1 << 6) : this.errors;
+      this.errors |= (this.daysOfWeek.every(x => !x.selected)) ? (1 << 7) : this.errors;
 
       setTimeout(() => {
         this.errors = 0;
@@ -1372,6 +1379,11 @@ export default {
         });
     },
 
+    resolveGroupName(groupId) {
+      let g = this.groups.find(x => x.id == groupId);
+      return g.shortName;
+    },
+
     viewPanel() {
       return this.$store.state.profile.hasRole(Permission.VIEW_PANEL);
     },
@@ -1391,8 +1403,8 @@ export default {
   created() {
     this.loading = true;
     this.getClassFrequency();
-    this.makeQuery();
     this.loadAll();
+    this.makeQuery();
   },
   watch: {
     classes: function() {

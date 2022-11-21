@@ -87,8 +87,6 @@ export class EvaluateCountConditionsRestrictionsUseCase implements IUseCase<{}, 
         for (let i = 0; i < intervalBoth.length; ++i) {
           const evaluation = (OperaNumbers(intervalBoth[i].length, r.operator, r.part * interval[i].length)) ? 1 : 0;
 
-          console.log(intervalBoth[i].length, r.operator, interval[i].length, evaluation);
-
           if (evaluation == 0)
             ans.add(r._id.toString());
 
