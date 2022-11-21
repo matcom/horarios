@@ -30,8 +30,6 @@ export class TeacherBreakUserLinkUseCase implements IUseCase<{ teacherId: string
 
     const teacher: Teacher = await this.teacherRepository.findById(request.teacherId);
 
-    console.log(teacher);
-
     if (teacher === null)
       return left(Result.Fail(new AppError.ValidationError('Teacher not found')));
 

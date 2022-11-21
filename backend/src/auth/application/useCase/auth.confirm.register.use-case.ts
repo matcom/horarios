@@ -30,7 +30,6 @@ export class ConfirmRegisterUseCase implements IUseCase<ConfirmRegisterDto, Prom
 
     try {
       const idOrError = await this.validateToken(request.token);
-      console.log(idOrError);
       if (idOrError.isFailure) {
         return left(Result.Fail(new AppError.ValidationError('invalid token')));
       }
@@ -39,7 +38,6 @@ export class ConfirmRegisterUseCase implements IUseCase<ConfirmRegisterDto, Prom
         id: id,
         data: { status: UserStatus.Register },
       });
-      console.log(userConfirmRegister, '1');
 
       if (userConfirmRegister.isLeft()) {
         const error = userConfirmRegister.value.unwrapError();
