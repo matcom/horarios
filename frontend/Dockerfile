@@ -1,18 +1,17 @@
-FROM docker.uclv.cu/node:16-alpine as build-stage
+FROM node:16.16-alpine3.15 as build-stage
 
 WORKDIR /usr/src/ui
 
 COPY package*.json ./
 
-RUN npm install yarn
 
-RUN yarn install
+RUN yarn cache clean && yarn install
 
 COPY . .
 
 RUN npm run build
 
-FROM docker.uclv.cu/nginx as production-stage
+FROM nginx as production-stage
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
