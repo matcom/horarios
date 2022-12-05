@@ -10,58 +10,50 @@ Tutor: Pedro Quintero Rojas
 
 #### Como ejecutar el proyecto:
 
+Se describirán dos vías para la ejecución del proyecto. 
+
+Como **aspecto común** se hace necesario tener instalado docker y docker-compose en la computadora donde se pretenda ejecutar la aplicación. Además se debe contar con una VPN activa para la descarga de las imágenes de docker.
+
+Para sistema Linux:
+> sudo apt-get install docker.io     
+> sudo apt-get install docker-compose
+
+**Enfoque 1:**
+
+> 1. Situarse en la raíz del proyecto.
+> 2. Abrir una terminal en esa ubicación
+> 3. Ejecutar el siguiente comando: _docker-compose up -d_
+
+**Enfoque 2:**
+
 > **Se asume que para la ejecucion del proyecto se deba tener instalado:**
->- docker
->- docker-compose
 >- nodejs (superior a la version 16.0.0)
-   >  ```bash
+> ````
 >  Para actualizar la version de nodejs: (desde Windows quitar sudo)
->  
->  sudo npm cache clean -f
->  sudo npm install -g n 
->  sudo n stable
->   ```
+>  1. sudo npm cache clean -f
+>  2. sudo npm install -g n 
+>  3. sudo n stable
+> ````
 >- npm (superior a la version 8.0.0)
 
-**Nota**:
+###### Ejecutar el servidor:
+1. Estar situado en la raiz del backend (./backend)
+2. Abrir una terminal en esa ubicación
+3. Ejecutar el comando: _npm run start_
 
-- No debe tener ningun vpn activo; pues las imagenes de docker se estan descargando de un sitio nacional para evitar el
-  gasto de datos.
+###### Ejecutar el cliente:
+1. Estar situado en la raiz del frontend (./frontend)
+2. Ejecutar una terminal en esa ubucación
+3. Ejecutar el comando: _yarn serve_
 
-Se presentan dos formas de ejecutar el proyecto:
 
-##### Primera forma: [usando servidor nginx para el despliegue] (**Recomendada**)
+---------------------------------------------------------------------------------------
+En ambos casos la aplicación se encuentra accesible en `localhost:8081`
 
-Estar situado en la raiz del proyecto. (Donde se localiza el README en cuestion).
-
-```bash
-docker-compose up -d
-```
-
-##### Segunda forma: [ejecutando los proyectos por separado]
-
-Estar situado en la raiz de backend (src/backend)
-Si ha ejecutado el proyecto antes, entonces hacer **docker volume rm backend_horarios_postgres -f**
-
-```bash
-yarn install
-docker-compose up -d
-npm run start
-```
 
 Para analizar la base de datos revisar `locahost:8080` en el navegador
 
-Ejecutar la aplicacion visual (estar situado en la raiz del proyecto visual [dentro de la carpeta frontend])
-
-```bash
-yarn install
-yarn serve
-```
-
-> Navegar a http://localhost:8001
-
 
 **Para ingresar como administrador del sistema**
-
 - email: admin@admin.com
 - password: admin
